@@ -2,6 +2,31 @@
 
 return [
 
+
+
+
+
+
+    'extensions' => [
+
+        'media-manager' => [
+
+            // Select a local disk that you configured in `config/filesystem.php`
+            'disk' => 'public'
+        ],
+
+        'ckeditor' => [
+
+            //Set to false if you want to disable this extension
+            'enable' => true,
+
+            // Editor configuration
+            'config' => [
+
+            ]
+        ]
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Laravel-admin name
