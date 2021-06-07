@@ -141,7 +141,7 @@ ol {
 }
 
 .spad {
-	padding-top: 100px;
+	padding-top: 30px;
 	padding-bottom: 100px;
 }
 .text-white h1,
@@ -1079,7 +1079,8 @@ ol {
 .breadcrumb-section {
 	display: flex;
 	align-items: center;
-	padding: 45px 0 40px;
+	padding: 15px 0 15px;
+	background: #7fad39;
 }
 
 .breadcrumb__text h2 {
@@ -1292,7 +1293,7 @@ ol {
 -----------------------*/
 
 .product {
-	padding-top: 80px;
+	padding-top: 0px;
 	padding-bottom: 80px;
 }
 
@@ -1698,7 +1699,7 @@ ol {
 -----------------------*/
 
 .product-details {
-	padding-top: 80px;
+	padding-top: 30px;
 }
 
 .product__details__pic__item {
@@ -1765,8 +1766,10 @@ ol {
 
 .product__details__text ul {
 	border-top: 1px solid #ebebeb;
-	padding-top: 40px;
-	margin-top: 50px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .product__details__text ul li {
@@ -2997,7 +3000,10 @@ ol {
 .h-61{
 	height: 61px;
 	overflow: hidden;
-}    
+}
+.owl-carousel .owl-item img{
+	width:110px !important;
+}
 
 /*--------------------------------- Responsive Media Quaries -----------------------------*/
 
@@ -3262,6 +3268,9 @@ ol {
 /* Wide Mobile = 480px */
 
 @media only screen and (max-width: 767px) {
+	.header__logo img{
+		width: 38%;
+	}
 	.hero__categories {
 		margin-bottom: 5px;
     	margin-top: 10px;

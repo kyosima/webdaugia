@@ -31,8 +31,7 @@ function selectFileWithCKFinder( preview, in_value, type ) {
 		}
 	} );
 }
-
-$(".add_picture").click(function(event) {
+$(document).on('click', '.add_picture', function(event) {
 	/* Act on the event */
 	var preview = $(this).data('preview');
 	
