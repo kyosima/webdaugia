@@ -9,10 +9,11 @@ $(document).ready(function(){
 
     $(element.data('focus')).change(function(){
         var val = $(this).val();
+        var type = element.data('type');
         $.ajax({
             url: $('meta[name="url"]').attr('content')+'/admin/kiem-tra-duong-dan',
             method:"PUT",
-            data: { _token: CSRF_TOKEN, slug: val },
+            data: { _token: CSRF_TOKEN, slug: val, type: type },
             success:function(data)
             {
                 element.val(data);

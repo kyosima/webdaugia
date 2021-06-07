@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Posts;
+use App\Models\Category_post;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -25,7 +26,7 @@ class PostsController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header(trans('admin.Posts'))
+            ->header(trans('Tất cả bài viết'))
             // ->description(trans('admin.description'))
             ->body($this->grid());
     }
@@ -40,8 +41,8 @@ class PostsController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header(trans('admin.detail'))
-            ->description(trans('admin.description'))
+            ->header(trans('Chi tiết bài viết'))
+            // ->description(trans('admin.description'))
             ->body($this->detail($id));
     }
 
@@ -55,7 +56,7 @@ class PostsController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header(trans('admin.edit'))
+            ->header(trans('Sửa bài viết'))
             ->description(trans('admin.description'))
             ->body($this->form()->edit($id));
     }
@@ -69,8 +70,8 @@ class PostsController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header(trans('admin.create'))
-            ->description(trans('admin.description'))
+            ->header(trans('Thêm bài viết'))
+            // ->description(trans('admin.description'))
             ->body($this->form());
     }
 
@@ -89,9 +90,27 @@ class PostsController extends Controller
         // $grid->slug('slug');
         // $grid->body('body');
         // $grid->avatar('avatar');
-        $grid->created_at(trans('admin.created_at'));
-        $grid->updated_at(trans('admin.updated_at'));
+        $grid->column('created_at', __('Ngày tạo'))->filter('range', 'date');
+        $grid->expandFilter();
+        $grid->filter(function($filter){
 
+            // Remove the default id filter
+            $filter->disableIdFilter();
+            $filter->column(1/2, function ($filter) {
+                $filter->equal('ID')->integer();
+            });
+            $filter->column(1/2, function ($filter) {
+                $filter->contains('title')->placeholder('Tiêu đề...');
+            });
+            
+            
+            
+            
+        
+        });
+        $grid->actions(function ($actions) {
+            $actions->disableView();
+        });
         return $grid;
     }
 
@@ -106,14 +125,13 @@ class PostsController extends Controller
         $show = new Show(Posts::findOrFail($id));
 
         $show->id('ID');
-        $show->title('title');
+        $show->title('Tiêu đề');
         $show->desc_short('desc_short');
         $show->slug('slug');
         $show->body('body');
-        $show->avatar('avatar');
+        $show->avatar()->image();
         $show->created_at(trans('admin.created_at'));
         $show->updated_at(trans('admin.updated_at'));
-
         return $show;
     }
 
@@ -125,24 +143,46 @@ class PostsController extends Controller
     protected function form()
     {
         $form = new Form(new Posts);
+        // The first column occupies 1/2 of the page width
+        $form->column(8/12, function ($form) {
 
-        $form->display('ID');
-        $form->text('title', 'title');
-        $form->text('slug', 'slug')->readonly()->required()
-        ->attribute(['class' => 'create_slug form-control', 'data-focus' => '#title']);
-        $form->textarea('desc_short', 'desc_short');
-        $form->ckeditor('body', 'body');
-        $form->inputImage('avatar')->value(URL('/').'/public/upload/product_default.png')
-        ->attribute('data-type', '');
+            // Add a form item to this column
+
+            $form->text('title', 'Tiêu đề')->required()->autofocus();
+            $form->text('slug', 'Đường dẫn')->readonly()->required()
+            ->attribute(['class' => 'create_slug form-control', 'data-focus' => '#title', 'data-type' => 'post']);
+            $form->textarea('desc_short', 'Mô tả ngắn');
+            $form->ckeditor('body', 'Nội dung');
+        });
+
+        $form->column(4/12, function ($form) {
+
+            $form->checkbox('category' ,'Danh mục')->options(Category_post::all()->pluck('name','id'));
+
+            // Add a form item to this column
+            $form->inputImage('avatar', 'Ảnh đại điện')->value(URL('/').'/public/upload/product_default.png')
+            ->attribute('data-type', '');
+        });
+        
+        
+        $form->setWidth(12, 12);
         return $form;
     }
 
     public function createSlug(Request $request){
         
         $slug = Str::slug($request->slug, '-');
-        if(Posts::where('slug', $slug)->first()){
-            return response('Đã tồn tại tên bài viết, vui lòng thay đổi tên khác', 400);
+        if($request->type == 'post'){
+            if(Posts::where('slug', $slug)->first()){
+                return response('Đã tồn tại tên này, vui lòng thay đổi tên khác', 400);
+            }
         }
+        elseif($request->type == 'category_post'){
+            if(Category_post::where('slug', $slug)->first()){
+                return response('Đã tồn tại tên này, vui lòng thay đổi tên khác', 400);
+            }
+        }
+        
         return $slug;
     }
 }

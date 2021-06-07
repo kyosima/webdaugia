@@ -1,3 +1,6 @@
 .add_picture{
     cursor: pointer;
 }
+.form-horizontal .control-label{
+    text-align: left !important;
+}

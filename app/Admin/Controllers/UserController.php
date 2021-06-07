@@ -27,14 +27,29 @@ class UserController extends AdminController
         $grid = new Grid(new User());
 
         $grid->column('id', __('Id'));
-        $grid->column('name', __('Name'));
+        $grid->column('name', __('Tên'));
         $grid->column('email', __('Email'));
-        $grid->column('email_verified_at', __('Email verified at'));
-        $grid->column('password', __('Password'));
-        $grid->column('remember_token', __('Remember token'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        // $grid->column('email_verified_at', __('Email verified at'));
+        // $grid->column('password', __('Password'));
+        // $grid->column('remember_token', __('Remember token'));
+        $grid->column('created_at', __('Ngày tạo'))->filter('range', 'date');
+        // $grid->column('created_at', __('Created at'));
+        // $grid->column('updated_at', __('Updated at'));
+        $grid->filter(function($filter){
 
+            // Remove the default id filter
+            $filter->disableIdFilter();
+            $filter->column(1/2, function ($filter) {
+                $filter->equal('ID')->integer();
+            });
+            $filter->column(1/2, function ($filter) {
+                $filter->contains('name', 'Tên')->placeholder('Tên thành viên...');
+            });       
+        
+        });
+        $grid->actions(function ($actions) {
+            $actions->disableView();
+        });
         return $grid;
     }
 

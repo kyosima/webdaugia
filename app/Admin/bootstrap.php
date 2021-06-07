@@ -37,5 +37,5 @@ Admin::css('public/admin/css/style.css');
 
 Form::extend('inputImage', InputImage::class);
 
-Form::extend('inputSlug', InputSlug::class);
+
 
