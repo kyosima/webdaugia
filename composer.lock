@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "2b6a6fba115653c59e7d02a25de26407",
+=======
+    "content-hash": "0580a9b0766885ba50a5b2f3bcdb37b1",
+>>>>>>> truong
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1206,6 +1210,7 @@
             "time": "2021-04-26T09:17:50+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "laravel-admin-ext/ckeditor",
             "version": "v1.0.1",
             "source": {
@@ -1217,6 +1222,19 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel-admin-extensions/ckeditor/zipball/33b0be1f489f923617417f8135a198d984a6b12f",
                 "reference": "33b0be1f489f923617417f8135a198d984a6b12f",
+=======
+            "name": "laravel-admin-ext/helpers",
+            "version": "v1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel-admin-extensions/helpers.git",
+                "reference": "47fac9ad239da56a444af86a0fa53b213209dd6d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel-admin-extensions/helpers/zipball/47fac9ad239da56a444af86a0fa53b213209dd6d",
+                "reference": "47fac9ad239da56a444af86a0fa53b213209dd6d",
+>>>>>>> truong
                 "shasum": ""
             },
             "require": {
@@ -1230,12 +1248,17 @@
             "extra": {
                 "laravel": {
                     "providers": [
+<<<<<<< HEAD
                         "Encore\\CKEditor\\CKEditorServiceProvider"
+=======
+                        "Encore\\Admin\\Helpers\\HelpersServiceProvider"
+>>>>>>> truong
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
+<<<<<<< HEAD
                     "Encore\\CKEditor\\": "src/"
                 }
             },
@@ -1291,6 +1314,9 @@
             "autoload": {
                 "psr-4": {
                     "Encore\\Admin\\Media\\": "src/"
+=======
+                    "Encore\\Admin\\Helpers\\": "src/"
+>>>>>>> truong
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1303,6 +1329,7 @@
                     "email": "zosong@126.com"
                 }
             ],
+<<<<<<< HEAD
             "description": "Media manager for laravel",
             "homepage": "https://github.com/laravel-admin-extensions/media-manager",
             "keywords": [
@@ -1311,6 +1338,15 @@
                 "media"
             ],
             "time": "2019-10-14T09:05:25+00:00"
+=======
+            "description": "Helpers extension for laravel-admin",
+            "homepage": "https://github.com/laravel-admin-extensions/helpers",
+            "keywords": [
+                "helpers",
+                "laravel-admin"
+            ],
+            "time": "2019-12-11T02:59:06+00:00"
+>>>>>>> truong
         },
         {
             "name": "laravel/framework",

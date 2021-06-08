@@ -13,4 +13,12 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
 
+    $router->resource('users', UserController::class);
+
+    $router->resource('posts', PostsController::class);
+
+    $router->resource('category', CategoryPostController::class);
+
+    $router->put('/kiem-tra-duong-dan', 'PostsController@createSlug');
+
 });

@@ -1,4 +1,9 @@
 <?php
+use Encore\Admin\Form;
+use App\Admin\Extensions\Form\CKEditor;
+use App\Admin\Extensions\Form\InputImage;
+use App\Admin\Extensions\Form\InputSlug;
+Use Encore\Admin\Admin;
 
 /**
  * Laravel-admin - admin builder based on Laravel.
@@ -19,3 +24,18 @@
  */
 
 Encore\Admin\Form::forget(['map', 'editor']);
+
+Form::extend('ckeditor', CKEditor::class);
+
+Admin::js('public/packages/ckfinder/ckfinder.js');
+
+Admin::js('public/admin/js/input-image.js');
+
+Admin::js('public/admin/js/slug.js');
+
+Admin::css('public/admin/css/style.css');
+
+Form::extend('inputImage', InputImage::class);
+
+
+
