@@ -36,3 +36,9 @@ Route::get('/blog', [BlogController::class, 'index']);
 
 Route::get('/chi-tiet-bai-viet', [BlogController::class, 'detail']);
 
+//start login, register
+
+Route::get('/dang-nhap', [UserLoginController::class, 'index']);
+
+//end login, register
+

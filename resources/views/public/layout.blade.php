@@ -6,7 +6,10 @@
     <meta name="description" content="Đấu giá Template">
     <meta name="keywords" content="Đấu giá, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="canonical" href="{{URL('/')}}">
+    <link rel="icon" href="{{asset('public/mevivu/img/logo.png')}}" type="image/gif" sizes="32x32">
     <title>Đấu giá | Template</title>
 
     <!-- Google Font -->
