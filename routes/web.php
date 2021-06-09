@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryProductController;
@@ -8,6 +8,8 @@ use App\Http\Controllers\CampaignController;
 
 use App\Http\Controllers\CampaignTypeController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ProductCategoryController;
+
 
 
 /*
@@ -38,7 +40,13 @@ Route::get('/chi-tiet-bai-viet', [BlogController::class, 'detail']);
 
 //start login, register
 
-Route::get('/dang-nhap', [UserLoginController::class, 'index']);
 
 //end login, register
 
+Route::resources([
+    'san-pham' => 'ProductController',
+    'danh-muc' => 'ProductCategoryController',
+]);
+Route::fallback(function() {
+    return view('404');
+});
