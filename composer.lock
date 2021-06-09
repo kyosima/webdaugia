@@ -71,10 +71,6 @@
                 "seotools",
                 "webmaster"
             ],
-            "support": {
-                "issues": "https://github.com/artesaos/seotools/issues",
-                "source": "https://github.com/artesaos/seotools"
-            },
             "time": "2021-05-03T21:46:46+00:00"
         },
         {
@@ -2765,10 +2761,6 @@
                 "laravel",
                 "reliese"
             ],
-            "support": {
-                "issues": "https://github.com/reliese/laravel/issues",
-                "source": "https://github.com/reliese/laravel"
-            },
             "time": "2021-04-29T14:36:44+00:00"
         },
         {
@@ -7606,5 +7598,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "1.1.0"
 }
