@@ -1,3 +1,7 @@
+@php
+use App\Models\CategoryPost;
+$category = CategoryPost::select('title', 'slug')->get();
+@endphp
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -13,8 +17,9 @@
     <title>Đấu giá | Template</title>
 
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet"> -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Pridi:wght@200;300;400;600;900&display=swap" rel="stylesheet">
     <!-- Css Styles -->
     <link rel="stylesheet" href="{{asset('public/mevivu/css/bootstrap.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('public/mevivu/css/font-awesome.min.css')}}" type="text/css">
@@ -46,12 +51,19 @@
             <div class="header__cart__price"><span>150.000 đ</span></div>
         </div>
         <div class="humberger__menu__widget">
+            @guest
             <div class="header__top__right__auth header__top__register">
-                <a href="#"><i class="fa fa-user"></i>Đăng nhập</a>
+                <a href="{{URL::to('/dang-nhap')}}"><i class="fa fa-user"></i>Đăng nhập</a>
             </div>
             <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user-plus"></i>Đăng ký</a>
+                <a href="{{URL::to('/lien-he')}}"><i class="fa fa-user-plus"></i>Đăng ký đại lý</a>
             </div>
+            @endguest
+            @auth
+            <div class="header__top__right__auth">
+                    <a href="{{URL::to('/dang-ky')}}">Xin chào, {{Auth::user()->name}}</a>
+                </div> 
+            @endauth
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
@@ -64,7 +76,13 @@
                         <li><a href="{{URL::to('/loai-dau-gia')}}">Chuẩn bị diễn ra</a></li>    
                     </ul>
                 </li>
-                <li><a href="{{URL::to('/blog')}}">Blog</a></li>
+                <li><a href="{{URL::to('/blog')}}">Blog</a>
+                    <ul class="header__menu__dropdown">
+                        @foreach($category as $value)
+                        <li><a href="{{URL::to('/danh-muc-bai-viet/'.$value->slug)}}">{{$value->title}}</a></li>
+                        @endforeach  
+                    </ul>
+                </li>
                 <li><a href="{{URL::to('/lien-he')}}">Liên hệ</a></li>
             </ul>
         </nav>
@@ -93,12 +111,28 @@
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__right">
+                            @guest
                             <div class="header__top__right__auth header__top__register">
-                                <a href="#"><i class="fa fa-user"></i>Đăng nhập</a>
+                                <a href="{{URL::to('/dang-nhap')}}"><i class="fa fa-user"></i>Đăng nhập</a>
                             </div>
                             <div class="header__top__right__auth">
-                                <a href="#"><i class="fa fa-user-plus"></i>Đăng ký</a>
+                                <a href="{{URL::to('/lien-he')}}"><i class="fa fa-user-plus"></i>Đăng ký đại lý</a>
                             </div>
+                            @endguest
+                            @auth
+                            <div class="header__top__right__auth_login">
+                                <span class="dropdow_custom" data-toggle=".dropdown_custom">
+                                    Xin chào, {{Auth::user()->name}}
+                                </span>
+                                <div class="dropdown_custom" style="display:none;">
+                                    <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Đơn hàng</a>
+                                    <a class="dropdown-item" href="#"><i class="fa fa-hourglass-half"></i> Đấu giá</a>
+                                    <a class="dropdown-item" href="#"><i class="fa fa-heart-o"></i> Yêu thích</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{URL::to('/thoat-tai-khoan')}}"><i class="fa fa-sign-out"></i> Thoát tài khoản</a>
+                                </div>     
+                            </div> 
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -111,17 +145,20 @@
                         <a href="{{URL::to('/')}}"><img src="{{asset('public/mevivu/img/logo.png')}}" alt=""></a>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                	<div class="input-group">
-					  <input type="text" class="form-control" placeholder="Search">
-					  <div class="input-group-append">
-					    <button class="btn btn-success" type="submit">Tìm kiếm</button>
-					  </div>
-					</div>
-                </div>
-                <div class="col-lg-3 d-none d-md-block">
+                <div class="col-lg-9 d-none d-md-block">
                     <div class="header__cart">
                         <ul>
+                            <li class="search_all">
+                                <div class="seach_form" style="display:none;">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-ocean" type="submit">Tìm kiếm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#" class="search_icon"><i class="fa fa-search"></i></a>
+                            </li>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                             <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                         </ul>
@@ -144,7 +181,7 @@
                     <div class="hero__categories">
                         <div class="hero__categories__all">
                             <i class="fa fa-bars"></i>
-                            <span>Danh mục sản phẩm</span>
+                            <span>CÁC DÒNG CÁ KOI</span>
                         </div>
                         <ul style="display: none;">
                             <li><a href="#">Fresh Meat</a></li>
@@ -164,8 +201,16 @@
                 <div class="col-lg-9">
                 	<nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="./index.html">Home</a></li>
-                            <li><a href="{{URL::to('/cua-hang')}}">Cửa hàng</a></li>
+                            <li class="active"><a href="./index.html"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                            <li><a href="{{URL::to('/cua-hang')}}">Giới thiệu</a></li>
+                            <li><a href="{{URL::to('/cua-hang')}}">Danh sách đại lý</a></li>
+                            <li><a href="{{URL::to('/cua-hang')}}">Sản phẩm</a>
+                            <ul class="header__menu__dropdown">
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Koi</a></li>
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Cám cá</a></li>
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Vật liệu</a></li>    
+                                </ul>
+                            </li>
                             <li><a href="{{URL::to('/dau-gia')}}">Đấu giá</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="{{URL::to('/loai-dau-gia')}}">Đang diễn ra</a></li>
@@ -173,7 +218,14 @@
                                     <li><a href="{{URL::to('/loai-dau-gia')}}">Chuẩn bị diễn ra</a></li>    
                                 </ul>
                             </li>
-                            <li><a href="{{URL::to('/blog')}}">Blog</a></li>
+                            <li><a href="{{URL::to('/blog')}}">Blog</a>
+                                <ul class="header__menu__dropdown">
+                                    @foreach($category as $value)
+                                    <li><a href="{{URL::to('/danh-muc-bai-viet/'.$value->slug)}}">{{$value->title}}</a></li>
+                                    @endforeach  
+                                </ul>
+                            </li>
+                            
                             <li><a href="{{URL::to('/lien-he')}}">Liên hệ</a></li>
                         </ul>
                     </nav>
@@ -193,7 +245,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                            <a href="{{URL::to('/')}}"><img src="{{asset('public/mevivu/img/logo.png')}}" alt=""></a>
                         </div>
                         <ul>
                             <li>Address: 60-49 Road 11378 New York</li>
@@ -256,6 +308,7 @@
     <!-- Js Plugins -->
     <script src="{{asset('public/mevivu/js/jquery-3.3.1.min.js')}}"></script>
     <script src="{{asset('public/mevivu/js/bootstrap.min.js')}}"></script>
+    <!-- <script src="{{asset('public/mevivu/js/popper.min.js')}}"></script> -->
     <script src="{{asset('public/mevivu/js/jquery.nice-select.min.js')}}"></script>
     <script src="{{asset('public/mevivu/js/jquery-ui.min.js')}}"></script>
     <script src="{{asset('public/mevivu/js/jquery.slicknav.js')}}"></script>
@@ -263,8 +316,6 @@
     <script src="{{asset('public/mevivu/js/owl.carousel.min.js')}}"></script>
     <script src="{{asset('public/mevivu/js/main.js')}}"></script>
     <script src="{{asset('public/mevivu/js/jquery.countdown.min.js')}}"></script>
-
-
 
 </body>
 

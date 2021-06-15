@@ -9,6 +9,11 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\CampaignTypeController;
 use App\Http\Controllers\BlogController;
 
+use App\Http\Controllers\UserLoginController;
+
+use App\Http\Controllers\UserRegisterController;
+use App\Http\Controllers\UserGetPassword;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,11 +39,36 @@ Route::get('/loai-dau-gia', [CampaignTypeController::class, 'index']);
 
 Route::get('/blog', [BlogController::class, 'index']);
 
-Route::get('/chi-tiet-bai-viet', [BlogController::class, 'detail']);
+Route::get('/danh-muc-bai-viet/{categoryPost:slug}', [BlogController::class, 'category']);
+
+Route::get('/bai-viet/{post:slug}', [BlogController::class, 'detail']);
 
 //start login, register
 
 Route::get('/dang-nhap', [UserLoginController::class, 'index']);
 
-//end login, register
+Route::post('/dang-nhap', [UserLoginController::class, 'postLogin'])->name('post.login');
 
+Route::group(['prefix' => '/', 'middleware' => 'auth'], function(){
+
+    Route::get('thoat-tai-khoan', [UserLoginController::class, 'getLogout']);
+
+});
+
+
+
+Route::get('/dang-ky', [UserRegisterController::class, 'index']);
+
+Route::post('/dang-ky', [UserRegisterController::class, 'postRegister'])->name('post.register');
+
+//end login, register
+//get password
+Route::get('gui-yeu-cau-lay-mat-khau', [UserGetPassword::class, 'getPassword'])->name('getpassword');
+
+Route::post('gui-yeu-cau-lay-mat-khau', [UserGetPassword::class, 'postSendRequireGetPassword'])->name('post.sendRequireGetPassword');
+
+Route::get('xac-nhan-lay-lai-mat-khau', [UserGetPassword::class, 'getAcceptPassword'])->name('getAcceptPassword');
+
+Route::put('xac-nhan-lay-lai-mat-khau', [UserGetPassword::class, 'postAcceptGetPassword'])->name('put.getAcceptPassword');
+
+//get password

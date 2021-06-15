@@ -1,3 +1,7 @@
+@php
+use App\Models\Posts;
+$posts_new = Posts::orderBy('id', 'DESC')->take(5)->get();
+@endphp
 <div class="blog__sidebar">
     <div class="blog__sidebar__search">
         <form action="#">
@@ -9,51 +13,17 @@
     <div class="blog__sidebar__item">
         <h4>Bài viết mới</h4>
         <div class="blog__sidebar__recent">
-            <a href="#" class="blog__sidebar__recent__item">
-                <div class="blog__sidebar__recent__item__pic">
-                    <img src="{{asset('public/mevivu/img/blog/sidebar/sr-1.jpg')}}" alt="">
+            @foreach($posts_new as $value)
+            <a href="{{URL::to('bai-viet/'.$value->slug)}}" class="blog__sidebar__recent__item">
+                <div class="blog__sidebar__recent__item__pic blog-img-small">
+                    <img src="{{asset($value->avatar)}}" alt="">
                 </div>
                 <div class="blog__sidebar__recent__item__text">
-                    <h6>09 Kinds Of Vegetables<br /> Protect The Liver</h6>
-                    <span>MAR 05, 2019</span>
+                    <h6>{{$value->title}}</h6>
+                    <span>{{date("d/m/Y",strtotime($value->created_at))}}</span>
                 </div>
             </a>
-            <a href="#" class="blog__sidebar__recent__item">
-                <div class="blog__sidebar__recent__item__pic">
-                    <img src="{{asset('public/mevivu/img/blog/sidebar/sr-3.jpg')}}" alt="">
-                </div>
-                <div class="blog__sidebar__recent__item__text">
-                    <h6>4 Principles Help You Lose <br />Weight With Vegetables</h6>
-                    <span>MAR 05, 2019</span>
-                </div>
-            </a>
-            <a href="#" class="blog__sidebar__recent__item">
-                <div class="blog__sidebar__recent__item__pic">
-                    <img src="{{asset('public/mevivu/img/blog/sidebar/sr-2.jpg')}}" alt="">
-                </div>
-                <div class="blog__sidebar__recent__item__text">
-                    <h6>Tips You To Balance<br /> Nutrition Meal Day</h6>
-                    <span>MAR 05, 2019</span>
-                </div>
-            </a>
-            <a href="#" class="blog__sidebar__recent__item">
-                <div class="blog__sidebar__recent__item__pic">
-                    <img src="{{asset('public/mevivu/img/blog/sidebar/sr-3.jpg')}}" alt="">
-                </div>
-                <div class="blog__sidebar__recent__item__text">
-                    <h6>4 Principles Help You Lose <br />Weight With Vegetables</h6>
-                    <span>MAR 05, 2019</span>
-                </div>
-            </a>
-            <a href="#" class="blog__sidebar__recent__item">
-                <div class="blog__sidebar__recent__item__pic">
-                    <img src="{{asset('public/mevivu/img/blog/sidebar/sr-1.jpg')}}" alt="">
-                </div>
-                <div class="blog__sidebar__recent__item__text">
-                    <h6>09 Kinds Of Vegetables<br /> Protect The Liver</h6>
-                    <span>MAR 05, 2019</span>
-                </div>
-            </a>
+            @endforeach
         </div>
     </div>
     
