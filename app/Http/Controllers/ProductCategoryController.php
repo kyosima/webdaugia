@@ -16,7 +16,7 @@ class ProductCategoryController extends Controller
     public function index()
     {
         //
-        $products_onsale = Product::latest()->with('category')->where('product_discount','<>',0)->orderBy('product_discount','desc')->take(6);
+        $products_onsale = Product::latest()->with('category')->where('discount','<>',0)->orderBy('discount','desc')->take(6);
         $products = Product::latest()->with('category')->latest()->paginate(6);
         return view('public.product.shop', ['products'=>$products,'products_onsale'=>$products_onsale]);
     }
@@ -57,9 +57,9 @@ class ProductCategoryController extends Controller
      */
     public function show($slug)
     {        
-        $category = ProductCategory::whereCategorySlug($slug)->firstOrFail();
-        $products_onsale = Product::latest()->whereIn('product_category',$this->getIds($category))->with('category')->where('product_discount','<>',0)->orderBy('product_discount','desc')->get();
-        $products = Product::whereIn('product_category', $this->getIds($category))->with('category')->latest()->paginate(16);
+        $category = ProductCategory::whereSlug($slug)->firstOrFail();
+        $products_onsale = Product::latest()->whereIn('category_id',$this->getIds($category))->with('category')->where('discount','<>',0)->orderBy('discount','desc')->get();
+        $products = Product::whereIn('category_id', $this->getIds($category))->with('category')->latest()->paginate(16);
         return view('public.product.shop', ['products'=>$products,'products_onsale'=>$products_onsale]);
     }
 

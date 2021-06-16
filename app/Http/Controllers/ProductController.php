@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function index()
     {
         //
-        $products_onsale = Product::latest()->with('category')->where('product_discount','<>',0)->orderBy('product_discount','desc')->take(6);
+        $products_onsale = Product::latest()->with('category')->where('discount','<>',0)->orderBy('discount','desc')->take(6);
 
         $products = Product::latest()->with('category')->latest()->paginate(6);
         return view('public.product.shop', ['products'=>$products,'products_onsale'=>$products_onsale]);
@@ -48,10 +48,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($product_slug)
+    public function show($slug)
     {
         //
-        $product = Product::whereProductSlug($product_slug)->firstOrFail();
+        $product = Product::whereSlug($slug)->firstOrFail();
         return view('public.product.detail', ['product'=>$product]);
     }
 

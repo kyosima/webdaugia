@@ -10,25 +10,29 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class BlogCategory
+ * Class PostCategory
  * 
  * @property int $id
- * @property string $category_parent
- * @property string $category_slug
- * @property string $category_name
+ * @property int $parent_id
+ * @property string $slug
+ * @property string $order
+ * @property string $title
+ * @property string $desc
+ * @property string $logo
  * @property Carbon $created_at
  * @property Carbon $update_at
  *
  * @package App\Models
  */
-class BlogCategory extends Model
+class PostCategory extends Model
 {
-	protected $table = 'blog_category';
+	protected $table = 'post_category';
 	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
-		'id' => 'int'
+		'id' => 'int',
+		'parent_id' => 'int'
 	];
 
 	protected $dates = [
@@ -36,9 +40,12 @@ class BlogCategory extends Model
 	];
 
 	protected $fillable = [
-		'category_parent',
-		'category_slug',
-		'category_name',
+		'parent_id',
+		'slug',
+		'order',
+		'title',
+		'desc',
+		'logo',
 		'update_at'
 	];
 }

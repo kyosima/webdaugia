@@ -19,6 +19,8 @@ Route::group([
 
     $router->resource('category', CategoryPostController::class);
 
+    $router->resource('products', ProductController::class);
+
     $router->put('/kiem-tra-duong-dan', 'PostsController@createSlug');
 
 });

@@ -9,7 +9,7 @@
                 <div class="breadcrumb__text">
                     <div class="breadcrumb__option">
                         <a href="{{URL::to('/')}}">Trang chủ</a>
-                        <a href="{{URL::to('danh-muc/')}}">Betta</a>
+                        <a href="{{URL::to('danh-muc/'.$product->category->slug)}}">{{$product->category->title}}</a>
                         <span>Cá cảnh đẹp rực rỡ</span>
                     </div>
                 </div>
@@ -27,10 +27,10 @@
                 <div class="product__details__pic">
                     <div class="product__details__pic__item">
                         <img class="product__details__pic__item--large"
-                            src="@getimage({{$product->product_feature_img}})" alt="">
+                            src="@getimage({{$product->avatar}})" alt="">
                     </div>
                     <div class="product__details__pic__slider owl-carousel">
-                        @foreach (explode(',',$product->product_gallery) as $image)
+                        @foreach (explode(',',$product->gallery) as $image)
                             <img data-imgbigurl="@getimage({{$image}})"
                             src="@getimage({{$image}})" alt="">
                         @endforeach
@@ -39,7 +39,7 @@
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="product__details__text">
-                    <h3 class="product__detail__title">{{$product->product_name}}</h3>
+                    <h3 class="product__detail__title">{{$product->title}}</h3>
                     <div class="star-rating" title="Rated 5.00 out of 5">
                         <span style="width:{{rand(50,100)}}%"><strong class="rating">5.00</strong> out of 5</span>
                     </div>
@@ -57,7 +57,7 @@
                     <a href="#" class="primary-btn">THÊM VÀO GIỎ HÀNG</a>
                     <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                     <ul>
-                        <li><b>Danh mục</b> <span>{{$product->category->category_name}}</span></li>
+                        <li><b>Danh mục</b> <span>{{$product->category->title}}</span></li>
                         <li><b>Chia sẻ</b>
                             <div class="share">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
@@ -85,7 +85,7 @@
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
                             <div class="product__details__tab__desc">
                                 <h6>Mô tả</h6>
-                                <p>{!! $product->product_longdsc!!}</p>
+                                <p>{!! $product->desc_long!!}</p>
                             </div>
                         </div>
                         <div class="tab-pane" id="tabs-3" role="tabpanel">
@@ -117,7 +117,7 @@
                 <div class="product__related_carousel">
                     <div class="row">
                             <div class="product__discount__slider owl-carousel">
-                                @foreach(\App\Models\Product::where('product_category',$product->product_category)->take(8)->latest()->get() as $product)
+                                @foreach(\App\Models\Product::where('category_id',$product->category_id)->take(8)->latest()->get() as $product)
                                     @include('public.product.includes.product_grid', ['item'=>$product])
                                 @endforeach
                             </div>

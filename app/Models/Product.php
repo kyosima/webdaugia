@@ -6,29 +6,34 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Encore\Admin\Traits\AdminBuilder;
+use Encore\Admin\Traits\ModelTree;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 /**
  * Class Product
  * 
  * @property int $id
- * @property string $product_slug
- * @property string|null $product_category
- * @property string $product_name
- * @property string|null $product_price
- * @property string|null $product_sku
- * @property int|null $product_quantity
- * @property string $product_feature_img
- * @property string|null $product_gallery
- * @property string|null $product_brand
- * @property int $product_variation_status
- * @property string|null $product_variation
- * @property int $product_status
- * @property string|null $product_shortdsc
- * @property string|null $product_longdsc
- * @property string|null $product_info
- * @property string|null $product_offer
+ * @property string $slug
+ * @property string|null $title
+ * @property int $category_id
+ * @property int|null $price
+ * @property int $discount
+ * @property string|null $sku
+ * @property int|null $quantity
+ * @property string $avatar
+ * @property string|null $gallery
+ * @property int|null $brand_id
+ * @property int $variation_status
+ * @property string|null $variation_id
+ * @property int $status
+ * @property string|null $desc_short
+ * @property string|null $desc_long
+ * @property string|null $info
+ * @property string|null $offer
  * @property int|null $is_highlight
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -37,37 +42,58 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Product extends Model
 {
+	
 	protected $table = 'product';
+	use Sluggable;
+
+	public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
 
 	protected $casts = [
-		'product_quantity' => 'int',
-		'product_variation_status' => 'int',
-		'product_status' => 'int',
+		'category_id' => 'int',
+		'price' => 'int',
+		'discount' => 'int',
+		'quantity' => 'int',
+		'brand_id' => 'int',
+		'variation_status' => 'int',
+		'status' => 'int',
 		'is_highlight' => 'int'
 	];
 
 	protected $fillable = [
-		'product_slug',
-		'product_category',
-		'product_name',
-		'product_price',
-		'product_sku',
-		'product_quantity',
-		'product_feature_img',
-		'product_gallery',
-		'product_brand',
-		'product_variation_status',
-		'product_variation',
-		'product_status',
-		'product_shortdsc',
-		'product_longdsc',
-		'product_info',
-		'product_offer',
+		'slug',
+		'title',
+		'category_id',
+		'price',
+		'discount',
+		'sku',
+		'quantity',
+		'avatar',
+		'gallery',
+		'brand_id',
+		'variation_status',
+		'variation_id',
+		'status',
+		'desc_short',
+		'desc_long',
+		'info',
+		'offer',
 		'is_highlight'
 	];
 	public function category()
     {
-        return $this->belongsTo(ProductCategory::class, 'product_category', 'id');
+        return $this->belongsTo(ProductCategory::class, 'category_id', 'id');
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
 
 }

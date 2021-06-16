@@ -8,7 +8,6 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Post
@@ -19,22 +18,29 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $slug
  * @property string|null $body
  * @property string $avatar
+ * @property int $category_id
+ * @property int $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property string|null $deleted_at
  *
  * @package App\Models
  */
 class Post extends Model
 {
-	use SoftDeletes;
 	protected $table = 'posts';
+
+	protected $casts = [
+		'category_id' => 'int',
+		'status' => 'int'
+	];
 
 	protected $fillable = [
 		'title',
 		'desc_short',
 		'slug',
 		'body',
-		'avatar'
+		'avatar',
+		'category_id',
+		'status'
 	];
 }

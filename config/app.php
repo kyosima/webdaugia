@@ -163,6 +163,8 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
         Reliese\Coders\CodersServiceProvider::class,
+        Cviebrock\EloquentSluggable\ServiceProvider::class,
+
         /*
          * Package Service Providers...
          */

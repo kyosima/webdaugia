@@ -13,9 +13,10 @@ use Illuminate\Database\Eloquent\Model;
  * Class ProductReview
  * 
  * @property int $id
- * @property int $review_ofproduct
- * @property float $review_rating
- * @property string $review_content
+ * @property int $product_id
+ * @property int $user_id
+ * @property float $rating
+ * @property string $content
  * @property Carbon $updated_at
  * @property Carbon $created_at
  *
@@ -28,13 +29,15 @@ class ProductReview extends Model
 
 	protected $casts = [
 		'id' => 'int',
-		'review_ofproduct' => 'int',
-		'review_rating' => 'float'
+		'product_id' => 'int',
+		'user_id' => 'int',
+		'rating' => 'float'
 	];
 
 	protected $fillable = [
-		'review_ofproduct',
-		'review_rating',
-		'review_content'
+		'product_id',
+		'user_id',
+		'rating',
+		'content'
 	];
 }

@@ -13,13 +13,12 @@ use Illuminate\Database\Eloquent\Model;
  * Class Blog
  * 
  * @property int $id
- * @property string $blog_name
- * @property string $blog_slug
- * @property string|null $blog_category
- * @property string|null $blog_feature_img
- * @property string|null $blog_excerpt
- * @property string $blog_content
- * @property int $blog_status
+ * @property string $title
+ * @property string $slug
+ * @property int|null $category_id
+ * @property string|null $avatar
+ * @property string|null $body
+ * @property int $status
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
@@ -30,16 +29,16 @@ class Blog extends Model
 	protected $table = 'blogs';
 
 	protected $casts = [
-		'blog_status' => 'int'
+		'category_id' => 'int',
+		'status' => 'int'
 	];
 
 	protected $fillable = [
-		'blog_name',
-		'blog_slug',
-		'blog_category',
-		'blog_feature_img',
-		'blog_excerpt',
-		'blog_content',
-		'blog_status'
+		'title',
+		'slug',
+		'category_id',
+		'avatar',
+		'body',
+		'status'
 	];
 }

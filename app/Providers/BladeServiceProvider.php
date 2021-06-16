@@ -29,7 +29,7 @@ class BladeServiceProvider extends ServiceProvider
             return "{{number_format($money)}} đ";
         });
         Blade::directive('getimage', function ($image) {
-            return asset('storage/app/public/images/'.$image);
+            return '<img src='.asset('storage/app/public/images/'.$image).'/>';
         });
     }
 }
