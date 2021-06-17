@@ -31,7 +31,7 @@ use App\Http\Controllers\UserGetPassword;
 Route::get('/', [HomeController::class, 'home']);
 Route::get('/lien-he', [HomeController::class, 'contact']);
 
-Route::get('/cua-hang', [CategoryProductController::class, 'index']);
+    // Route::get('/cua-hang', [CategoryProductController::class, 'index']);
 
 Route::get('/chi-tiet-san-pham', [ProductDetailController::class, 'index']);
 
@@ -74,7 +74,7 @@ Route::put('xac-nhan-lay-lai-mat-khau', [UserGetPassword::class, 'postAcceptGetP
 
 Route::resources([
     'san-pham' => 'ProductController',
-    'danh-muc' => 'ProductCategoryController',
+    'cua-hang' => 'ProductCategoryController',
 ]);
 Route::fallback(function() {
     return view('404');
