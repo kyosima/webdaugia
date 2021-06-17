@@ -8,6 +8,14 @@
 ---------------------------------------------------------  */
 
 'use strict';
+const current = location.href;
+const query = document.querySelectorAll('a');
+const queryLenth = query.length;
+for(let i = 0; i < queryLenth; i++){
+    if(query[i].href == current){
+        query[i].classList.add("active");
+    }
+}
 
 (function ($) {
 
