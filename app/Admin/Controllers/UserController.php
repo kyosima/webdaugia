@@ -27,14 +27,12 @@ class UserController extends AdminController
         $grid = new Grid(new User());
 
         $grid->column('id', __('Id'));
-        $grid->column('name', __('Tên'));
+        $grid->column('name', __('Tên đăng nhập'));
         $grid->column('email', __('Email'));
         // $grid->column('email_verified_at', __('Email verified at'));
         // $grid->column('password', __('Password'));
         // $grid->column('remember_token', __('Remember token'));
         $grid->column('created_at', __('Ngày tạo'))->filter('range', 'date');
-        // $grid->column('created_at', __('Created at'));
-        // $grid->column('updated_at', __('Updated at'));
         $grid->filter(function($filter){
 
             // Remove the default id filter
@@ -64,11 +62,8 @@ class UserController extends AdminController
         $show = new Show(User::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('name', __('Name'));
+        $show->field('name', __('Tên đăng nhập'));
         $show->field('email', __('Email'));
-        $show->field('email_verified_at', __('Email verified at'));
-        $show->field('password', __('Password'));
-        $show->field('remember_token', __('Remember token'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 
@@ -82,14 +77,61 @@ class UserController extends AdminController
      */
     protected function form()
     {
+        // $method = Request::method();
+
+        // $rules = ($method === 'PUT') ? 'required' : 'required|unique:demo_users,name';
+
         $form = new Form(new User());
-
-        $form->text('name', __('Name'));
-        $form->email('email', __('Email'));
-        $form->datetime('email_verified_at', __('Email verified at'))->default(date('Y-m-d H:i:s'));
-        $form->password('password', __('Password'));
-        $form->text('remember_token', __('Remember token'));
-
+        $form->column(1/2, function ($form) {
+            $form->text('name', __('Tên đăng nhập'))->rules(['required', 'string' , 'min:3', 'max:255', 'unique:users,name,{{id}}'], [
+                'required' => 'Họ và tên không được để trống',
+                'min'   => 'code can not be less than 10 characters',
+                'max'   => 'Tên dài quá'
+            ])->required();
+            $form->email('email', __('Email'))->rules('required|email|min:8|max:255|unique:users,email,{{id}}', [
+                'required' => 'Họ và tên không được để trống',
+                'min'   => 'code can not be less than 10 characters',
+                'max'   => 'Tên dài quá'
+            ])->required();;
+            $form->password('password', __('Mật khẩu'));
+        });
+        $form->column(1/2, function ($form) {
+            
+            $form->column(1/4, function ($form) {
+                $form->text('user_info.fullname', __('Họ và tên'))->rules('required|string|min:3|max:255', [
+                    'required' => 'Họ và tên không được để trống',
+                    'min'   => 'code can not be less than 10 characters',
+                    'max'   => 'Tên dài quá'
+                ])->required();
+            });
+            $form->column(1/4, function ($form) {
+                $form->text('user_info.phone', __('Số điện thoại'))->pattern('(84|0[3|5|7|8|9])+([0-9]{8})\b')->rules(['required', 'regex:/((09|03|07|08|05)+([0-9]{8})\b)/'], [
+                    'required' => 'Họ và tên không được để trống',
+                    'regex'   => 'Số điện thoại không hợp lệ',
+                ])->required();
+            });
+            $form->column(1/2, function ($form) {
+                $form->text('user_info.address', __('Địa chỉ đại lý'))->required()->rules(['required'], [
+                    'required' => 'Họ và tên không được để trống',
+                ])->required();
+            });
+            $form->column(1/4, function ($form) {
+                $form->date('user_info.birthday', __('Ngày sinh'))->placeholder('Ngày sinh')->required();
+            });
+            $form->column(1/4, function ($form) {
+                $form->radio('user_info.gender', __('Giới tính'))->options([1 => 'Nam', 0 => 'Nữ'])->default('1');
+            });
+            
+        });
+        $form->setWidth(12, 12);
+        
+        $form->saving(function (Form $form) {
+            if ($form->password && $form->model()->password != $form->password) {
+                $form->password = Hash::make($form->password);
+            }
+        });
         return $form;
     }
+
+    
 }

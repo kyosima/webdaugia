@@ -4,3 +4,14 @@
 .form-horizontal .control-label{
     text-align: left !important;
 }
+.delete_gallery {
+    position: absolute;
+    top: -20px;
+    right: 13px;
+    color: black;
+    cursor: pointer;
+}
+#preview_gallery img {
+    width: 100%;
+    /* margin-top: 1rem; */
+}

@@ -1,3 +1,4 @@
+
 @extends('public.layout')
 @section('content')
 
@@ -267,50 +268,33 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-title from-blog__title">
-                            <h2>Tư vấn mua</h2>
+                            <h2>Kiến thức</h2>
                         </div>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-12 pr-md-1">
                         <div class="blog__item">
                             <div class="blog__item__pic">
-                                <img src="{{asset('public/mevivu/img/blog/blog-1.jpg')}}" alt="">
+                                <img src="{{asset($kienthuc1->avatar)}}" alt="">
                             </div>
                             <div class="blog__item__text">
                                 <ul>
-                                    <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
+                                    <li><i class="fa fa-calendar-o"></i> {{date("d/m/Y",strtotime($kienthuc1->created_at))}}</li>
                                     <!-- <li><i class="fa fa-comment-o"></i> 5</li> -->
                                 </ul>
-                                <h5><a href="{{URL::to('/chi-tiet-bai-viet')}}">Cooking tips make cooking simple</a></h5>
-                                <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                                <h5><a href="{{URL::to('/bai-viet/'.$kienthuc1->slug)}}">{{$kienthuc1->title}}</a></h5>
+                                <p>{{Str::of($kienthuc1->desc_short)->limit(200, '...')}}</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 pl-md-1 pr-md-1 d-none d-md-block">
-                        <a href="{{URL::to('/chi-tiet-bai-viet')}}" class="d-flex mb-2 align-items-center">
-                            <div class="w-80 h-61 mr-1"><img src="{{asset('public/mevivu/img/blog/blog-1.jpg')}}" alt="" width="100%"></div>
-                            <div class="flex-grow-1 text-13">Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat</div>
+                        @foreach($kienthuc2 as $value)
+                        <a href="{{URL::to('/bai-viet/'.$value->slug)}}" class="d-flex mb-2 align-items-center">
+                            <div class="mr-1 blog-img-small"><img src="{{asset($value->avatar)}}" alt="" width="100%"></div>
+                            <div class="flex-grow-1 text-13">
+                                <span class="title_Blog_small">{{$value->title}}</span>
+                            </div>
                         </a>
-                        <a href="{{URL::to('/chi-tiet-bai-viet')}}" class="d-flex mb-2 align-items-center">
-                            <div class="w-80 h-61 mr-1"><img src="{{asset('public/mevivu/img/blog/blog-1.jpg')}}" alt="" width="100%"></div>
-                            <div class="flex-grow-1 text-13">Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat</div>
-                        </a>
-                        <a href="{{URL::to('/chi-tiet-bai-viet')}}" class="d-flex mb-2 align-items-center">
-                            <div class="w-80 h-61 mr-1"><img src="{{asset('public/mevivu/img/blog/blog-1.jpg')}}" alt="" width="100%"></div>
-                            <div class="flex-grow-1 text-13">Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat</div>
-                        </a>
-                        <a href="{{URL::to('/chi-tiet-bai-viet')}}" class="d-flex mb-2 align-items-center">
-                            <div class="w-80 h-61 mr-1"><img src="{{asset('public/mevivu/img/blog/blog-1.jpg')}}" alt="" width="100%"></div>
-                            <div class="flex-grow-1 text-13">Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat</div>
-                        </a>
-                        <a href="{{URL::to('/chi-tiet-bai-viet')}}" class="d-flex mb-2 align-items-center">
-                            <div class="w-80 h-61 mr-1"><img src="{{asset('public/mevivu/img/blog/blog-1.jpg')}}" alt="" width="100%"></div>
-                            <div class="flex-grow-1 text-13">Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat</div>
-                        </a>
-                        <a href="{{URL::to('/chi-tiet-bai-viet')}}" class="d-flex mb-2 align-items-center">
-                            <div class="w-80 h-61 mr-1"><img src="{{asset('public/mevivu/img/blog/blog-1.jpg')}}" alt="" width="100%"></div>
-                            <div class="flex-grow-1 text-13">Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat</div>
-                        </a>
-
+                        @endforeach
                     </div>
                 </div>
                 
@@ -319,39 +303,25 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-title from-blog__title">
-                            <h2>Tin đấu giá</h2>
+                            <h2>Tin tức đấu giá</h2>
                         </div>
                     </div>
-                    <div class="col-12">
+                    @foreach($tindaugia as $value)
+                    <div class="col-12 blog_right">
                         <div class="blog__item">
                             <div class="blog__item__pic">
-                                <img src="{{asset('public/mevivu/img/blog/blog-2.jpg')}}" alt="">
+                                <img src="{{asset($value->avatar)}}" alt="">
                             </div>
                             <div class="blog__item__text">
                                 <ul>
-                                    <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
+                                    <li><i class="fa fa-calendar-o"></i> {{date("d/m/Y",strtotime($value->created_at))}}</li>
                                     <!-- <li><i class="fa fa-comment-o"></i> 5</li> -->
                                 </ul>
-                                <h5><a href="{{URL::to('/chi-tiet-bai-viet')}}">6 ways to prepare breakfast for 30</a></h5>
-                                <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                                <h5><a href="{{URL::to('/bai-viet/'.$value->slug)}}">{{$value->title}}</a></h5>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <div class="blog__item">
-                            <div class="blog__item__pic">
-                                <img src="{{asset('public/mevivu/img/blog/blog-3.jpg')}}" alt="">
-                            </div>
-                            <div class="blog__item__text">
-                                <ul>
-                                    <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                                    <!-- <li><i class="fa fa-comment-o"></i> 5</li> -->
-                                </ul>
-                                <h5><a href="{{URL::to('/chi-tiet-bai-viet')}}">Visit the clean farm in the US</a></h5>
-                                <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                            </div>
-                        </div>
-                    </div>  
+                    @endforeach 
                 </div>
                 
             </div>
