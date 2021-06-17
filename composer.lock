@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "content-hash": "5274b229ecc4d8a624aab482063367ca",
+    "content-hash": "8b7281cffd6b00257950764caa17701c",
     "packages": [
         {
             "name": "artesaos/seotools",
@@ -249,10 +250,13 @@
                 "slug",
                 "slugify"
             ],
+<<<<<<< HEAD
             "support": {
                 "issues": "https://github.com/cocur/slugify/issues",
                 "source": "https://github.com/cocur/slugify/tree/master"
             },
+=======
+>>>>>>> origin/truong
             "time": "2019-12-14T13:04:14+00:00"
         },
         {
@@ -316,10 +320,13 @@
                 "slug",
                 "sluggable"
             ],
+<<<<<<< HEAD
             "support": {
                 "issues": "https://github.com/cviebrock/eloquent-sluggable/issues",
                 "source": "https://github.com/cviebrock/eloquent-sluggable/tree/8.0.7"
             },
+=======
+>>>>>>> origin/truong
             "funding": [
                 {
                     "url": "https://github.com/cviebrock",

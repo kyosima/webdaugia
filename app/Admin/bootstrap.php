@@ -2,7 +2,7 @@
 use Encore\Admin\Form;
 use App\Admin\Extensions\Form\CKEditor;
 use App\Admin\Extensions\Form\InputImage;
-use App\Admin\Extensions\Form\InputSlug;
+use App\Admin\Extensions\Form\InputGallery;
 Use Encore\Admin\Admin;
 
 /**
@@ -36,6 +36,8 @@ Admin::js('public/admin/js/slug.js');
 Admin::css('public/admin/css/style.css');
 
 Form::extend('inputImage', InputImage::class);
+
+Form::extend('inputGallery', InputGallery::class);
 
 
 

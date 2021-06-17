@@ -16,7 +16,7 @@ function selectFileWithCKFinder( preview, in_value, type ) {
 
 				    files.forEach( function( file, i ) {
 
-				    	html += '<div class="col-4 mt-3"><span data-id="" data-url="'+file.getUrl()+'" class="delete_gallery"><i class="fas fa-times"></i></span><img src="'+file.getUrl()+'"></div>';
+				    	html += '<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-3"><span data-id="" data-url="'+file.getUrl()+'" class="delete_gallery"><i class="fas fa-times"></i></span><img src="'+file.getUrl()+'"></div>';
 				        value += file.getUrl() + ',';
 				    } );
 				    $(preview).append(html);
@@ -44,11 +44,10 @@ $(document).on('click', '.add_picture', function(event) {
 
 
 $(document).on('click', '.delete_gallery', function(event) {
-
 	var t = $(this);
 
 	if($(this).data('id') == ''){
-		var in_value = $("#in_gallery");
+		var in_value = $("#gallery");
 		var url = $(this).data('url');
 		var newValue = in_value.val().replace(url+',', '');
 		in_value.val(newValue);
