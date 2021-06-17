@@ -67,12 +67,13 @@ class ProductController extends AdminController
      */
     protected function detail($id)
     {
+        
         $show = new Show(Product::findOrFail($id));
 
         $show->field('id', __('Id'));
         $show->field('slug', __('Product slug'));
         $show->field('category_id', __('Product category'));
-        $show->field('titke', __('Product name'));
+        $show->field('title', __('Product name'));
         $show->field('price', __('Product price'));
         $show->field('discount', __('Product discount'));
         $show->field('sku', __('Product sku'));
@@ -107,8 +108,8 @@ class ProductController extends AdminController
             $form->text('title', __('Tên sản phẩm'))->rules('required');
             $form->currency('price', 'Giá')->symbol('đ');
             $form->number('discount', __('Giảm giá(%)'))->max(100)->min(0)->default(0);
-            $form->inputImage('avatar', 'Ảnh đại điện')->value(URL('/').'/public/upload/product_default.png')->attribute('data-type', '');
-            $form->inputImage('gallery', 'Thư viên ảnh')->value(URL('/').'/public/upload/product_default.png')->attribute('data-type', 'multiple');
+            $form->inputImage('avatar', 'Ảnh đại điện')->value('/public/upload/product_default.png')->attribute('data-type', '');
+            $form->inputImage('gallery', 'Thư viên ảnh')->value('/public/upload/product_default.png')->attribute('data-type', 'multiple');
             $form->text('sku', __('Mã sản phẩm'));
             $form->number('quantity', __('Số lượng'))->min(0)->default(1);
             $form->select('brand_id', __('Thương hiệu'))->options(ProductBrand::selectOptions())->rules('required');
