@@ -3,7 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Posts;
-use App\Models\Category_post;
+use App\Models\CategoryPost;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -12,6 +12,12 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use \Cviebrock\EloquentSluggable\Services\SlugService;
+use Encore\Admin\Facades\Admin;
+use App\Admin\Actions\Post\Restore;
+use App\Admin\Extensions\Tools\RestorePost;
+use App\Admin\Actions\Post\BatchRestore;
+use Carbon\Carbon;
 
 class PostsController extends Controller
 {
@@ -84,13 +90,23 @@ class PostsController extends Controller
     {
         $grid = new Grid(new Posts);
 
-        $grid->id('ID');
-        $grid->title('title');
-        $grid->desc_short('Mô tả ngắn');
-        // $grid->slug('slug');
-        // $grid->body('body');
-        // $grid->avatar('avatar');
-        $grid->column('created_at', __('Ngày tạo'))->filter('range', 'date');
+        $grid->id('ID')->sortable();
+        $grid->title('Tiêu đề',);
+        // $grid->column('avatar', 'avatar')->image(url('/'), 100, 100);
+        $grid->category('Danh mục')->display(function ($category) {
+
+            $category = array_map(function ($category) {
+                return "<span class='label label-success'>{$category['title']}</span>";
+            }, $category);
+        
+            return join('&nbsp;', $category);
+        }, 'Danh mục');
+        $grid->desc_short('Mô tả ngắn')->display(function($desc_short) {
+            return Str::limit($desc_short, 150, '...');
+        });;
+        $grid->column('created_at', __('Ngày tạo'))->display(function ($created_at) {
+            return date("d/m/Y",strtotime($created_at));
+            })->filter('range', 'date');
         $grid->expandFilter();
         $grid->filter(function($filter){
 
@@ -102,14 +118,20 @@ class PostsController extends Controller
             $filter->column(1/2, function ($filter) {
                 $filter->contains('title')->placeholder('Tiêu đề...');
             });
-            
-            
-            
-            
-        
+            $filter->scope('trashed', 'Recycle Bin')->onlyTrashed();
         });
         $grid->actions(function ($actions) {
+            if (\ request('_ scope_') == 'trashed') {
+                $actions->add(new Restore());
+            }
             $actions->disableView();
+        });
+        $grid->batchActions(function($batch) {
+
+            if (\request('_scope_') == 'trashed') {
+                $batch->add(new BatchRestore());
+            }
+            
         });
         return $grid;
     }
@@ -149,39 +171,35 @@ class PostsController extends Controller
             // Add a form item to this column
 
             $form->text('title', 'Tiêu đề')->required()->autofocus();
-            $form->text('slug', 'Đường dẫn')->readonly()->required()
-            ->attribute(['class' => 'create_slug form-control', 'data-focus' => '#title', 'data-type' => 'post']);
+            $form->text('slug', 'Đường dẫn')->readonly();
             $form->textarea('desc_short', 'Mô tả ngắn');
             $form->ckeditor('body', 'Nội dung');
         });
 
         $form->column(4/12, function ($form) {
 
-            $form->checkbox('category' ,'Danh mục')->options(Category_post::all()->pluck('name','id'));
+            $form->checkbox('category' ,'Danh mục')->options(CategoryPost::all()->pluck('title','id')); 
 
             // Add a form item to this column
-            $form->inputImage('avatar', 'Ảnh đại điện')->value(URL('/').'/public/upload/product_default.png')
-            ->attribute('data-type', '');
+            $form->inputImage('avatar', 'Ảnh đại điện')->value('/public/upload/product_default.png');
         });
         
-        
         $form->setWidth(12, 12);
+        $form->saving(function (Form $form) {
+            $form->slug = SlugService::createSlug(Posts::class, 'slug',  $form->title);
+            $form->avatar = Str::after($form->avatar, URL('/'));
+        });
         return $form;
     }
 
     public function createSlug(Request $request){
-        
-        $slug = Str::slug($request->slug, '-');
         if($request->type == 'post'){
-            if(Posts::where('slug', $slug)->first()){
-                return response('Đã tồn tại tên này, vui lòng thay đổi tên khác', 400);
-            }
+            $slug = SlugService::createSlug(Posts::class, 'slug',  $request->slug);
         }
-        elseif($request->type == 'category_post'){
-            if(Category_post::where('slug', $slug)->first()){
-                return response('Đã tồn tại tên này, vui lòng thay đổi tên khác', 400);
-            }
+        else{
+            $slug = SlugService::createSlug(CategoryPost::class, 'slug',  $request->slug);
         }
+        
         
         return $slug;
     }

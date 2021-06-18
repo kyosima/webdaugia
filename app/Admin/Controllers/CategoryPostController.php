@@ -2,13 +2,14 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Category_post;
+use App\Models\CategoryPost;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use \Cviebrock\EloquentSluggable\Services\SlugService;
 
 class CategoryPostController extends Controller
 {
@@ -79,12 +80,14 @@ class CategoryPostController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Category_post);
+        $grid = new Grid(new CategoryPost);
 
         $grid->id('ID');
-        $grid->name('Tên', 'name');
+        $grid->title('Tiêu đề', 'Title');
         $grid->slug('Đường dẫn', 'slug');
-        $grid->column('created_at', __('Ngày tạo'))->filter('range', 'date');
+        $grid->column('created_at', __('Ngày tạo'))->display(function ($created_at) {
+            return date("d/m/Y",strtotime($created_at));
+            })->filter('range', 'date');
         // $grid->updated_at(trans('admin.updated_at'));
         $grid->filter(function($filter){
 
@@ -112,10 +115,10 @@ class CategoryPostController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Category_post::findOrFail($id));
+        $show = new Show(CategoryPost::findOrFail($id));
 
         $show->id('ID');
-        $show->name('name', 'Tên');
+        $show->title('Title', 'Tiêu đề');
         $show->slug('slug', 'Đường dẫn');
         $show->created_at(trans('ngày tạo'));
         $show->updated_at(trans('Ngày cập nhật'));
@@ -130,15 +133,17 @@ class CategoryPostController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Category_post);
+        $form = new Form(new CategoryPost);
 
         // $form->display('ID');
-        $form->text('name', 'Tên')->required()->autofocus();
+        $form->text('title', 'Tiêu đề')->required()->autofocus();
         $form->text('slug', 'Đường dẫn')->readonly()->required()
-        ->attribute(['class' => 'create_slug form-control', 'data-focus' => '#name', 'data-type' => 'category_post']);
+        ->attribute(['class' => 'create_slug form-control', 'data-focus' => '#title', 'data-type' => 'category_post']);
         // $form->display(trans('Ngày tạo'));
         // $form->display(trans('admin.updated_at'));
-
+        $form->saving(function (Form $form) {
+            $form->slug = SlugService::createSlug(CategoryPost::class, 'slug',  $form->title);
+        });
         return $form;
     }
 }

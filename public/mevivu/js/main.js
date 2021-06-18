@@ -8,6 +8,14 @@
 ---------------------------------------------------------  */
 
 'use strict';
+const current = location.href;
+const query = document.querySelectorAll('a');
+const queryLenth = query.length;
+for(let i = 0; i < queryLenth; i++){
+    if(query[i].href == current){
+        query[i].classList.add("active");
+    }
+}
 
 (function ($) {
 
@@ -114,6 +122,10 @@
         $('.hero__categories ul').slideToggle(400);
     });
 
+    $('.dropdow_custom').on('click', function(){
+        $($(this).data('toggle')).slideToggle(400);
+    });
+
     /*--------------------------
         Latest Product Slider
     ----------------------------*/
@@ -211,6 +223,9 @@
                 src: imgurl
             });
         }
+    });
+    $('.search_icon').on('click', function(){
+        $('.seach_form').slideToggle();
     });
 
     /*-------------------
