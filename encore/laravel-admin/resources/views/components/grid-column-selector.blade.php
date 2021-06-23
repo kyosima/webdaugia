@@ -26,8 +26,8 @@
         </li>
         <li class="divider"></li>
         <li class="text-right">
-            <button class="btn btn-sm btn-default column-select-all">{{ __('admin.all') }}</button>&nbsp;&nbsp;
-            <button class="btn btn-sm btn-primary column-select-submit">{{ __('admin.submit') }}</button>
+            <button class="btn btn-sm btn-default column-select-all">Tất cả</button>&nbsp;&nbsp;
+            <button class="btn btn-sm btn-primary column-select-submit">Đồng ý</button>
         </li>
     </ul>
 </div>
