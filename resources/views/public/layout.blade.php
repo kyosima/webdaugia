@@ -12,6 +12,7 @@ $category = CategoryPost::select('title', 'slug')->get();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="canonical" href="{{URL('/')}}">
     <link rel="icon" href="{{asset('public/mevivu/img/logo.png')}}" type="image/gif" sizes="32x32">
     <title>Đấu giá | Template</title>
@@ -24,7 +25,22 @@ $category = CategoryPost::select('title', 'slug')->get();
     <link rel="stylesheet" href="{{asset('public/mevivu/css/bootstrap.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('public/mevivu/css/font-awesome.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('public/mevivu/css/elegant-icons.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('public/mevivu/css/nice-select.css')}}" type="text/css">
+    {{-- <link rel="stylesheet" href="{{asset('public/mevivu/css/nice-select.css')}}" type="text/css"> --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container {
+            width: 100% !important;
+        }
+        .select2-container--default .select2-selection--single {
+            border: 1px solid #ebebeb;
+        }
+        .select2-container .select2-selection--single, .select2-container--default .select2-selection--single .select2-selection__arrow{
+            height: 46px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 46px;
+        }
+    </style>
     <link rel="stylesheet" href="{{asset('public/mevivu/css/jquery-ui.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('public/mevivu/css/owl.carousel.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('public/mevivu/css/slicknav.min.css')}}" type="text/css">
@@ -160,9 +176,58 @@ $category = CategoryPost::select('title', 'slug')->get();
                                 <a href="#" class="search_icon"><i class="fa fa-search"></i></a>
                             </li>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li class="cartHeader">
+                                <a href="{{route('cart.index')}}">
+                                    <i class="fa fa-shopping-bag"></i> 
+                                    <span class="cart-count" style="{{Cart::instance('shopping')->count() > 0 ? 'display:inline-block' : 'display:none'}}">
+                                        {{Cart::instance('shopping')->count()}}
+                                    </span>
+                                </a>
+                                <div class="div-dropdown-cart">
+                                    <ul class="dropdown-cart">
+                                        <li class="dropdown-cart-item">
+                                            <div class="cart-content">
+                                                <ul class="mini-cart">
+                                                    @if (Cart::instance('shopping')->count() == 0)
+                                                        <li class="no-item">Chưa có sản phẩm trong giỏ hàng</li>
+                                                    @else
+                                                    @foreach (Cart::instance('shopping')->content() as $item)
+                                                        @php
+                                                            $productImg = App\Models\Product::where('id', $item->id)->value('avatar');
+                                                        @endphp
+                                                        <li class="mini-cart-item"> 
+                                                            <span class="remove" data-rowid="{{$item->rowId}}" data-href="{{route('cart.removeFromCart')}}">x</span>
+                                                            <a href="san-pham/{{$item->options->slug}}" style="color: #000;">
+                                                                <img src="{{$productImg}}" width="60" height="60">
+                                                                {!! $item->name !!}
+                                                            </a>
+                                                            <p class="quantity">
+                                                                {!! $item->qty !!} × 
+                                                                <span class="amount">
+                                                                    {{ number_format($item->price,0,",",".") . "₫"}}
+                                                                </span>
+                                                            </p>
+                                                        </li>
+                                                    @endforeach
+                                                    @endif
+                                                </ul>
+                                                @if (Cart::instance('shopping')->subtotal() > 0)
+                                                <p class="total">
+                                                    <strong>Tổng số phụ: </strong>
+                                                    <span class="amount">
+                                                        {{ Cart::instance('shopping')->subtotal() . "₫"}}
+                                                    </span>
+                                                </p>
+                                                @endif
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
-                        <div class="header__cart__price"><span>150.000 đ</span></div>
+                        <div class="header__cart__price">
+                            <span>{{ Cart::instance('shopping')->subtotal() > 0 ? Cart::instance('shopping')->subtotal() . "₫" : '0 đ'}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -309,13 +374,35 @@ $category = CategoryPost::select('title', 'slug')->get();
     <script src="{{asset('public/mevivu/js/jquery-3.3.1.min.js')}}"></script>
     <script src="{{asset('public/mevivu/js/bootstrap.min.js')}}"></script>
     <!-- <script src="{{asset('public/mevivu/js/popper.min.js')}}"></script> -->
-    <script src="{{asset('public/mevivu/js/jquery.nice-select.min.js')}}"></script>
+    {{-- <script src="{{asset('public/mevivu/js/jquery.nice-select.min.js')}}"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{asset('public/mevivu/js/jquery-ui.min.js')}}"></script>
     <script src="{{asset('public/mevivu/js/jquery.slicknav.js')}}"></script>
     <script src="{{asset('public/mevivu/js/mixitup.min.js')}}"></script>
     <script src="{{asset('public/mevivu/js/owl.carousel.min.js')}}"></script>
     <script src="{{asset('public/mevivu/js/main.js')}}"></script>
     <script src="{{asset('public/mevivu/js/jquery.countdown.min.js')}}"></script>
+    <script src="{{asset('public/mevivu/js/ajaxCart.js')}}"></script>
+    <script src="{{asset('public/mevivu/js/ajaxSelectAddress.js')}}"></script>
+    <script>
+        $(document).ready(function () {
+          var pathName = $(location).attr('pathname');
+          if(pathName.includes('/cart')){
+            $('li.cartHeader').hover(function (e) { 
+              e.preventDefault();
+              $('.cartHeader .div-dropdown-cart').css('display','none');
+            });
+          }
+
+          $('section.checkout span.open-coupon').click(function(){
+              $('div.checkout__order__use__coupon').css({"display": "block", "margin-top": "5px"});
+          })
+
+        });
+
+      </script>
+
+
 
 </body>
 

@@ -27,24 +27,6 @@ class User extends Model
 {
 	protected $table = 'users';
 
-<<<<<<< HEAD
-	protected $dates = [
-		'email_verified_at'
-	];
-
-	protected $hidden = [
-		'password',
-		'remember_token'
-	];
-
-	protected $fillable = [
-		'name',
-		'email',
-		'email_verified_at',
-		'password',
-		'remember_token'
-	];
-=======
     /**
      * The attributes that are mass assignable.
      *
@@ -77,5 +59,4 @@ class User extends Model
     public function user_info(){
         return $this->hasOne(UserInfo::class, 'user_id', 'id');
     }
->>>>>>> origin/truong
 }
