@@ -104,7 +104,7 @@ class ProductController extends AdminController
     {
         $form = new Form(new Product());
         $form->tab('Thông Tin Cơ Bản', function ($form) {
-            $form->select('category', __('Danh mục'))->options(ProductCategory::selectOptions())->rules('required');
+            $form->select('category', __('Danh mục'))->options(ProductCategory::all()->pluck('title','id'))->required(); 
             $form->text('title', __('Tên sản phẩm'))->rules('required');
             $form->currency('price', 'Giá')->symbol('đ');
             $form->number('discount', __('Giảm giá(%)'))->max(100)->min(0)->default(0);
@@ -117,15 +117,13 @@ class ProductController extends AdminController
                 'on' => ['value' => 1, 'text' => 'Hiện', 'color' => 'success'],
                 'off' => ['value' => 0, 'text' => 'Không', 'color' => 'danger'],
             ];
-            $form->switch('variation_status', __('Sản phẩm có biến thể'))->states($states)->default(0);
-            $form->text('variation_id', __('Biến thể'));
             $form->switch('status', __('Hiển thị'))->states($states)->default(1);
             $form->switch('is_highlight', __('Nổi bật'))->states($states)->default(0);
         })->tab('Thông tin mô tả', function ($form) {
-            $form->textarea('desc_short', __('Mô tả ngắn'));
-            $form->textarea('desc_long', __('Mô tả dài'));
-            $form->textarea('info', __('Thông tin'));
-            $form->textarea('offer', __('Ưu đãi'));
+            $form->ckeditor('desc_short', __('Mô tả ngắn'));
+            $form->ckeditor('desc_long', __('Mô tả dài'));
+            $form->ckeditor('info', __('Thông tin'));
+            $form->ckeditor('offer', __('Ưu đãi'));
         });
 
         return $form;

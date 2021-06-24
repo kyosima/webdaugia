@@ -55,9 +55,8 @@ class ProductCategory extends Model
 		'status'
 	];
 
-	public function products()
-    {
-        return $this->hasMany(Product::class, 'category_id', 'id');
+    public function products(){
+    	return $this->belongsToMany(Product::class, 'category_to_post', 'id_ofcategory', 'id_ofproduct');
     }
 
     public function categories()

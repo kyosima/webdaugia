@@ -8,6 +8,9 @@ use App\Http\Controllers\CampaignController;
 
 use App\Http\Controllers\CampaignTypeController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\ProductCategoryController;
 
 
@@ -76,7 +79,38 @@ Route::resources([
     'san-pham' => 'ProductController',
     'cua-hang' => 'ProductCategoryController',
 ]);
-Route::fallback(function() {
-    return view('404');
-});
-//get password
+
+
+
+// QUOC MINH DEP TRAI
+// Cart
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+Route::post('/add-cart', [CartController::class, 'addToCart'])->name('cart.addCart');
+
+Route::post('/fast-add-cart', [CartController::class, 'fastAddToCart'])->name('cart.fastAddToCart');
+
+Route::put('/update-cart', [CartController::class, 'updateCart'])->name('cart.updateCart');
+
+Route::delete('/delete-cart', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
+
+// coupon
+Route::post('/use-coupon', [CouponController::class, 'useCoupon'])->name('coupon.useCoupon');
+
+Route::delete('/unuse-coupon', [CouponController::class, 'unUseCoupon'])->name('coupon.unUseCoupon');
+
+// checkout
+
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+
+Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout.checkout');
+
+Route::get('/getLocation', [CheckoutController::class, 'getLocation'])->name('checkout.getLocation');
+
+// ORDER SUCCESS
+
+Route::get('/order-success', [CheckoutController::class, 'orderSuccess'])->name('checkout.orderSuccess');
+
+// wishlist
+
+

@@ -11,7 +11,7 @@ use Encore\Admin\Traits\AdminBuilder;
 use Encore\Admin\Traits\ModelTree;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class Product
@@ -66,29 +66,41 @@ class Product extends Model
 		'is_highlight' => 'int'
 	];
 
-	protected $fillable = [
-		'slug',
-		'title',
-		'category_id',
-		'price',
-		'discount',
-		'sku',
-		'quantity',
-		'avatar',
-		'gallery',
-		'brand_id',
-		'variation_status',
-		'variation_id',
-		'status',
-		'desc_short',
-		'desc_long',
-		'info',
-		'offer',
-		'is_highlight'
-	];
-	public function category()
-    {
-        return $this->belongsTo(ProductCategory::class, 'category_id', 'id');
+	// protected $fillable = [
+	// 	'slug',
+	// 	'title',
+	// 	'category_id',
+	// 	'price',
+	// 	'discount',
+	// 	'sku',
+	// 	'quantity',
+	// 	'avatar',
+	// 	'gallery',
+	// 	'brand_id',
+	// 	'variation_status',
+	// 	'variation_id',
+	// 	'status',
+	// 	'desc_short',
+	// 	'desc_long',
+	// 	'info',
+	// 	'offer',
+	// 	'is_highlight'
+	// ];
+
+	protected $guarded = [];
+
+	public function category(){
+    	return $this->belongsToMany(ProductCategory::class, 'category_to_product', 'id_ofproduct', 'id_ofcategory');
+    }
+
+	public function getArrCategory(){
+        $categories = DB::table('category_to_product')->select('id_ofcategory')->where('id_ofproduct', $this->id)->get()->toArray();
+        $arrIdCategories = array_column($categories, 'id_ofcategory');
+        return $arrIdCategories;
+    }
+
+	public function bills(){
+    	return $this->belongsToMany(Bill::class, 'bill_detail', 'id_ofbill', 'id_ofproduct');
     }
 
     public function brand()

@@ -27,22 +27,6 @@ class User extends Model
 {
 	protected $table = 'users';
 
-	protected $dates = [
-		'email_verified_at'
-	];
-
-	protected $hidden = [
-		'password',
-		'remember_token'
-	];
-
-	protected $fillable = [
-		'name',
-		'email',
-		'email_verified_at',
-		'password',
-		'remember_token'
-	];
     /**
      * The attributes that are mass assignable.
      *

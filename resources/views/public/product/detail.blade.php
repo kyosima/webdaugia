@@ -9,7 +9,7 @@
                 <div class="breadcrumb__text">
                     <div class="breadcrumb__option">
                         <a href="{{URL::to('/')}}">Trang chủ</a>
-                        <a href="{{URL::to('danh-muc/'.$product->category->slug)}}">{{$product->category->title}}</a>
+                        {{-- <a href="{{URL::to('danh-muc/'.$product->category->slug)}}">{{$product->category->title}}</a> --}}
                         <span>Cá cảnh đẹp rực rỡ</span>
                     </div>
                 </div>
@@ -50,14 +50,16 @@
                     <div class="product__details__quantity">
                         <div class="quantity">
                             <div class="pro-qty">
+                                <span class="dec qtybtn">-</span>
                                 <input type="text" value="1">
+                                <span class="inc qtybtn">+</span>
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="primary-btn">THÊM VÀO GIỎ HÀNG</a>
+                    <button data-href="{{route('cart.addCart')}}" data-id="{{$product->id}}" class="primary-btn">THÊM VÀO GIỎ HÀNG</button>
                     <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                     <ul>
-                        <li><b>Danh mục</b> <span>{{$product->category->title}}</span></li>
+                        {{-- <li><b>Danh mục</b> <span>{{$product->category->title}}</span></li> --}}
                         <li><b>Chia sẻ</b>
                             <div class="share">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
@@ -103,7 +105,7 @@
 <!-- Product Details Section End -->
 
 <!-- Related Product Section Begin -->
-<section class="related-product">
+{{-- <section class="related-product">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -126,7 +128,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> --}}
 <!-- Related Product Section End -->
 
 

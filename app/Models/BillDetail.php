@@ -20,21 +20,22 @@ use Illuminate\Database\Eloquent\Model;
  */
 class BillDetail extends Model
 {
-	protected $table = 'bill_details';
-	public $incrementing = false;
+	protected $table = 'bill_detail';
 	public $timestamps = false;
 
-	protected $casts = [
-		'id_ofbill' => 'int',
-		'id_ofproduct' => 'int',
-		'end_price' => 'float',
-		'SL' => 'int'
-	];
+	// protected $casts = [
+	// 	'id_ofbill' => 'int',
+	// 	'id_ofproduct' => 'int',
+	// 	'end_price' => 'float',
+	// 	'SL' => 'int'
+	// ];
 
-	protected $fillable = [
-		'id_ofbill',
-		'id_ofproduct',
-		'end_price',
-		'SL'
-	];
+	// protected $fillable = [
+	// 	'id_ofbill',
+	// 	'id_ofproduct',
+	// 	'end_price',
+	// 	'SL'
+	// ];
+
+	protected $guarded = [];
 }
