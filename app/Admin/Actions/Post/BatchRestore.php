@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Collection;
 
 class BatchRestore extends BatchAction
 {
-    public $name = 'Restore';
+    public $name = 'Khôi phục';
 
     public function handle (Collection $collection)
     {
         $collection->each->restore();
 
-        return $this->response()->success('Recovered')->refresh();
+        return $this->response()->success('Phục hồi')->refresh();
     }
 
     public function dialog ()
     {
-        $this->confirm('Are you sure you want to resume?');
+        $this->confirm('Bạn có chắc chắn muốn tiếp tục không?');
     }
 }

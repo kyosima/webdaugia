@@ -176,7 +176,7 @@ class Tools implements Renderable
      */
     protected function renderList()
     {
-        $text = trans('admin.list');
+        $text = 'Danh sách';
 
         return <<<EOT
 <div class="btn-group pull-right" style="margin-right: 5px">
@@ -192,7 +192,7 @@ EOT;
      */
     protected function renderView()
     {
-        $view = trans('admin.view');
+        $view = 'Xem';
 
         return <<<HTML
 <div class="btn-group pull-right" style="margin-right: 5px">
@@ -211,10 +211,10 @@ HTML;
     protected function renderDelete()
     {
         $trans = [
-            'delete_confirm' => trans('admin.delete_confirm'),
-            'confirm'        => trans('admin.confirm'),
-            'cancel'         => trans('admin.cancel'),
-            'delete'         => trans('admin.delete'),
+            'delete_confirm' => 'chấp nhận xóa',
+            'confirm'        => 'Chấp nhận',
+            'cancel'         => 'Hủy',
+            'delete'         => 'Xóa',
         ];
 
         $class = uniqid();
