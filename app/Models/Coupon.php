@@ -45,21 +45,4 @@ class Coupon extends Model
 		'coupon_category',
 		'coupon_exp'
 	];
-
-	public static function findByCode($code){
-        return Coupon::where('coupon_code', $code)->first();
-    }
-
-    public function discount($total)
-    {
-        if($this->coupon_type == 1){
-            return $this->coupon_value;
-        } 
-        elseif ($this->coupon_type == 2) {
-            return round(($this->coupon_value / 100) * $total);
-        }
-        else {
-            return 0;
-        }
-    }
 }

@@ -27,12 +27,12 @@
                 <div class="product__details__pic">
                     <div class="product__details__pic__item">
                         <img class="product__details__pic__item--large"
-                            src="@getimage({{$product->avatar}})" alt="">
+                            src="{{getImage($product->avatar)}}" alt="">
                     </div>
                     <div class="product__details__pic__slider owl-carousel">
                         @foreach (explode(',',$product->gallery) as $image)
-                            <img data-imgbigurl="@getimage({{$image}})"
-                            src="@getimage({{$image}})" alt="">
+                            <img data-imgbigurl="{{getImage($image)}}"
+                            src="{{getImage($image)}}" alt="">
                         @endforeach
                     </div>
                 </div>

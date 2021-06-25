@@ -130,8 +130,4 @@
 </section>
 <!-- Shoping Cart Section End -->
 
-<script type="text/javascript">
-    var coupon = {!! json_encode(session('coupon')) !!};
-</script>
-
 @endsection

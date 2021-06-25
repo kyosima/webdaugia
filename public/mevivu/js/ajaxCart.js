@@ -134,7 +134,7 @@ $(document).ready(function(){
 
 
     // delete from cart
-    if(!coupon){
+    if(coupon == null){
         $(document).on("click","span.remove",function() {
             var rowID = $(this).data('rowid');
             var url = $(this).data('href');

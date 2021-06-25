@@ -17,9 +17,13 @@ Route::group([
 
     $router->resource('posts', PostsController::class);
 
-    $router->resource('category', CategoryPostController::class);
+    $router->resource('categories', CategoryPostController::class);
 
     $router->resource('products', ProductController::class);
+
+    $router->resource('product-categories', ProductCategoryController::class);
+    
+    $router->resource('campaigns', CampaignController::class);
 
     $router->put('/kiem-tra-duong-dan', 'PostsController@createSlug');
 

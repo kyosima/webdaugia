@@ -1,7 +1,7 @@
-@php
+{{-- @php
 use App\Models\CategoryPost;
 $category = CategoryPost::select('title', 'slug')->get();
-@endphp
+@endphp --}}
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -94,9 +94,9 @@ $category = CategoryPost::select('title', 'slug')->get();
                 </li>
                 <li><a href="{{URL::to('/blog')}}">Blog</a>
                     <ul class="header__menu__dropdown">
-                        @foreach($category as $value)
+                        {{-- @foreach($category as $value)
                         <li><a href="{{URL::to('/danh-muc-bai-viet/'.$value->slug)}}">{{$value->title}}</a></li>
-                        @endforeach  
+                        @endforeach   --}}
                     </ul>
                 </li>
                 <li><a href="{{URL::to('/lien-he')}}">Liên hệ</a></li>
@@ -285,9 +285,9 @@ $category = CategoryPost::select('title', 'slug')->get();
                             </li>
                             <li><a href="{{URL::to('/blog')}}">Blog</a>
                                 <ul class="header__menu__dropdown">
-                                    @foreach($category as $value)
+                                    {{-- @foreach($category as $value)
                                     <li><a href="{{URL::to('/danh-muc-bai-viet/'.$value->slug)}}">{{$value->title}}</a></li>
-                                    @endforeach  
+                                    @endforeach   --}}
                                 </ul>
                             </li>
                             
@@ -399,6 +399,12 @@ $category = CategoryPost::select('title', 'slug')->get();
           })
 
         });
+
+        if({!! json_encode(session('coupon')) !!} != null){
+            var coupon = {!! json_encode(session('coupon')) !!};
+        }
+        var coupon = null;
+
 
       </script>
 

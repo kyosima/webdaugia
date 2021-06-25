@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -20,6 +21,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * 
+ * @property Collection|Bill[] $bills
+ * @property Collection|ProductReview[] $product_reviews
+ * @property Collection|UsersInfo[] $users_infos
  *
  * @package App\Models
  */
@@ -27,36 +32,35 @@ class User extends Model
 {
 	protected $table = 'users';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    // protected $fillable = [
-    //     'name',
-    //     'email',
-    //     'password',
-    // ];
-    protected $guarded =[];
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'remember_token',
-    ];
+	protected $dates = [
+		'email_verified_at'
+	];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+	protected $hidden = [
+		'password',
+		'remember_token'
+	];
 
-    public function user_info(){
-        return $this->hasOne(UserInfo::class, 'user_id', 'id');
-    }
+	protected $fillable = [
+		'name',
+		'email',
+		'email_verified_at',
+		'password',
+		'remember_token'
+	];
+
+	public function bills()
+	{
+		return $this->hasMany(Bill::class, 'id_ofuser');
+	}
+
+	public function product_reviews()
+	{
+		return $this->hasMany(ProductReview::class, 'id_ofuser');
+	}
+
+	public function users_infos()
+	{
+		return $this->hasMany(UsersInfo::class);
+	}
 }

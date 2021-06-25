@@ -175,7 +175,6 @@ class PostsController extends Controller
         
         $form->setWidth(12, 12);
         $form->saving(function (Form $form) {
-            $form->slug = SlugService::createSlug(Posts::class, 'slug',  $form->title);
             $form->avatar = Str::after($form->avatar, URL('/'));
         });
         return $form;

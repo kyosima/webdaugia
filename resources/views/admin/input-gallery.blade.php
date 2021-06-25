@@ -5,7 +5,7 @@
     @include('admin::form.help-block')
 </div>
 
-<div class="{{$viewClass['field']}}">
+<div class="">
     <div id="preview_gallery" class="row">
     @php
         $string = Str::of($value)->rtrim(',');
@@ -19,6 +19,7 @@
         @endforeach
     
     </div>
+    <div class="text-center" style="margin: 30px 0px">
     <button type="button" class="btn btn-primary add_picture" data-type="MULTIPLE" data-input="#{{$id}}" data-preview="#preview_gallery">Thêm thư viện hình ảnh</button>
-    
+    </div> 
 </div>

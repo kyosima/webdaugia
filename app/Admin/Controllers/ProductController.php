@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Models\ProductBrand;
 use App\Models\Product;
+use Illuminate\Support\Str;
 
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -29,20 +30,14 @@ class ProductController extends AdminController
     {
         $grid = new Grid(new Product());
         $grid->model()->latest();
-        $grid->column('avatar', 'Ảnh đại diện')->image('', '100');
-        $states = [
-            'on' => ['value' => 1, 'text' => 'Hiện', 'color' => 'success'],
-            'off' => ['value' => 0, 'text' => 'Không', 'color' => 'danger'],
-        ];
-        $grid->column('slug', __('Product slug'));
-        $grid->column('title', __('Product name'));
+        $grid->column('avatar', __('Ảnh đại diện'))->image(url('/'), '100','100');
+        $grid->column('title', __('Tiêu đề'));
+        $grid->column('slug', __('Đường dẫn'));
         $grid->column('category_id', __('Danh mục'));
         $grid->column('price', __('Giá'));
         $grid->column('discount', __('Giảm giá'));
         $grid->column('sku', __('Mã'));
         $grid->column('quantity', __('Số lượng'));
-        $grid->column('status', __('Product status'))->states($states);
-
 
         $grid->filter(function ($filter) {
 
@@ -51,9 +46,9 @@ class ProductController extends AdminController
 
             // Add a column filter
             $filter->like('title', 'Tên sản phẩm');
+            $filter->like('sku', 'Mã sản phẩm');
             $filter->between('price', 'Giá');
             $filter->in('category_id', 'Danh mục sản phẩm')->multipleSelect(ProductCategory::all()->pluck('title', 'id')->toArray());
-            $filter->in('brand_id', 'Thương hiệu')->multipleSelect(ProductBrand::all()->pluck('title', 'id')->toArray());
         });
 
         return $grid;
@@ -103,29 +98,28 @@ class ProductController extends AdminController
     protected function form()
     {
         $form = new Form(new Product());
-        $form->tab('Thông Tin Cơ Bản', function ($form) {
-            $form->select('category', __('Danh mục'))->options(ProductCategory::all()->pluck('title','id'))->required(); 
+            $form->select('category_id', __('Danh mục'))->options(ProductCategory::all()->pluck('title','id')); 
             $form->text('title', __('Tên sản phẩm'))->rules('required');
+            $form->text('sku', __('Mã sản phẩm'));
             $form->currency('price', 'Giá')->symbol('đ');
             $form->number('discount', __('Giảm giá(%)'))->max(100)->min(0)->default(0);
-            $form->inputImage('avatar', 'Ảnh đại điện')->value('/public/upload/product_default.png')->attribute('data-type', '');
-            $form->inputImage('gallery', 'Thư viên ảnh')->value('/public/upload/product_default.png')->attribute('data-type', 'multiple');
-            $form->text('sku', __('Mã sản phẩm'));
             $form->number('quantity', __('Số lượng'))->min(0)->default(1);
-            $form->select('brand_id', __('Thương hiệu'))->options(ProductBrand::selectOptions())->rules('required');
             $states = [
                 'on' => ['value' => 1, 'text' => 'Hiện', 'color' => 'success'],
                 'off' => ['value' => 0, 'text' => 'Không', 'color' => 'danger'],
             ];
             $form->switch('status', __('Hiển thị'))->states($states)->default(1);
             $form->switch('is_highlight', __('Nổi bật'))->states($states)->default(0);
-        })->tab('Thông tin mô tả', function ($form) {
+            $form->inputImage('avatar', 'Ảnh đại điện')->value('/public/upload/product_default.png')->attribute('data-type', '');
+            $form->inputGallery('gallery', 'Thư viên ảnh');
+    
             $form->ckeditor('desc_short', __('Mô tả ngắn'));
             $form->ckeditor('desc_long', __('Mô tả dài'));
             $form->ckeditor('info', __('Thông tin'));
             $form->ckeditor('offer', __('Ưu đãi'));
-        });
-
+            $form->saving(function (Form $form) {
+                $form->avatar = Str::after($form->avatar, URL('/'));
+            });
         return $form;
     }
 }

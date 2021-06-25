@@ -16,7 +16,6 @@ class ProductController extends Controller
     {
         //
         $products_onsale = Product::latest()->with('category')->where('discount','<>',0)->orderBy('discount','desc')->take(6);
-
         $products = Product::latest()->with('category')->latest()->paginate(6);
         return view('public.product.shop', ['products'=>$products,'products_onsale'=>$products_onsale]);
     }

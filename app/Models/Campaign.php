@@ -13,13 +13,16 @@ use Illuminate\Database\Eloquent\Model;
  * Class Campaign
  * 
  * @property int $id
- * @property string $campaign_name
- * @property string|null $campaign_desc
- * @property string $campaign_feture_img
- * @property string $time_start
- * @property string $time_end
- * @property int $campaign_status
- * @property int|null $notify_time
+ * @property string $title
+ * @property string $avatar
+ * @property string|null $description
+ * @property string $product_id
+ * @property int $price_start
+ * @property int $price_end
+ * @property int $price_step
+ * @property Carbon $time_start
+ * @property Carbon $time_end
+ * @property int $status
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
@@ -30,17 +33,27 @@ class Campaign extends Model
 	protected $table = 'campaign';
 
 	protected $casts = [
-		'campaign_status' => 'int',
-		'notify_time' => 'int'
+		'price_start' => 'int',
+		'price_end' => 'int',
+		'price_step' => 'int',
+		'status' => 'int'
+	];
+
+	protected $dates = [
+		'time_start',
+		'time_end'
 	];
 
 	protected $fillable = [
-		'campaign_name',
-		'campaign_desc',
-		'campaign_feture_img',
+		'title',
+		'avatar',
+		'description',
+		'product_id',
+		'price_start',
+		'price_end',
+		'price_step',
 		'time_start',
 		'time_end',
-		'campaign_status',
-		'notify_time'
+		'status'
 	];
 }

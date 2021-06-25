@@ -9,41 +9,35 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class BillDetail
+ * Class CategoryToProduct
  * 
- * @property int $id_ofbill
  * @property int $id_ofproduct
- * @property float|null $end_price
- * @property int $SL
+ * @property int $id_ofcategory
  * 
- * @property Bill $bill
+ * @property ProductCategory $product_category
  * @property Product $product
  *
  * @package App\Models
  */
-class BillDetail extends Model
+class CategoryToProduct extends Model
 {
-	protected $table = 'bill_details';
+	protected $table = 'category_to_product';
 	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
-		'id_ofbill' => 'int',
 		'id_ofproduct' => 'int',
-		'end_price' => 'float',
-		'SL' => 'int'
+		'id_ofcategory' => 'int'
 	];
 
 	protected $fillable = [
-		'id_ofbill',
 		'id_ofproduct',
-		'end_price',
-		'SL'
+		'id_ofcategory'
 	];
 
-	public function bill()
+	public function product_category()
 	{
-		return $this->belongsTo(Bill::class, 'id_ofbill');
+		return $this->belongsTo(ProductCategory::class, 'id_ofcategory');
 	}
 
 	public function product()

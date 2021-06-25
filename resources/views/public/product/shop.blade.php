@@ -78,7 +78,7 @@
                         </div> -->
                         <div class="col-lg-6 col-md-6">
                             <div class="filter__found">
-                                <h6><span>16</span> Products found</h6>
+                                <h6><span>{{count($products)}}</span> sản phẩm</h6>
                             </div>
                         </div>
                         
