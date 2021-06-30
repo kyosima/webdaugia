@@ -105,6 +105,14 @@ $config['resourceTypes'][] = array(
     'deniedExtensions'  => '',
     'backend'           => 'default'
 );
+$config['resourceTypes'][] = array(
+    'name'              => 'Videos',
+    'directory'         => 'Videos',
+    'maxSize'           => 0,
+    'allowedExtensions' => 'mp4',
+    'deniedExtensions'  => '',
+    'backend'           => 'default'
+);
 
 /*================================ Access Control =====================================*/
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_roleSessionVar

@@ -10,4 +10,5 @@ CKEDITOR.editorConfig = function( config ) {
 	config.filebrowserBrowseUrl = domain + '/public/packages/ckfinder/ckfinder.html';
  
 	config.filebrowserUploadUrl = domain + '/public/packages/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
+	config.extraPlugins = 'video';
 };
