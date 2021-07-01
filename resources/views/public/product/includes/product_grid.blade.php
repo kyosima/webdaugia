@@ -4,7 +4,7 @@
                 data-setbg="@getimage({{$item->avatar}})">
                 <div class="product__discount__percent">{{$item->discount}}%</div>
                 <ul class="product__item__pic__hover">
-                    <li class="wishlist-add"><button href="#"><i class="fa fa-heart"></i></button></li>
+                    <li class="wishlist-add"><button data-href="{{route('wishlist.addToWishList')}}"><i class="fa fa-heart"></i></button></li>
                     <li class=""><button href="#"><i class="fa fa-retweet"></i></button></li>
                     <li class="quick-add"><button data-href="{{route('cart.fastAddToCart')}}"><i class="fa fa-shopping-cart"></i></button></li>
                 </ul>

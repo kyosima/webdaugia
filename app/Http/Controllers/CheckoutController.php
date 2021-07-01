@@ -25,6 +25,20 @@ class CheckoutController extends Controller
     public function checkout(Request $request){
         $cart = Cart::instance('shopping')->content();
 
+        $validation = $request->validate([
+            'payment_method' => 'required|in:cod,banking',
+            'customer_Name' => 'required',
+            'customer_Phone' => ['required','regex:/((09|03|07|08|05)+([0-9]{8})\b)|(84)\d{9}/'],
+            'customer_Email' => 'required|email',
+            'customer_City' => 'required',
+            'customer_District' => 'required',
+            'customer_Ward' => 'required',
+            'customer_Address' => 'required',
+            'bill_total' => 'required',
+            'bill_subtotal' => 'required',
+            'bill_soluong' => 'required',
+        ]);
+
         $fullAddress = $request->customer_Address . ', ' . $request->phuong . ', ' . $request->quan . ', ' . $request->thanhpho;
 
         return DB::transaction(function() use ($request, $cart, $fullAddress){
@@ -32,7 +46,8 @@ class CheckoutController extends Controller
                 $bill = Bill::create([
                     'id_ofuser' => auth()->user() ? auth()->user()->id : null,
                     'note' => $request->customer_Note,
-                    'payment_method' => 1,
+                    'payment_method' => $request->payment_method == "cod" ? 1 : 0,
+                    'bill_subtotal' => intval(str_replace(".","",$request->bill_subtotal)),
                     'bill_total' => intval(str_replace(".","",$request->bill_total)),
                     'bill_promo' => intval(str_replace(".","",$request->bill_promo)),
                     'bill_coupon' => $request->bill_coupon,
@@ -52,6 +67,7 @@ class CheckoutController extends Controller
                         'id_ofbill' => $bill->id,
                         'id_ofproduct' => $item->id,
                         'SL' => $item->qty,
+                        'end_price' => $item->price
                     ]);
                 }
         
@@ -64,8 +80,7 @@ class CheckoutController extends Controller
                 ]);
 
                 Cart::instance('shopping')->destroy();
-                $this->orderSuccess();
-
+                return redirect()->route('checkout.orderSuccess');
             } catch (\Throwable $th) {
                 throw new \Exception('Đã có lỗi xảy ra vui lòng thử lại');
                 return redirect()->back()->withErrors(['error' => $th->getMessage()]);
@@ -87,7 +102,7 @@ class CheckoutController extends Controller
             $quan = session('bill.quan');
             $thanhpho = session('bill.thanhpho');
 
-            // $this->sendMail(session('bill.billId'), $info, $products);
+            $this->sendMail($bill, $info, $products);
 
             session()->forget('bill');
             session()->forget('coupon');
@@ -97,11 +112,9 @@ class CheckoutController extends Controller
         }
     }
 
-    public function sendMail($id, $info, $products)
+    public function sendMail($bill, $info, $products)
     {
-        $bill = Bill::where('id', $id)->first();
         $userEmail = $info->email;
-
         // send mail
         $content = [
             'name' => $info->name,
@@ -110,8 +123,11 @@ class CheckoutController extends Controller
             'address' => $info->address,
             'billID' => $bill->id,
             'items' => $products,
+            'subtotal' => $bill->bill_subtotal,
             'total' => $bill->bill_total,
             'promo' => $bill->bill_promo,
+            'coupon' => $bill->bill_coupon,
+            'payment' => $bill->payment_method,
         ];
         Mail::send('emails.sendMailToUser', $content, function ($message) use ($userEmail) {
             $message->to($userEmail)->subject('MEVIVU');

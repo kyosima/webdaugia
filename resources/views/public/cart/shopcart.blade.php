@@ -44,7 +44,7 @@
                                     <h5>{{$item->name}}</h5>
                                 </td>
                                 <td class="shoping__cart__price">
-                                    {{ number_format($item->price,0,",",".") . "₫"}}
+                                    @money($item->price)
                                 </td>
                                 <td class="shoping__cart__quantity">
                                     <div class="quantity">
@@ -56,7 +56,7 @@
                                     </div>
                                 </td>
                                 <td class="shoping__cart__total" data-rowId="{{$item->rowId}}">
-                                    {{ number_format($item->price*$item->qty,0,",",".") . "₫"}}
+                                    @money($item->price*$item->qty)
                                 </td>
                                 <td class="shoping__cart__item__close">
                                     <span class="icon_close remove" data-rowId="{{$item->rowId}}" data-href="{{route('cart.removeFromCart')}}"></span>
@@ -83,7 +83,11 @@
                         <h5>Mã giảm giá</h5>
                         <form action="{{route('coupon.useCoupon')}}" method="POST">
                             @csrf
-                            <input type="text" name="couponCode" placeholder="Nhập mã giảm giá" value="{{session('coupon') ? session()->get('coupon')['name'] : ""}}">
+                            <input type="text" name="couponCode" placeholder="Nhập mã giảm giá"
+                            @if (session('coupon'))
+                                value="{{session()->get('coupon')['name']}}" readonly
+                            @endif
+                            >
                             <button type="submit" class="site-btn">ÁP DỤNG</button>
                         </form>
                     </div>
@@ -108,12 +112,12 @@
                                     @method('delete')
                                     <button type="submit">x</button>
                                 </form>
-                                <b class="float-right">-{{number_format(session('coupon')['discount'],0,",",".")}}₫</b>
+                                <b class="float-right">-@money(session('coupon')['discount'])</b>
                             </li>
 
                             <li class="shopping__total">
                                 <span>Tổng cộng</span>
-                                <b class="float-right">{{number_format(session('coupon')['newSubtotal'],0,",",".")}}₫</b>
+                                <b class="float-right">@money(session('coupon')['newSubtotal'])</b>
                             </li>
                         @else
                             <li class="shopping__total">
@@ -129,9 +133,5 @@
     </div>
 </section>
 <!-- Shoping Cart Section End -->
-
-<script type="text/javascript">
-    var coupon = {!! json_encode(session('coupon')) !!};
-</script>
 
 @endsection

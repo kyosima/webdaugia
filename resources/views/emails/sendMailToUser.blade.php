@@ -20,7 +20,7 @@
 
                                         <table border="0" cellpadding="0" cellspacing="0" width="100%"
                                             id="m_584358752881652500template_header"
-                                            style="background-color:#96588a;color:#ffffff;border-bottom:0;font-weight:bold;line-height:100%;vertical-align:middle;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;border-radius:3px 3px 0 0">
+                                            style="background-color:#000;color:#ffffff;border-bottom:0;font-weight:bold;line-height:100%;vertical-align:middle;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;border-radius:3px 3px 0 0">
                                             <tbody>
                                                 <tr>
                                                     <td id="m_584358752881652500header_wrapper"
@@ -53,17 +53,17 @@
                                                                             style="color:#636363;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:14px;line-height:150%;text-align:left">
 
                                                                             <p style="margin:0 0 16px">Xin chào 
-                                                                                {{ $name }}. Đơn hàng của bạn:
+                                                                                {{ $name }}. Đơn hàng của quý khách:
                                                                             </p>
 
                                                                             <h2
-                                                                                style="color:#96588a;display:block;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:18px;font-weight:bold;line-height:130%;margin:0 0 18px;text-align:left">
+                                                                                style="color:#000;display:block;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:18px;font-weight:bold;line-height:130%;margin:0 0 18px;text-align:left">
                                                                                 <a href="#"
-                                                                                    style="font-weight:normal;text-decoration:underline;color:#96588a"
+                                                                                    style="font-weight:normal;text-decoration:underline;color:#000"
                                                                                     target="_blank"
                                                                                     data-saferedirecturl="">[Đơn hàng
                                                                                     #{{ $billID }}]</a>
-                                                                                ({{Carbon::now()->format('l d F Y')}})
+                                                                                ({{Carbon::now('Asia/Ho_Chi_Minh')->format('l d F Y')}})
                                                                             </h2>
 
                                                                             <div style="margin-bottom:40px">
@@ -110,18 +110,20 @@
                                                                                                 Tổng số phụ:</th>
                                                                                             <td
                                                                                                 style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left;border-top-width:4px">
-                                                                                                <span>0<span>₫</span></span>
+                                                                                                <span>{{ number_format($subtotal , '0', ',', '.') }}<span>₫</span></span>
                                                                                             </td>
                                                                                         </tr>
+                                                                                        @if ($promo > 0)
                                                                                         <tr>
                                                                                             <th scope="row" colspan="2"
-                                                                                                style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left;border-top-width:4px">
+                                                                                                style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left;">
                                                                                                 Giảm giá:</th>
                                                                                             <td
-                                                                                                style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left;border-top-width:4px">
-                                                                                                <span>0<span>₫</span></span>
+                                                                                                style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left;">
+                                                                                                <span>-{{ number_format($promo, '0', ',', '.')}}<span>₫</span></span>
                                                                                             </td>
                                                                                         </tr>
+                                                                                        @endif
                                                                                          <tr>
                                                                                             <th scope="row" colspan="2"
                                                                                                 style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left">
@@ -129,18 +131,20 @@
                                                                                             </th>
                                                                                             <td
                                                                                                 style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left">
-                                                                                                Trả tiền mặt khi nhận
-                                                                                                hàng</td>
-                                                                                        </tr> 
+                                                                                                {{$payment == 1 ? 'Trả tiền mặt khi nhận hàng' : 'Chuyển khoản ngân hàng'}}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        
                                                                                         <tr>
                                                                                             <th scope="row" colspan="2"
                                                                                                 style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left">
                                                                                                 Tổng cộng:</th>
                                                                                             <td
                                                                                                 style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left">
-                                                                                                <span>{{ number_format($total  , '0', ',', '.')}}<span>₫</span></span>
+                                                                                                <span style="color: red; font-w">{{ number_format($total, '0', ',', '.')}}<span>₫</span></span>
                                                                                             </td>
                                                                                         </tr>
+                                                                                        
                                                                                     </tfoot>
                                                                                 </table>
                                                                             </div>

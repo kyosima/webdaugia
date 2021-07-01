@@ -15,6 +15,7 @@ return [
 
     'paths' => [
         resource_path('views'),
+        realpath(base_path('encore/laravel-admin/resources/views')),
     ],
 
     /*

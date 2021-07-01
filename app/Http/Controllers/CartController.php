@@ -51,6 +51,8 @@ class CartController extends Controller
             Cart::instance('shopping')->content(),
             Cart::instance('shopping')->subtotal(),
             Cart::instance('shopping')->count(),
+            route('san-pham.index'),
+            route('cart.removeFromCart'),
         ],200);
     }
 
@@ -86,6 +88,8 @@ class CartController extends Controller
             Cart::instance('shopping')->content(),
             Cart::instance('shopping')->subtotal(),
             Cart::instance('shopping')->count(),
+            route('san-pham.index'),
+            route('cart.removeFromCart'),
         ],200);
     }
 
@@ -105,6 +109,8 @@ class CartController extends Controller
             Cart::instance('shopping')->content(),
             Cart::instance('shopping')->subtotal(),
             Cart::instance('shopping')->count(),
+            route('san-pham.index'),
+            route('trangchu'),
         ],200);
     }
     

@@ -18,7 +18,7 @@ use App\Http\Controllers\UserLoginController;
 
 use App\Http\Controllers\UserRegisterController;
 use App\Http\Controllers\UserGetPassword;
-
+use App\Http\Controllers\WishListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +31,7 @@ use App\Http\Controllers\UserGetPassword;
 |
 */
 
-Route::get('/', [HomeController::class, 'home']);
+Route::get('/', [HomeController::class, 'home'])->name('trangchu');
 Route::get('/lien-he', [HomeController::class, 'contact']);
 
 Route::get('/cua-hang', [CategoryProductController::class, 'index']);
@@ -118,5 +118,15 @@ Route::get('/getLocation', [CheckoutController::class, 'getLocation'])->name('ch
 Route::get('/order-success', [CheckoutController::class, 'orderSuccess'])->name('checkout.orderSuccess');
 
 // wishlist
+
+Route::get('/wish-list', [WishListController::class, 'index'])->name('wishlist.index');
+
+Route::post('/wish-list', [WishListController::class, 'addToWishList'])->name('wishlist.addToWishList');
+
+Route::delete('/wishlist-remove', [WishListController::class, 'removeFromWishList'])->name('wishlist.removeFromWishList');
+
+Route::post('/change-to-cart', [WishListController::class, 'changeWishToCart'])->name('wishlist.changeWishToCart');
+
+
 
 

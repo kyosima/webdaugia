@@ -10,15 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class CouponController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $coupons = Coupon::all();
-    }
 
     public function useCoupon(Request $request)
     {
@@ -80,92 +71,4 @@ class CouponController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $pro = implode(',', $request->coupon_product);
-        $cat = implode(',', $request->coupon_category);
-        Coupon::insert([
-            'coupon_type' => $request->coupon_type,
-            'coupon_code' => $request->coupon_code,
-            'coupon_desc' => $request->coupon_desc,
-            'coupon_value' => $request->value,
-            'coupon_product' => $pro,
-            'coupon_category' => $cat,
-            'coupon_exp' => $request->coupon_exp,
-        ]);
-        return redirect()->route('coupon.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Coupon $coupon)
-    {
-        $pro = implode(',', $request->coupon_product);
-        $cat = implode(',', $request->coupon_category);
-        $coupon->update([
-            'coupon_type' => $request->coupon_type,
-            'coupon_code' => $request->coupon_code,
-            'coupon_desc' => $request->coupon_desc,
-            'coupon_value' => $request->value,
-            'coupon_product' => $pro,
-            'coupon_category' => $cat,
-            'coupon_exp' => $request->coupon_exp,
-        ]);
-        return redirect()->route('coupon.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Coupon $coupon)
-    {
-        $coupon->delete();
-        return redirect()->route('coupon.index');
-    }
 }

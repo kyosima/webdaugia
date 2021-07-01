@@ -110,7 +110,7 @@ class PostsController extends Controller
             $filter->scope('trashed', 'Recycle Bin')->onlyTrashed();
         });
         $grid->actions(function ($actions) {
-            if (\ request('_ scope_') == 'trashed') {
+            if (\request('_ scope_') == 'trashed') {
                 $actions->add(new Restore());
             }
             $actions->disableView();
@@ -171,6 +171,8 @@ class PostsController extends Controller
 
             // Add a form item to this column
             $form->inputImage('avatar', 'Ảnh đại điện')->value('/public/upload/product_default.png');
+
+            $form->datetime('abc', 'saaa')->format('DD-MM-YYYY HH:mm:ss');
         });
         
         $form->setWidth(12, 12);
@@ -178,6 +180,7 @@ class PostsController extends Controller
             $form->slug = SlugService::createSlug(Posts::class, 'slug',  $form->title);
             $form->avatar = Str::after($form->avatar, URL('/'));
         });
+
         return $form;
     }
 
