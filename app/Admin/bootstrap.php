@@ -3,6 +3,8 @@ use Encore\Admin\Form;
 use App\Admin\Extensions\Form\CKEditor;
 use App\Admin\Extensions\Form\InputImage;
 use App\Admin\Extensions\Form\InputGallery;
+use App\Admin\Extensions\Form\InputProductOrder;
+
 Use Encore\Admin\Admin;
 
 /**
@@ -38,6 +40,9 @@ Admin::css('public/admin/css/style.css');
 Form::extend('inputImage', InputImage::class);
 
 Form::extend('inputGallery', InputGallery::class);
+
+Form::extend('inputProductOrder', InputProductOrder::class);
+
 
 
 

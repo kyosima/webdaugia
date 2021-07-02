@@ -587,6 +587,16 @@
             })
         });
 
+        // KHI NHAN NUT HUY
+        $('.cancel-action').click(function(){
+            $('.function').css('display', 'block')
+            $('.wc-order-add-item').css('display', 'none')
+            $('a.edit-order-item').css('display', 'block')
+            $('div.view').css('display', 'block')
+            $('div.edit').css('display', 'none')
+
+        })
+
         $('.wc-product-search').select2();
 
         $('.add-order-item').click(function() {

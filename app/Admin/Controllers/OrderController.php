@@ -182,36 +182,21 @@ class OrderController extends Controller
         // kiem tra lai so luong + tong tien va cap nhat
         $soluong = $item_delete->first()->SL;
         $giaban = $item_delete->first()->end_price;
-        $newSoluong = $bill->soluong - $soluong;
-        if($giaban != NULL) {   
-            $total = $giaban*$soluong;
-            $newSubtotal = $bill->bill_subtotal - $total;
-            if($bill->bill_promo > 0) {
-                $newtotal = $bill->bill_total - $total - $bill->bill_promo;
-            }
-            $newtotal = $bill->bill_total - $total;
-            $bill->update([
-                'bill_subtotal' => $newSubtotal,
-                'bill_soluong' => $newSoluong,
-                'bill_total' =>  $newtotal
-            ]);
+        $newSoluong = $bill->bill_soluong - $soluong;
+
+        $total = $giaban*$soluong;
+        $newSubtotal = $bill->bill_subtotal - $total;
+        if($bill->bill_promo > 0) {
+            $newtotal = $bill->bill_total - $total - $bill->bill_promo;
         } else {
-            $product = Product::where('id', $request->item_id)->first();
-            $giaban = $product->price;
-
-            if($product->discount != NULL){
-                $giaban = $giaban * (1-$product->discount/100);
-            }
-
-            $total = $giaban*$soluong;
-            $newSubtotal = $bill->bill_subtotal - $total;
             $newtotal = $bill->bill_total - $total;
-            $bill->update([
-                'bill_subtotal' => $newSubtotal,
-                'bill_soluong' => $newSoluong,
-                'bill_total' =>  $newtotal
-            ]);
         }
+        $bill->update([
+            'bill_subtotal' => $newSubtotal,
+            'bill_soluong' => $newSoluong,
+            'bill_total' =>  $newtotal
+        ]);
+
         // xoa san pham tuong ung o bill detail
         $item_delete->delete();
         // render view
@@ -361,26 +346,30 @@ class OrderController extends Controller
                 2 => 'Đã hoàn tất',
                 3 => 'Đã hủy',
             ])->required()->default('bill_status');
+            $form->text('note', 'Ghi chú đơn hàng');
+            $form->text('bill_soluong', 'Tổng số lượng')->rules([
+                'required',
+                'regex:/^[0-9]*$/'
+            ])->default(0)->readonly();
             $form->text('bill_subtotal', 'Tổng tạm tính')->rules([
                 'required',
                 'regex:/^[0-9]*$/'
-            ]);
-            $form->text('bill_promo', 'Giảm giá')->rules([
-                'regex:/^[0-9]*$/'
-            ]);
-            $form->text('bill_coupon', 'Mã giảm giá');
-            $form->text('bill_soluong', 'Số lượng')->rules([
-                'regex:/^[0-9]*$/',
-                'required'
-            ]);
+            ])->default(0)->readonly();
+            // $form->text('bill_promo', 'Giảm giá')->rules([
+            //     'regex:/^[0-9]*$/'
+            // ]);
+            // $form->text('bill_coupon', 'Mã giảm giá');
+            // $form->text('bill_soluong', 'Số lượng')->rules([
+            //     'regex:/^[0-9]*$/',
+            //     'required'
+            // ]);
             $form->text('bill_total', 'Tổng đơn hàng')->rules([
                 'required',
                 'regex:/^[0-9]*$/'
-            ]);
+            ])->default(0)->readonly();
         })->tab('Sản phẩm', function($form) use ($id){
             // $form->belongsToMany('bill_detail', Products::class,__('Sản phẩm'));
-                // $form->view('customForm');
-
+                $form->inputProductOrder();
         });
 
         return $form;
