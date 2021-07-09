@@ -6,8 +6,12 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Encore\Admin\Traits\AdminBuilder;
+use Encore\Admin\Traits\ModelTree;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class Campaign
@@ -30,6 +34,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Campaign extends Model
 {
+
+	use Sluggable;
+
+	public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
+	
 	protected $table = 'campaign';
 
 	protected $casts = [
@@ -56,4 +72,15 @@ class Campaign extends Model
 		'time_end',
 		'status'
 	];
+	public function campaign_details()
+    {
+        return $this->hasMany(CampaignDetail::class, 'campaign_id', 'id');
+    }
+
+	// public function campaign_details($value)
+    // {
+    //     return CampaignDetail::get($value);
+    // }
+
+
 }

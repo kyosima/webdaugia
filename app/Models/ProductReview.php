@@ -13,15 +13,12 @@ use Illuminate\Database\Eloquent\Model;
  * Class ProductReview
  * 
  * @property int $id
- * @property int $id_ofproduct
- * @property int $id_ofuser
+ * @property int $product_id
+ * @property int $user_id
  * @property float $rating
  * @property string $content
  * @property Carbon $updated_at
  * @property Carbon $created_at
- * 
- * @property User $user
- * @property Product $product
  *
  * @package App\Models
  */
@@ -32,25 +29,15 @@ class ProductReview extends Model
 
 	protected $casts = [
 		'id' => 'int',
-		'id_ofproduct' => 'int',
-		'id_ofuser' => 'int',
+		'product_id' => 'int',
+		'user_id' => 'int',
 		'rating' => 'float'
 	];
 
 	protected $fillable = [
-		'id_ofproduct',
-		'id_ofuser',
+		'product_id',
+		'user_id',
 		'rating',
 		'content'
 	];
-
-	public function user()
-	{
-		return $this->belongsTo(User::class, 'id_ofuser');
-	}
-
-	public function product()
-	{
-		return $this->belongsTo(Product::class, 'id_ofproduct');
-	}
 }

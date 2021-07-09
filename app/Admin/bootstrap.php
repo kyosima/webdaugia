@@ -3,6 +3,8 @@ use Encore\Admin\Form;
 use App\Admin\Extensions\Form\CKEditor;
 use App\Admin\Extensions\Form\InputImage;
 use App\Admin\Extensions\Form\InputGallery;
+use App\Admin\Extensions\Form\InputProduct;
+
 Use Encore\Admin\Admin;
 
 /**
@@ -33,11 +35,17 @@ Admin::js('public/admin/js/input-image.js');
 
 Admin::js('public/admin/js/slug.js');
 
+Admin::js('public/admin/js/input-product.js');
+
 Admin::css('public/admin/css/style.css');
+
+Admin::css('public/mevivu/css/style.css');
 
 Form::extend('inputImage', InputImage::class);
 
 Form::extend('inputGallery', InputGallery::class);
+
+Form::extend('inputProduct', InputProduct::class);
 
 
 

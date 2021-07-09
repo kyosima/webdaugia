@@ -1,13 +1,106 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Campaign;
+use App\Models\CampaignDetail;
+
 
 use Illuminate\Http\Request;
 
 class CampaignController extends Controller
 {
-    //
-    public function index(){
-        return view('public.campaign.all');
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $campaigns_coming = Campaign::whereStatus(0)->orderBy( 'id','asc')->get();
+        $campaigns_run = Campaign::whereStatus(1)->orderBy( 'id','asc')->get();
+        $campaigns_end = Campaign::whereStatus(2)->orderBy( 'id','asc')->get();
+
+        return view('public.campaign.campaign',['campaigns_coming'=>$campaigns_coming, 'campaigns_run'=>$campaigns_run, 'campaigns_end'=>$campaigns_end]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($slug)
+    {
+        //
+        $campaign = Campaign::whereSlug($slug)->first();
+        return view('public.campaign.detail', ['campaign'=>$campaign]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+    public function startCampaign(Request $request){
+        $id = $request->id;
+        Campaign::whereId($id)->update(['status' =>1]);
+        $detail = CampaignDetail::whereCampaignId($id)->orderBy( 'id','asc')->first();
+        CampaignDetail::whereId($detail->id)->update(['status'=>1]);
+
+        return 'Start campaign successfully';
+    }
+    public function startDetail(Request $request){
+        $id = $request->id;
+        CampaignDetail::whereId($id)->update(['status'=>1]);
+        return 'Start details successfully';
     }
 }

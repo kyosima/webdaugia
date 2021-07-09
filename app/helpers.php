@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\CampaignDetail;
 if (!function_exists('getImage')) {
     function getImage($path)
     {
@@ -20,6 +20,14 @@ if (!function_exists('getCurrency')) {
     function getCurrency($price)
     {
         return number_format($price, 0, '.', ',') . 'đ';
+    }
+}
+
+if (!function_exists('countProductCampaign')) {
+    function countProductCampaign($id)
+    {
+           
+        return CampaignDetail::whereCampaignId($id)->count(); 
     }
 }
 if (!function_exists('sale')) {

@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\PusherController;
 
 use App\Http\Controllers\CampaignTypeController;
 use App\Http\Controllers\BlogController;
@@ -38,10 +39,6 @@ Route::get('/lien-he', [HomeController::class, 'contact']);
 
 Route::get('/chi-tiet-san-pham', [ProductDetailController::class, 'index']);
 
-Route::get('/dau-gia', [CampaignController::class, 'index']);
-
-Route::get('/loai-dau-gia', [CampaignTypeController::class, 'index']);
-
 Route::get('/blog', [BlogController::class, 'index']);
 
 Route::get('/danh-muc-bai-viet/{categoryPost:slug}', [BlogController::class, 'category']);
@@ -49,7 +46,9 @@ Route::get('/danh-muc-bai-viet/{categoryPost:slug}', [BlogController::class, 'ca
 Route::get('/bai-viet/{post:slug}', [BlogController::class, 'detail']);
 
 //start login, register
-
+Route::get('socket', 'SocketController@index');
+Route::post('sendmessage', 'SocketController@sendMessage');
+Route::get('writemessage', 'SocketController@writemessage');
 
 Route::post('/dang-nhap', [UserLoginController::class, 'postLogin'])->name('post.login');
 
@@ -78,6 +77,7 @@ Route::put('xac-nhan-lay-lai-mat-khau', [UserGetPassword::class, 'postAcceptGetP
 Route::resources([
     'san-pham' => 'ProductController',
     'cua-hang' => 'ProductCategoryController',
+    'dau-gia' => 'CampaignController',
 ]);
 
 
@@ -113,4 +113,16 @@ Route::get('/order-success', [CheckoutController::class, 'orderSuccess'])->name(
 
 // wishlist
 
+Route::group(['prefix' => 'dau-gia'], function(){
+    Route::get('/bat-dau/{id}', [CampaignController::class,'startCampaign'])->name('campaign.start');
+    Route::get('/bat-dau/detail/{id}', [CampaignController::class,'startDetail'])->name('campaign.startdetail');
 
+});
+
+
+Route::group(['prefix' => 'pusher'], function(){
+
+    Route::get('start-campaign/{id}', [PusherController::class, 'startCampaign']);
+
+
+});

@@ -45,6 +45,10 @@ $category = CategoryPost::select('title', 'slug')->get();
     <link rel="stylesheet" href="{{asset('public/mevivu/css/owl.carousel.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('public/mevivu/css/slicknav.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('public/mevivu/css/style.css')}}" type="text/css">
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script src="{{asset('public/mevivu/js/campaign.js')}}"></script>
+
+
 </head>
 
 <body>
@@ -383,6 +387,7 @@ $category = CategoryPost::select('title', 'slug')->get();
     <script src="{{asset('public/mevivu/js/main.js')}}"></script>
     <script src="{{asset('public/mevivu/js/jquery.countdown.min.js')}}"></script>
     <script src="{{asset('public/mevivu/js/ajaxCart.js')}}"></script>
+
     <script src="{{asset('public/mevivu/js/ajaxSelectAddress.js')}}"></script>
     <script>
         $(document).ready(function () {

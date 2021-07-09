@@ -8,12 +8,13 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-
+use Cviebrock\EloquentSluggable\Sluggable;
+use Encore\Admin\Traits\AdminBuilder;
+use Encore\Admin\Traits\ModelTree;
 /**
  * Class ProductCategory
  * 
  * @property int $id
- * @property string|null $logo
  * @property string|null $parent_id
  * @property string $slug
  * @property string|null $sku
@@ -22,14 +23,23 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $status
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * 
- * @property CategoryToProduct $category_to_product
  *
  * @package App\Models
  */
 class ProductCategory extends Model
 {
+	use ModelTree, AdminBuilder, Sluggable;
+
 	protected $table = 'product_category';
+
+	public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
 
 	protected $casts = [
 		'order' => 'int',
@@ -37,7 +47,6 @@ class ProductCategory extends Model
 	];
 
 	protected $fillable = [
-		'logo',
 		'parent_id',
 		'slug',
 		'sku',
@@ -46,8 +55,22 @@ class ProductCategory extends Model
 		'status'
 	];
 
-	public function category_to_product()
-	{
-		return $this->hasOne(CategoryToProduct::class, 'id_ofcategory');
-	}
+    public function products(){
+    	return $this->belongsToMany(Product::class, 'category_to_post', 'id_ofcategory', 'id_ofproduct');
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(ProductCategory::class, 'parent_id', 'id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ProductCategory::class, 'parent_id', 'id');
+    }
+
+    public function brands()
+    {
+        return $this->belongsToMany(Brand::class, Product::class, 'category_id', 'brand_id');
+    }
 }

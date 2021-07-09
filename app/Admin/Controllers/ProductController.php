@@ -5,6 +5,8 @@ namespace App\Admin\Controllers;
 use App\Models\ProductBrand;
 use App\Models\Product;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\CampaignDetail;
 
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -53,6 +55,16 @@ class ProductController extends AdminController
 
         return $grid;
     }
+    public function getProduct(Request $request)
+    {   
+        $product = Product::findOrFail($request->id);
+        CampaignDetail::insert([
+            'campaign_id'=>$request->campaign_id,
+            'product_id'=>$request->id
+        ]);
+        $detail = CampaignDetail::whereCampaignId($request->campaign_id)->whereProductId($product->id)->first();
+        return view('admin.campaign_detail',['product'=>$product,'campaign_id'=>$request->campaign_id,'detail'=>$detail])->render();
+    }
 
     /**
      * Make a show builder.
@@ -61,33 +73,10 @@ class ProductController extends AdminController
      * @return Show
      */
     protected function detail($id)
-    {
-        
-        $show = new Show(Product::findOrFail($id));
-
-        $show->field('id', __('Id'));
-        $show->field('slug', __('Product slug'));
-        $show->field('category_id', __('Product category'));
-        $show->field('title', __('Product name'));
-        $show->field('price', __('Product price'));
-        $show->field('discount', __('Product discount'));
-        $show->field('sku', __('Product sku'));
-        $show->field('quantity', __('Product quantity'));
-        $show->field('feature_img', __('Product feature img'));
-        $show->field('gallery', __('Product gallery'));
-        $show->field('brand_id', __('Product brand'));
-        $show->field('variation_status', __('Product variation status'));
-        $show->field('variation_id', __('Product variation'));
-        $show->field('status', __('Product status'));
-        $show->field('desc_short', __('Product shortdsc'));
-        $show->field('desc_long', __('Product longdsc'));
-        $show->field('info', __('Product info'));
-        $show->field('offer', __('Product offer'));
-        $show->field('is_highlight', __('Is highlight'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
-
-        return $show;
+    {   
+        $product = Product::findOrFail($id);
+        $returnHTML = view('admin.campaign_detail')->renderSections()['content'];
+        return ($returnHTML);
     }
 
     /**

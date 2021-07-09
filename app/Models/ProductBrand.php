@@ -8,6 +8,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Encore\Admin\Traits\AdminBuilder;
+use Encore\Admin\Traits\ModelTree;
 
 /**
  * Class ProductBrand
@@ -25,10 +28,20 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ProductBrand extends Model
 {
+	use ModelTree, AdminBuilder, Sluggable;
+
 	protected $table = 'product_brand';
 	public $incrementing = false;
 	public $timestamps = false;
 
+	public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
 	protected $casts = [
 		'id' => 'int',
 		'order' => 'int',

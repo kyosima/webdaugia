@@ -36,4 +36,7 @@ class CampaignNoti extends Model
 		'campaign_id',
 		'user_id'
 	];
+	public function campaign() {
+        return $this->belongsTo(Campaign::class);
+    }
 }

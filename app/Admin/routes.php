@@ -10,8 +10,13 @@ Route::group([
     'middleware'    => config('admin.route.middleware'),
     'as'            => config('admin.route.prefix') . '.',
 ], function (Router $router) {
+    $router->get('products/get/{id}/{campaign_id}', 'ProductController@getProduct');
 
-    $router->get('/', 'HomeController@index')->name('home');
+    $router->get('campaigns/remove/{id}', 'CampaignController@removeCampaignDetail');
+
+    $router->post('campaigns/postCampaign', 'CampaignController@postCampaign');
+
+    $router->get('/', 'HomeController@index')->name('home');    
 
     $router->resource('users', UserController::class);
 

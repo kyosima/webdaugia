@@ -3,10 +3,17 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Campaign;
+use App\Models\CampaignDetail;
+
+use App\Models\Product;
+use Encore\Admin\Layout\Content;
+
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class CampaignController extends AdminController
 {
@@ -27,20 +34,25 @@ class CampaignController extends AdminController
         $grid = new Grid(new Campaign());
 
         $grid->column('id', __('Id'));
-        $grid->column('title', __('Title'));
-        $grid->column('avatar', __('Avatar'));
-        $grid->column('description', __('Description'));
-        $grid->column('product_id', __('Product id'));
-        $grid->column('price_start', __('Price start'));
-        $grid->column('price_end', __('Price end'));
-        $grid->column('price_step', __('Price step'));
+        $grid->column('avatar', __('Ảnh đại diện'))->image(url('/'), '100','100');
+        $grid->column('title', __('Tiêu đề'));
         $grid->column('time_start', __('Time start'));
         $grid->column('time_end', __('Time end'));
-        $grid->column('status', __('Status'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
-
         return $grid;
+    }
+
+    public function postCampaign(Request $request){
+            CampaignDetail::whereId($_POST['campaign_detail_id'])->update([
+                'detail_price_start'=>$_POST['detail_price_start'],
+                'detail_price_step'=>$_POST['detail_price_step']
+            ]);
+       
+        return 'Thành công';
+    }
+
+    public function removeCampaignDetail(Request $request){
+        CampaignDetail::whereId($request->id)->delete();
+        return 'Thành công';
     }
 
     /**
@@ -75,21 +87,56 @@ class CampaignController extends AdminController
      *
      * @return Form
      */
+     /**
+     * Edit interface.
+     *
+     * @param mixed $id
+     * @param Content $content
+     * @return Content
+     */
+    public function edit($id, Content $content)
+    {
+        return $content
+            ->body($this->formEdit($id)->edit($id,$content));
+    }
+
+    public function update($id)
+    {
+        return $this->formEdit($id)->update($id);
+    }
+     /**
+     * Create interface.
+     *
+     * @param Content $content
+     * @return Content
+     */
+    public function create(Content $content)
+    {
+        return $content
+            ->body($this->form());
+    }
+
     protected function form()
     {
-        $form = new Form(new Campaign());
+        $form = new Form(new Campaign());   
 
-        $form->text('title', __('Title'));
-        $form->image('avatar', __('Avatar'));
-        $form->textarea('description', __('Description'));
-        $form->text('product_id', __('Product id'));
-        $form->number('price_start', __('Price start'));
-        $form->number('price_end', __('Price end'));
-        $form->number('price_step', __('Price step'));
-        $form->datetime('time_start', __('Time start'))->default(date('Y-m-d H:i:s'));
-        $form->datetime('time_end', __('Time end'))->default(date('Y-m-d H:i:s'));
-        $form->number('status', __('Status'));
+        $form->text('title', __('Tiêu đề'));
+        return $form;
+    }
 
+    protected function formEdit($id)
+    {
+        $form = new Form(new Campaign());   
+        $form->text('id', __('ID'))->readonly();
+        $form->text('title', __('Tiêu đề'));
+        $form->inputImage('avatar', __('Ảnh đại diện'))->value('/public/upload/product_default.png')->attribute('data-type', '');
+        $form->inputProduct('id', __('Chọn sản phẩm'))->value($id);
+        $form->datetime('time_start', __('Thời gian bắt đầu'))->default(date('Y-m-d H:i:s'));
+        $form->number('time_range', 'Thời gian đấu giá 1 sản phẩm');
+        $form->ckeditor('description', __('Mô tả'));
+        $form->saving(function (Form $form) {
+            $form->avatar = Str::after($form->avatar, URL('/'));
+        });
         return $form;
     }
 }
