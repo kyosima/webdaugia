@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Campaign;
 use App\Models\CampaignDetail;
+use Carbon\Carbon;
 
 
 use Illuminate\Http\Request;
@@ -53,7 +54,23 @@ class CampaignController extends Controller
     public function show($slug)
     {
         //
-        $campaign = Campaign::whereSlug($slug)->first();
+        $campaign = Campaign::whereSlug($slug)->first();    
+        $now = Carbon::now();
+        $details = CampaignDetail::whereCampaignId($campaign->id)->orderBy( 'id','asc')->get();
+        $time_run = $campaign->time_range + count($details)-1;
+        if(strtotime($campaign->time_start) <= strtotime($now) && (strtotime($now) <= strtotime($campaign->time_start.'+'.$time_run.'minute'))){
+            Campaign::whereId($campaign->id)->update(['status' =>1]);
+        }elseif((strtotime($now) > strtotime($campaign->time_start.'+'.$time_run.'minute'))){
+            Campaign::whereId($campaign->id)->update(['status' =>2]);
+
+        }
+        for($i=0; $i<count($details); $i++){
+            if((strtotime($campaign->time_start.'+'.($campaign->time_range +$i).'minute') >= strtotime($now))&&(strtotime($now) >= strtotime($campaign->time_start.'+'.$i.'minute'))){
+                CampaignDetail::whereId($details[$i]->id)->update(['status'=>1]);
+            }elseif(strtotime($campaign->time_start.'+'.($campaign->time_range +$i).'minute') < strtotime($now)){
+                CampaignDetail::whereId($details[$i]->id)->update(['status'=>2]);
+            }
+        }
         return view('public.campaign.detail', ['campaign'=>$campaign]);
     }
 

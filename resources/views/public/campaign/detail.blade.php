@@ -84,12 +84,14 @@
         </div>
         @if($campaign->status == 0)
             <script>
-                countStart('{{$campaign->time_start}}','{{$campaign->campaign_details()->get()}}', {{$campaign->time_range}});
+                countStart('{{$campaign->time_start}}','{{count($campaign->campaign_details()->get())}}', {{$campaign->time_range}});
             </script>
         @elseif($campaign->status == 1)
             <script>
                 countRun('{{$campaign->time_start}}','{{$campaign->campaign_details()->get()}}');
             </script>
+         @else
+            <h3>Đấu giá đã kết thúc</h3>
         @endif
         <div class="row">
             <div class="col-lg-12">

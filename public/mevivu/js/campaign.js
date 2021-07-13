@@ -39,8 +39,8 @@ function countStart(time,total, duration){
                     {
                         console.log(response); // show response from the php script.
                         countRun(time,total);
-                        countRunDetail(time, 0, 1, total, duration)
-
+                        console.log('total: ' +total);
+                        countRunDetail(time, 0, 1, total, duration,0);
                     },
                     error: function(xhr, textStatus, errorThrown) {
                         console.log(errorThrown);
@@ -90,7 +90,42 @@ function countRun(time,total){
     }, 1000);
 }
 
-function countRunDetail(time, order, step, total,duration){ 
+function startDetail(order){
+    url =$('#detail-counter-'+(parseInt(order))).data('urlcancel');
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: {}, // serializes the form's elements.
+        success: function(response)
+        {
+            console.log(response); // show response from the php script.
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            console.log(errorThrown);
+        }
+    });
+}
+function stopDetail(order){
+    url =$('#detail-counter-'+(parseInt(order))).data('urlcancel');
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: {}, // serializes the form's elements.
+        success: function(response)
+        {
+            console.log(response); // show response from the php script.
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            console.log(errorThrown);
+        }
+    });
+}
+
+function countRunDetail(time, order, step, total,duration, status){ 
+    console.log(order);
+    if(parseInt(status) == 0){
+        startDetail(parseInt(order));
+    }
     // var t = '2014/01/01 23:59:59:0'.split(/[- :]/);
     var t = time.split(' ');
     var a = t[0].split('-');
@@ -101,10 +136,10 @@ function countRunDetail(time, order, step, total,duration){
     startDateTime = new Date(startDateTime.getTime() + duration*60000);
     var  newStamp= startDateTime.getTime();
     var timer; // for storing the interval (to stop or pause later if needed)
-
-    var start_next, start_first = true;
     
+    var start_next = true;
     timer = setInterval(function(){
+     
         newDate = new Date();
         startStamp= newDate.getTime();
         var diff = Math.round((newStamp-startStamp)/1000);
@@ -115,31 +150,21 @@ function countRunDetail(time, order, step, total,duration){
         var m = Math.floor(diff/(60));
         diff = diff-(m*60);
         var s = diff;
-        console.log(duration-1- m + ' '+step)
-        if(start_next){
-            if(parseInt(duration-1 - m) == step){
-                if(order+1 < total){
-                    console.log(url);
-                    startDetail(parseInt(order)+1);
-                    start_next = false;
-                }
+        console.log(step +' ' + (parseInt(duration) -2) + ' ' +m);
+        console.log(start_next);
+        if(((parseInt(duration) -2) == m) && (start_next == true)){
+            console.log('dk1');
+            console.log(parseInt(order)+1);
+            console.log(parseInt(total));
+            if((parseInt(order)+1) <= (parseInt(total))){
+                console.log('dk2');
+                countRunDetail(time, parseInt(order)+1, step,total,duration, 0);
+                start_next = false;
             }
         }
+        
         if((d == 0) && (h==0) && (m == 0) && (s ==0)){
-            url =$('#detail-counter'+(order+1)).data('urlcancel');
-            console.log(url);
-            $.ajax({
-                type: "GET",
-                url: url,
-                data: {}, // serializes the form's elements.
-                success: function(response)
-                {
-                    console.log(response); // show response from the php script.
-                },
-                error: function(xhr, textStatus, errorThrown) {
-                    console.log(errorThrown);
-                }
-            });
+            stopDetail(order);
             clearInterval(timer);
         }
         $('#detail-counter-'+order+ ' .day').text(d);
@@ -149,20 +174,3 @@ function countRunDetail(time, order, step, total,duration){
     }, 1000);
 }
 
-function startDetail(order){
-    url =$('#detail-counter-'+ order).data('url');
-    $.ajax({
-        type: "GET",
-        url: url,
-        data: {}, // serializes the form's elements.
-        success: function(response)
-        {
-            countRunDetail(time, parseInt(order)+1,step, total,duration);
-
-            console.log(response); // show response from the php script.
-        },
-        error: function(xhr, textStatus, errorThrown) {
-            console.log(errorThrown);
-        }
-    });
-}

@@ -27,6 +27,8 @@ $category = CategoryPost::select('title', 'slug')->get();
     <link rel="stylesheet" href="{{asset('public/mevivu/css/elegant-icons.css')}}" type="text/css">
     {{-- <link rel="stylesheet" href="{{asset('public/mevivu/css/nice-select.css')}}" type="text/css"> --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="{{asset('public/mevivu/js/jquery-3.3.1.min.js')}}"></script>
+
     <style>
         .select2-container {
             width: 100% !important;
@@ -375,7 +377,6 @@ $category = CategoryPost::select('title', 'slug')->get();
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
-    <script src="{{asset('public/mevivu/js/jquery-3.3.1.min.js')}}"></script>
     <script src="{{asset('public/mevivu/js/bootstrap.min.js')}}"></script>
     <!-- <script src="{{asset('public/mevivu/js/popper.min.js')}}"></script> -->
     {{-- <script src="{{asset('public/mevivu/js/jquery.nice-select.min.js')}}"></script> --}}
