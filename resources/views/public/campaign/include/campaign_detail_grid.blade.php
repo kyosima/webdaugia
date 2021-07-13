@@ -17,7 +17,7 @@
         <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12">
             <h3 class="product__detail__title">{{$product->title}}</h3>
             @if($item->status == 0)
-            <div id="detail-counter-{{$order}}" data-url="{{url('dau-gia/bat-dau/detail/'.$item->id)}}">
+            <div id="detail-counter-{{$order}}" data-url="{{url('dau-gia/bat-dau/detail/'.$item->id)}}"  data-urlcancel="{{url('dau-gia/ket-thuc/detail/'.$item->id)}}">
                 <div id="timer">
                     <div class="number-list">
                       <div class="item day">00</div>
@@ -52,7 +52,7 @@
                   </div>
             </div>
             <script> 
-                countRunDetail('{{$campaign->time_start}}', '{{$order}}',{{$order*5}}, '{{$total}}', {{$duration}});
+                countRunDetail('{{$campaign->time_start}}', '{{$order}}',1, '{{$total}}', {{$duration}});
             </script>
             @endif
             <div class="product__details__tab__desc">

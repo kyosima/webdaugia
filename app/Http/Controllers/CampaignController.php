@@ -103,4 +103,9 @@ class CampaignController extends Controller
         CampaignDetail::whereId($id)->update(['status'=>1]);
         return 'Start details successfully';
     }
+    public function stopDetail(Request $request){
+        $id = $request->id;
+        CampaignDetail::whereId($id)->update(['status'=>2]);
+        return 'Stop details successfully';
+    }
 }

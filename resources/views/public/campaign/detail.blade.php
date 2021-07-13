@@ -84,7 +84,7 @@
         </div>
         @if($campaign->status == 0)
             <script>
-                countStart('{{$campaign->time_start}}','{{$campaign->campaign_details()->get()}}');
+                countStart('{{$campaign->time_start}}','{{$campaign->campaign_details()->get()}}', {{$campaign->time_range}});
             </script>
         @elseif($campaign->status == 1)
             <script>
