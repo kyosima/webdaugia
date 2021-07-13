@@ -1,4 +1,4 @@
-function countStart(time,total){ 
+function countStart(time,total, duration){ 
     // var t = '2014/01/01 23:59:59:0'.split(/[- :]/);
     console.log(time);
     var t = time.split(' ');
@@ -39,13 +39,15 @@ function countStart(time,total){
                     {
                         console.log(response); // show response from the php script.
                         countRun(time,total);
-                        countRunDetail(time, 0, 0, total)
+                        countRunDetail(time, 0, 1, total, duration)
 
                     },
                     error: function(xhr, textStatus, errorThrown) {
                         console.log(errorThrown);
                     }
                     });
+                    clearInterval(timer);
+
             }
 
             // document.getElementById("campaign-counter").innerHTML = ''
@@ -55,7 +57,6 @@ function countStart(time,total){
 }
 
 function countRun(time,total){ 
-    countRunDetail(time, 0, 0, total)
 
     // var t = '2014/01/01 23:59:59:0'.split(/[- :]/);
     var t = time.split(' ');
@@ -96,22 +97,16 @@ function countRunDetail(time, order, step, total,duration){
     var b = t[1].split(':');
     // Apply each element to the Date function
     // var startDateTime = new Date('2014,0,1,23,59,59,0');
-
-    var startDateTime = new Date(a[0], a[1]-1, a[2], b[0], parseInt(b[1]) + step, b[2],0);
-    var  startStamp= startDateTime.getTime();
+    var startDateTime = new Date(a[0], a[1]-1, a[2], b[0], parseInt(b[1])+(step*order) , b[2],0);
+    startDateTime = new Date(startDateTime.getTime() + duration*60000);
+    var  newStamp= startDateTime.getTime();
     var timer; // for storing the interval (to stop or pause later if needed)
-    newDate = new Date();
-    newStamp= newDate.getTime();
-    var diff = Math.round((newStamp-startStamp)/1000);
-    var d = Math.floor(diff/(24*60*60)); 
-    diff = diff-(d*24*60*60);
-    var h = Math.floor(diff/(60*60));
-    diff = diff-(h*60*60);
-    var m_o = Math.floor(diff/(60));
-    var count_m = 0;
-    var start_next = true;
+
+    var start_next, start_first = true;
+    
     timer = setInterval(function(){
-         newStamp= newDate.getTime();
+        newDate = new Date();
+        startStamp= newDate.getTime();
         var diff = Math.round((newStamp-startStamp)/1000);
         var d = Math.floor(diff/(24*60*60)); /* though I hope she won't be working for consecutive days :) */
         diff = diff-(d*24*60*60);
@@ -120,36 +115,54 @@ function countRunDetail(time, order, step, total,duration){
         var m = Math.floor(diff/(60));
         diff = diff-(m*60);
         var s = diff;
-        if(m_o != m){
-            count_m +=1;
-        }
+        console.log(duration-1- m + ' '+step)
         if(start_next){
-            if(count_m >=1){
+            if(parseInt(duration-1 - m) == step){
                 if(order+1 < total){
-                    url =$('#detail-counter-1').data('url');
                     console.log(url);
-                    $.ajax({
-                        type: "GET",
-                        url: url,
-                        data: {}, // serializes the form's elements.
-                        success: function(response)
-                        {
-                            console.log(response); // show response from the php script.
-                        },
-                        error: function(xhr, textStatus, errorThrown) {
-                            console.log(errorThrown);
-                        }
-                    });
+                    startDetail(parseInt(order)+1);
                     start_next = false;
-                    countRunDetail(time, parseInt(order)+1,1, total);
                 }
             }
+        }
+        if((d == 0) && (h==0) && (m == 0) && (s ==0)){
+            url =$('#detail-counter'+(order+1)).data('urlcancel');
+            console.log(url);
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: {}, // serializes the form's elements.
+                success: function(response)
+                {
+                    console.log(response); // show response from the php script.
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                }
+            });
+            clearInterval(timer);
         }
         $('#detail-counter-'+order+ ' .day').text(d);
         $('#detail-counter-'+order+ ' .hour').text(h);
         $('#detail-counter-'+order+ ' .minute').text(m);
         $('#detail-counter-'+order+ ' .second').text(s);
-        // document.getElementById("campaign-counter").innerHTML = ''
-        // d+" day(s), "+h+" hour(s), "+m+" minute(s), "+s+" second(s) working";
     }, 1000);
+}
+
+function startDetail(order){
+    url =$('#detail-counter-'+ order).data('url');
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: {}, // serializes the form's elements.
+        success: function(response)
+        {
+            countRunDetail(time, parseInt(order)+1,step, total,duration);
+
+            console.log(response); // show response from the php script.
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            console.log(errorThrown);
+        }
+    });
 }
