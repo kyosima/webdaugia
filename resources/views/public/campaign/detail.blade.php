@@ -10,8 +10,8 @@
                     <div class="breadcrumb__option">
                         <a href="{{URL::to('/')}}">Trang chủ</a>
                         
-                        {{-- <a href="{{URL::to('danh-muc/'.$product->category->slug)}}">{{$product->category->title}}</a> --}}
-                        <span>Cá cảnh đẹp rực rỡ</span>
+                        <a href="{{URL::to('dau-gia/')}}">Đấu giá</a>
+                        <span>{{$campaign->title}}</span>
                     </div>
                 </div>
             </div>
@@ -57,7 +57,7 @@
             </div>
         </div>
         <hr>
-        <div class="row">
+        @if($campaign->status == 0)
             <div class="col-lg-12">
                 <div id="campaign-counter-title" class="section-title">
                     <h2>Thời gian mở đấu giá</h2>
@@ -66,39 +66,62 @@
                     <div id="campaign-counter" data-url="{{url('dau-gia/bat-dau/'.$campaign->id)}}">
                         <div id="timer">
                             <div class="number-list">
-                              <div class="item day">00</div>
-                              <div class="item hour">00</div>
-                              <div class="item minute">00</div>
-                              <div class="item second">00</div>
+                            <div class="item day">00</div>
+                            <div class="item hour">00</div>
+                            <div class="item minute">00</div>
+                            <div class="item second">00</div>
                             </div>
                             <div class="unit-list">
-                              <div class="item">Day</div>
-                              <div class="item">Hour</div>
-                              <div class="item">Minutes</div>
-                              <div class="item">Seconds</div>
+                            <div class="item">Day</div>
+                            <div class="item">Hour</div>
+                            <div class="item">Minutes</div>
+                            <div class="item">Seconds</div>
                             </div>
-                          </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        @if($campaign->status == 0)
             <script>
                 countStart('{{$campaign->time_start}}','{{count($campaign->campaign_details()->get())}}', {{$campaign->time_range}});
             </script>
         @elseif($campaign->status == 1)
+            <div class="col-lg-12">
+                <div id="campaign-counter-title" class="section-title">
+                    <h2>Thời gian mở đấu giá</h2>
+                </div>
+                <div class="campaign__count_time_run">
+                    <div id="campaign-counter" data-url="{{url('dau-gia/bat-dau/'.$campaign->id)}}">
+                        <div id="timer">
+                            <div class="number-list">
+                            <div class="item day">00</div>
+                            <div class="item hour">00</div>
+                            <div class="item minute">00</div>
+                            <div class="item second">00</div>
+                            </div>
+                            <div class="unit-list">
+                            <div class="item">Day</div>
+                            <div class="item">Hour</div>
+                            <div class="item">Minutes</div>
+                            <div class="item">Seconds</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <script>
                 countRun('{{$campaign->time_start}}','{{$campaign->campaign_details()->get()}}');
             </script>
          @else
-            <h3>Đấu giá đã kết thúc</h3>
+            <div class="alert alert-success text-center ">
+                <h4 class="text-dark">Đấu giá đã kết thúc</h4>
+            </div>
         @endif
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title">
                     <h2>Sản phẩm đấu giá</h2>
                 </div>
-                @for($i=0; $i< count($details = $campaign->campaign_details()->get());$i++)
+                @for($i=0; $i< count($details = $campaign->campaign_details()->get()); $i++)
                     @include('public.campaign.include.campaign_detail_grid', ['duration'=>$campaign->time_range,'order'=>$i, 'total'=>count($details) ,'item'=>$details[$i], 'product'=>$details[$i]->product()->first()])
                 @endfor
             </div>
