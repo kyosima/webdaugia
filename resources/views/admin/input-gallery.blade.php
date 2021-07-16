@@ -17,6 +17,12 @@
                 <img src="{{asset($url)}}">
             </div>
         @endforeach
+    @foreach($string as $url)
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 mt-3">
+            <span data-id="1" data-url="{{$url}}" class="delete_gallery"><i class="fas fa-times"></i></span>
+            <img src="{{asset($url)}}">
+        </div>
+    @endforeach
     
     </div>
     <div class="text-center" style="margin: 30px 0px">

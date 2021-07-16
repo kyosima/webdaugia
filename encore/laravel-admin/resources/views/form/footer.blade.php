@@ -9,13 +9,20 @@
 
         @if(in_array('submit', $buttons))
         <div class="btn-group pull-right">
-            <button type="submit" class="btn btn-primary">{{ trans('admin.submit') }}</button>
+            <button type="submit" class="btn btn-primary">Đồng ý</button>
         </div>
 
         @foreach($submit_redirects as $value => $redirect)
             @if(in_array($redirect, $checkboxes))
             <label class="pull-right" style="margin: 5px 10px 0 0;">
-                <input type="checkbox" class="after-submit" name="after-save" value="{{ $value }}" {{ ($default_check == $redirect) ? 'checked' : '' }}> {{ trans("admin.{$redirect}") }}
+                <input type="checkbox" class="after-submit" name="after-save" value="{{ $value }}" {{ ($default_check == $redirect) ? 'checked' : '' }}>
+                @if($redirect == 'continue_creating')
+                    Tiếp tục tạo
+                @elseif($redirect == 'continue_editing')
+                    Tiếp tục sửa
+                @else
+                    Xem
+                @endif
             </label>
             @endif
         @endforeach

@@ -19,6 +19,7 @@ use App\Http\Controllers\UserLoginController;
 
 use App\Http\Controllers\UserRegisterController;
 use App\Http\Controllers\UserGetPassword;
+use App\Http\Controllers\ UserProfileController;
 
 
 /*
@@ -57,7 +58,16 @@ Route::post('/dang-nhap', [UserLoginController::class, 'postLogin'])->name('post
 Route::group(['prefix' => '/', 'middleware' => 'auth'], function(){
 
     Route::get('thoat-tai-khoan', [UserLoginController::class, 'getLogout']);
+    //profile user
 
+    Route::get('/trang-ca-nhan', [UserProfileController::class, 'index']);
+
+    Route::put('/thay-doi-thong-tin-ca-nhan', [UserProfileController::class, 'putChangeProfile'])->name('put.changeprofile');
+
+    Route::get('/doi-mat-khau', [UserProfileController::class, 'getChangePassword']);
+
+    Route::put('/doi-mat-khau', [UserProfileController::class, 'putChangePassword'])->name('put.changepassword');
+    //profile user
 });
 
 
@@ -131,3 +141,7 @@ Route::group(['prefix' => 'pusher'], function(){
 
 
 });
+//get password
+
+
+

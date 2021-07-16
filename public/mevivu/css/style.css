@@ -110,12 +110,7 @@ textarea:focus {
 	outline: none;
 }
 
-a:hover,
-a:focus {
-	text-decoration: none;
-	outline: none;
-	opacity: 0.7;
-}
+
 
 ul,
 ol {
@@ -141,12 +136,12 @@ ol {
 }
 
 .section-title h2 {
-	color: #fff;
+	color: #FF0000;
 	font-weight: 700;
 	position: relative;
 }
 
-.section-title h2:after {
+/* .section-title h2:after {
 	position: absolute;
 	left: 0;
 	bottom: -15px;
@@ -156,8 +151,8 @@ ol {
 	background: #FF0000;
 	content: "";
 	margin: 0 auto;
-}
-.sec_login{
+} */
+.sec_login, .sec_profile{
 	padding-top: 80px;
 	padding-bottom: 80px;
 }
@@ -440,17 +435,11 @@ a{
     opacity: 0.1;
     content: "";
 }
-.header__top__right__auth_login{
+.header__top__right__auth_login, .header__top__right__auth{
 	position: relative;
 }
 .dropdown_custom{
-	position: absolute;
-    top: 100%;
-    right: 0;
-    z-index: 1000;
-    display: none;
-    float: left;
-    width: 270px;
+    width: 260px;
     padding: .5rem 0;
     margin: .125rem 0 0;
     font-size: 1rem;
@@ -1138,8 +1127,8 @@ span.amount {
 }
 
 .featured__item__pic__hover li:hover a {
-	background: #7fad39;
-	border-color: #7fad39;
+	background: #FF0000;
+	border-color: #FF0000;
 }
 
 .featured__item__pic__hover li:hover a i {
@@ -3371,21 +3360,62 @@ section.order-success .success-color {
 	color: #fff;
 	font-size: 13px;
 }
+.profile_sidebar ul li{
+	list-style: none;
+}
+
+<<<<<<< HEAD
 
 
 
-
+=======
+.profile_sidebar ul li a, .profile_sidebar .card-footer a {
+    padding: 5px 0;
+    display: block;
+    color: #212529;
+}
+.profile_sidebar ul li a:hover, .profile_sidebar .card-footer a:hover {
+    color: #FF0000;
+}
+.sec_profile .nice-select{
+	float: none;
+	line-height: 30px;
+}
+a:hover,
+a:focus {
+	text-decoration: none;
+	outline: none;
+	color:#FF0000 !important;
+}
+a.active{
+	color:#FF0000 !important;
+}
+>>>>>>> truong
 /*--------------------------------- Responsive Media Quaries -----------------------------*/
 
 @media only screen and (min-width: 1200px) {
 	.container {
 		max-width: 1170px;
 	}
+	.dropdown_custom{
+		position: absolute;
+		top: 100%;
+		right: 0;
+		z-index: 1000;
+		display: none;
+	}
 }
 
 /* Medium Device = 1200px */
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
+	.dropdown_custom{
+		position: absolute;
+		top: 100%;
+		right: 0;
+		z-index: 1000;
+		display: none;
+	}
 	.header__menu ul li {
 		margin-right: 45px;
 	}
@@ -3450,12 +3480,12 @@ section.order-success .success-color {
 	.humberger__open {
 		display: block;
 		font-size: 22px;
-		color: #1c1c1c;
+		color: #fff;
 		height: 35px;
 		width: 35px;
 		line-height: 33px;
 		text-align: center;
-		border: 1px solid #1c1c1c;
+		border: 1px solid #fff;
 		cursor: pointer;
 		position: absolute;
 		right: 15px;
@@ -3529,7 +3559,7 @@ section.order-success .success-color {
 	.humberger__menu__cart ul li a span {
 		height: 13px;
 		width: 13px;
-		background: #7fad39;
+		background: #FF0000;
 		font-size: 10px;
 		color: #ffffff;
 		line-height: 13px;
@@ -3712,12 +3742,12 @@ section.order-success .success-color {
 	.humberger__open {
 		display: block;
 		font-size: 22px;
-		color: #1c1c1c;
+		color: #fff;
 		height: 35px;
 		width: 35px;
 		line-height: 33px;
 		text-align: center;
-		border: 1px solid #1c1c1c;
+		border: 1px solid #fff;
 		cursor: pointer;
 		position: absolute;
 		right: 15px;
@@ -3791,7 +3821,7 @@ section.order-success .success-color {
 	.humberger__menu__cart ul li a span {
 		height: 13px;
 		width: 13px;
-		background: #7fad39;
+		background: #FF0000;
 		font-size: 10px;
 		color: #ffffff;
 		line-height: 13px;
@@ -4018,4 +4048,5 @@ section.order-success .success-color {
 }
 .featured__item__pic__campaign__detail .featured__item__pic{
 	height: 400px;
+	
 }

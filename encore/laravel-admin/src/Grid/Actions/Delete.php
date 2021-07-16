@@ -14,7 +14,7 @@ class Delete extends RowAction
      */
     public function name()
     {
-        return __('admin.delete');
+        return __('Xóa');
     }
 
     /**

@@ -32,7 +32,9 @@ class UserController extends AdminController
         // $grid->column('email_verified_at', __('Email verified at'));
         // $grid->column('password', __('Password'));
         // $grid->column('remember_token', __('Remember token'));
-        $grid->column('created_at', __('Ngày tạo'))->filter('range', 'date');
+        $grid->column('created_at', __('Ngày tạo'))->display(function ($created_at) {
+            return date("d/m/Y",strtotime($created_at));
+            })->filter('range', 'date');
         $grid->filter(function($filter){
 
             // Remove the default id filter
@@ -41,10 +43,43 @@ class UserController extends AdminController
                 $filter->equal('ID')->integer();
             });
             $filter->column(1/2, function ($filter) {
-                $filter->contains('name', 'Tên')->placeholder('Tên thành viên...');
-            });       
-        
+                $filter->contains('name', 'Tên đăng nhập')->placeholder('Tên đăng nhập...');
+            });
+            
+            $filter->column(1/2, function ($filter) {
+                $filter->contains('email', 'Email')->placeholder('Email...');
+            });
+            $filter->column(1/2, function ($filter) {
+                $filter->where(function ($query) {
+
+                    $query->whereHas('user_info', function ($query) {
+                        $query->where('fullname', 'like', "%{$this->input}%");
+                    });
+                
+                }, 'Họ và tên');
+            });
+            $filter->column(1/2, function ($filter) {
+
+                $filter->where(function ($query) {
+
+                    $query->whereHas('user_info', function ($query) {
+                        $query->where('phone', 'like', "%{$this->input}%");
+                    });
+                
+                }, 'Số điện thoại');
+            });
+            $filter->column(1/2, function ($filter) {
+                $filter->where(function ($query) {
+
+                    $query->whereHas('user_info', function ($query) {
+                        $query->where('address', 'like', "%{$this->input}%");
+                    });
+                
+                }, 'Địa chỉ');
+            });
         });
+        
+
         $grid->actions(function ($actions) {
             $actions->disableView();
         });

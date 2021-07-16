@@ -11,7 +11,7 @@ class Edit extends RowAction
      */
     public function name()
     {
-        return __('admin.edit');
+        return __('Sửa');
     }
 
     /**

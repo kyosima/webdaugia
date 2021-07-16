@@ -82,9 +82,21 @@ $category = CategoryPost::select('title', 'slug')->get();
             </div>
             @endguest
             @auth
-            <div class="header__top__right__auth">
-                    <a href="{{URL::to('/dang-ky')}}">Xin chào, {{Auth::user()->name}}</a>
+                <div class="header__top__right__auth">
+                    <span class="dropdow_custom" data-toggle=".dropdown_custom">
+                        Xin chào, {{Auth::user()->name}}
+                    </span>
+                    <div class="dropdown_custom" style="display:none;">
+                        <a class="dropdown-item" href="{{URL::to('trang-ca-nhan')}}"><i class="fa fa-address-card-o"></i> Thông tin</a>
+                        <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Đơn hàng</a>
+                        <a class="dropdown-item" href="#"><i class="fa fa-hourglass-half"></i> Đấu giá</a>
+                        <a class="dropdown-item" href="#"><i class="fa fa-heart-o"></i> Yêu thích</a>
+                        <a class="dropdown-item" href="{{URL::to('doi-mat-khau')}}"><i class="fa fa-key"></i> Đổi mật khẩu</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{URL::to('/thoat-tai-khoan')}}"><i class="fa fa-sign-out"></i> Thoát tài khoản</a>
+                    </div>
                 </div> 
+                
             @endauth
         </div>
         <nav class="humberger__menu__nav mobile-menu">
@@ -107,6 +119,34 @@ $category = CategoryPost::select('title', 'slug')->get();
                 </li>
                 <li><a href="{{URL::to('/lien-he')}}">Liên hệ</a></li>
             </ul>
+        <ul>
+                            <li><a href="{{URL::to('/')}}/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                            <li><a href="{{URL::to('/cua-hang')}}">Giới thiệu</a></li>
+                            <li><a href="{{URL::to('/cua-hang')}}">Danh sách đại lý</a></li>
+                            <li><a href="{{URL::to('/cua-hang')}}">Sản phẩm</a>
+                            <ul class="header__menu__dropdown">
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Koi</a></li>
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Cám cá</a></li>
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Vật liệu</a></li>    
+                                </ul>
+                            </li>
+                            <li><a href="{{URL::to('/dau-gia')}}">Đấu giá</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Đang diễn ra</a></li>
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Đã diễn ra</a></li>
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Chuẩn bị diễn ra</a></li>    
+                                </ul>
+                            </li>
+                            <li><a href="{{URL::to('/blog')}}">Blog</a>
+                                <ul class="header__menu__dropdown">
+                                    {{-- @foreach($category as $value)
+                                    <li><a href="{{URL::to('/danh-muc-bai-viet/'.$value->slug)}}">{{$value->title}}</a></li>
+                                    @endforeach   --}}
+                                </ul>
+                            </li>
+                            
+                            <li><a href="{{URL::to('/lien-he')}}">Liên hệ</a></li>
+                        </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
         <div class="humberger__menu__contact">
@@ -147,9 +187,11 @@ $category = CategoryPost::select('title', 'slug')->get();
                                     Xin chào, {{Auth::user()->name}}
                                 </span>
                                 <div class="dropdown_custom" style="display:none;">
+                                    <a class="dropdown-item" href="{{URL::to('trang-ca-nhan')}}"><i class="fa fa-address-card-o"></i> Thông tin</a>
                                     <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Đơn hàng</a>
                                     <a class="dropdown-item" href="#"><i class="fa fa-hourglass-half"></i> Đấu giá</a>
                                     <a class="dropdown-item" href="#"><i class="fa fa-heart-o"></i> Yêu thích</a>
+                                    <a class="dropdown-item" href="{{URL::to('doi-mat-khau')}}"><i class="fa fa-key"></i> Đổi mật khẩu</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{URL::to('/thoat-tai-khoan')}}"><i class="fa fa-sign-out"></i> Thoát tài khoản</a>
                                 </div>     
@@ -272,7 +314,7 @@ $category = CategoryPost::select('title', 'slug')->get();
                 <div class="col-lg-9">
                 	<nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="./index.html"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                            <li><a href="{{URL::to('/')}}/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
                             <li><a href="{{URL::to('/cua-hang')}}">Giới thiệu</a></li>
                             <li><a href="{{URL::to('/cua-hang')}}">Danh sách đại lý</a></li>
                             <li><a href="{{URL::to('/cua-hang')}}">Sản phẩm</a>
