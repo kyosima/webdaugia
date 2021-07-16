@@ -1,7 +1,5 @@
 @extends('public.layout')
 @section('content')
-
-
 <!-- banner Section start -->
 <section class="banner">
     <div class="container">

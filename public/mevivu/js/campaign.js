@@ -40,7 +40,6 @@ function countStart(time,total, duration){
                         console.log(response); // show response from the php script.
                         countRun(time,total);
                         console.log('total: ' +total);
-                        countRunDetail(time, 0, 1, total, duration,0);
                     },
                     error: function(xhr, textStatus, errorThrown) {
                         console.log(errorThrown);
@@ -91,7 +90,7 @@ function countRun(time,total){
 }
 
 function startDetail(order){
-    url =$('#detail-counter-'+(parseInt(order))).data('urlcancel');
+    url =$('#detail-counter-'+(parseInt(order))).data('url');
     $.ajax({
         type: "GET",
         url: url,
@@ -99,6 +98,8 @@ function startDetail(order){
         success: function(response)
         {
             console.log(response); // show response from the php script.
+            $('#detail-counter-'+(parseInt(order))).css('display', 'block');
+            $('detail-product-title-'+(parseInt(order))).css('display', 'none');
         },
         error: function(xhr, textStatus, errorThrown) {
             console.log(errorThrown);
@@ -114,6 +115,9 @@ function stopDetail(order){
         success: function(response)
         {
             console.log(response); // show response from the php script.
+            $('#detail-counter-'+(parseInt(order))).css('display', 'none');
+            $('detail-product-title-'+(parseInt(order))).css('display', 'block');
+            $('detail-product-title-'+(parseInt(order))).text('Sản phẩm đã kết thúc đấu giá');
         },
         error: function(xhr, textStatus, errorThrown) {
             console.log(errorThrown);
@@ -121,8 +125,8 @@ function stopDetail(order){
     });
 }
 
-function countRunDetail(time, order, step, total,duration, status){ 
-    console.log(order);
+function countRunDetail(time, order, total,duration, status){ 
+
     if(parseInt(status) == 0){
         startDetail(parseInt(order));
     }
@@ -132,12 +136,11 @@ function countRunDetail(time, order, step, total,duration, status){
     var b = t[1].split(':');
     // Apply each element to the Date function
     // var startDateTime = new Date('2014,0,1,23,59,59,0');
-    var startDateTime = new Date(a[0], a[1]-1, a[2], b[0], parseInt(b[1])+(step*order) , b[2],0);
+    var startDateTime = new Date(a[0], a[1]-1, a[2], b[0], parseInt(b[1])+(parseInt(order)) , b[2],0);
     startDateTime = new Date(startDateTime.getTime() + duration*60000);
     var  newStamp= startDateTime.getTime();
     var timer; // for storing the interval (to stop or pause later if needed)
     
-    var start_next = true;
     timer = setInterval(function(){
      
         newDate = new Date();
@@ -150,22 +153,14 @@ function countRunDetail(time, order, step, total,duration, status){
         var m = Math.floor(diff/(60));
         diff = diff-(m*60);
         var s = diff;
-        console.log(step +' ' + (parseInt(duration) -2) + ' ' +m);
-        console.log(start_next);
-        if(((parseInt(duration) -2) == m) && (start_next == true)){
-            console.log('dk1');
-            console.log(parseInt(order)+1);
-            console.log(parseInt(total));
-            if((parseInt(order)+1) <= (parseInt(total))){
-                console.log('dk2');
-                countRunDetail(time, parseInt(order)+1, step,total,duration, 0);
-                start_next = false;
-            }
-        }
-        
         if((d == 0) && (h==0) && (m == 0) && (s ==0)){
             stopDetail(order);
             clearInterval(timer);
+            if((parseInt(order)+1) == parseInt(total)){
+                $('#detail-counter-'+order).empty().append('<div class="alert alert-warning text-center "><h5 class="text-dark">Sản phẩm đã kết thúc đấu giá</h5></div>');
+                $('.campaign__count_time_run').empty().append('<div class="alert alert-success text-center "><h4 class="text-dark">Đấu giá đã kết thúc</h4></div>');
+                $('#campaign-counter-title').remove();
+            }
         }
         $('#detail-counter-'+order+ ' .day').text(d);
         $('#detail-counter-'+order+ ' .hour').text(h);
@@ -174,3 +169,41 @@ function countRunDetail(time, order, step, total,duration, status){
     }, 1000);
 }
 
+function countStartDetail(time, order, total,duration, status){ 
+    // var t = '2014/01/01 23:59:59:0'.split(/[- :]/);
+    console.log(time);
+    var t = time.split(' ');
+    var a = t[0].split('-');
+    var b = t[1].split(':');
+    // Apply each element to the Date function
+    // var startDateTime = new Date('2014,0,1,23,59,59,0');
+    var startDateTime = new Date(a[0], a[1]-1, a[2], b[0], b[1], b[2],0);
+    startDateTime = new Date(startDateTime.getTime() + order*60000);
+    var newStamp = startDateTime.getTime();
+    var timer; // for storing the interval (to stop or pause later if needed)
+    if(status == 0){
+        timer = setInterval(function(){
+            newDate = new Date();
+            startStamp = newDate.getTime();
+            var diff = Math.round((newStamp-startStamp)/1000);
+            var d = Math.floor(diff/(24*60*60)); /* though I hope she won't be working for consecutive days :) */
+            diff = diff-(d*24*60*60);
+            var h = Math.floor(diff/(60*60));
+            diff = diff-(h*60*60);
+            var m = Math.floor(diff/(60));
+            diff = diff-(m*60);
+            var s = diff;
+            $('#detail-counter-'+order+ ' .day').text(d);
+            $('#detail-counter-'+order+ ' .hour').text(h);
+            $('#detail-counter-'+order+ ' .minute').text(m);
+            $('#detail-counter-'+order+ ' .second').text(s);
+            if((d == 0) && (h==0) && (m == 0) && (s ==0)){
+                clearInterval(timer);
+                countRunDetail(time, order, total, duration,status);
+            }
+
+            // document.getElementById("campaign-counter").innerHTML = ''
+            // d+" day(s), "+h+" hour(s), "+m+" minute(s), "+s+" second(s) working";
+        }, 1000);
+    }
+}

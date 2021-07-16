@@ -50,6 +50,8 @@ Route::get('socket', 'SocketController@index');
 Route::post('sendmessage', 'SocketController@sendMessage');
 Route::get('writemessage', 'SocketController@writemessage');
 
+Route::get('/dang-nhap', [UserLoginController::class, 'index'])->name('get.login');
+
 Route::post('/dang-nhap', [UserLoginController::class, 'postLogin'])->name('post.login');
 
 Route::group(['prefix' => '/', 'middleware' => 'auth'], function(){
@@ -117,6 +119,7 @@ Route::group(['prefix' => 'dau-gia'], function(){
     Route::get('/bat-dau/{id}', [CampaignController::class,'startCampaign'])->name('campaign.start');
     Route::get('/bat-dau/detail/{id}', [CampaignController::class,'startDetail'])->name('campaign.startdetail');
     Route::get('/ket-thuc/detail/{id}', [CampaignController::class,'stopDetail'])->name('campaign.stopdetail');
+    Route::get('/{slug1}/{slug2}', [CampaignController::class, 'getCampaignProductDetail'])->name('campaign.campaignproduct');
 
 
 });

@@ -4010,3 +4010,12 @@ section.order-success .success-color {
 	font-family: sans-serif;
   }
   
+.detail-counter{
+}
+.product__detail__title{
+	color: #80ad38;
+	font-weight: 600;
+}
+.featured__item__pic__campaign__detail .featured__item__pic{
+	height: 400px;
+}

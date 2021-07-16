@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Campaign;
+use App\Models\Product;
 use App\Models\CampaignDetail;
 use Carbon\Carbon;
 
@@ -17,10 +18,14 @@ class CampaignController extends Controller
      */
     public function index()
     {
+        $campaign_not_end = Campaign::whereIn('status', [0,1])->orderBy( 'id','asc')->get();
+        foreach($campaign_not_end as $campaign){
+            $this->checkCampaign($campaign);
+        }
         $campaigns_coming = Campaign::whereStatus(0)->orderBy( 'id','asc')->get();
         $campaigns_run = Campaign::whereStatus(1)->orderBy( 'id','asc')->get();
         $campaigns_end = Campaign::whereStatus(2)->orderBy( 'id','asc')->get();
-
+        
         return view('public.campaign.campaign',['campaigns_coming'=>$campaigns_coming, 'campaigns_run'=>$campaigns_run, 'campaigns_end'=>$campaigns_end]);
     }
 
@@ -57,21 +62,30 @@ class CampaignController extends Controller
         $campaign = Campaign::whereSlug($slug)->first();    
         $now = Carbon::now();
         $details = CampaignDetail::whereCampaignId($campaign->id)->orderBy( 'id','asc')->get();
-        $time_run = $campaign->time_range + count($details)-1;
-        if(strtotime($campaign->time_start) <= strtotime($now) && (strtotime($now) <= strtotime($campaign->time_start.'+'.$time_run.'minute'))){
-            Campaign::whereId($campaign->id)->update(['status' =>1]);
-        }elseif((strtotime($now) > strtotime($campaign->time_start.'+'.$time_run.'minute'))){
-            Campaign::whereId($campaign->id)->update(['status' =>2]);
-
-        }
+        $this->checkCampaign($campaign);
         for($i=0; $i<count($details); $i++){
-            if((strtotime($campaign->time_start.'+'.($campaign->time_range +$i).'minute') >= strtotime($now))&&(strtotime($now) >= strtotime($campaign->time_start.'+'.$i.'minute'))){
-                CampaignDetail::whereId($details[$i]->id)->update(['status'=>1]);
-            }elseif(strtotime($campaign->time_start.'+'.($campaign->time_range +$i).'minute') < strtotime($now)){
-                CampaignDetail::whereId($details[$i]->id)->update(['status'=>2]);
+            if($details[$i]->status != 2){
+                if((strtotime($campaign->time_start.'+'.($campaign->time_range +$i).'minute') >= strtotime($now))&&(strtotime($now) >= strtotime($campaign->time_start.'+'.$i.'minute'))){
+                    CampaignDetail::whereId($details[$i]->id)->update(['status'=>1]);
+                }elseif(strtotime($campaign->time_start.'+'.($campaign->time_range +$i).'minute') < strtotime($now)){
+                    CampaignDetail::whereId($details[$i]->id)->update(['status'=>2]);
+                }
             }
         }
+        $campaign = Campaign::whereSlug($slug)->first();    
         return view('public.campaign.detail', ['campaign'=>$campaign]);
+    }
+
+    public function getCampaignProductDetail($slug1, $slug2)
+    {
+    
+        $campaign = Campaign::whereSlug($slug1)->firstOrFail();
+        $product = Product::whereSlug($slug2)->firstOrFail();
+        $details = CampaignDetail::whereCampaignId($campaign->id)->orderBy( 'id','asc')->get()->toArray();
+        $detail = CampaignDetail::whereCampaignId($campaign->id)->whereProductId($product->id)->firstOrFail();
+        $order = array_search($detail->id, array_column($details, 'id'));
+        return view('public.campaign.campaign_product', ['campaign'=>$campaign, 'details'=>$details,'order'=>$order, 'product'=>$product, 'detail'=>$detail]);
+
     }
 
     /**
@@ -124,5 +138,20 @@ class CampaignController extends Controller
         $id = $request->id;
         CampaignDetail::whereId($id)->update(['status'=>2]);
         return 'Stop details successfully';
+    }
+
+    public function checkCampaign($campaign){
+        $now = Carbon::now();
+        $details = CampaignDetail::whereCampaignId($campaign->id)->orderBy( 'id','asc')->get();
+
+        $time_run = $campaign->time_range + count($details)-1;
+        if($campaign->status != 2){
+            if(strtotime($campaign->time_start) <= strtotime($now) && (strtotime($now) <= strtotime($campaign->time_start.'+'.$time_run.'minute'))){
+                Campaign::whereId($campaign->id)->update(['status' =>1]);
+            }elseif((strtotime($now) > strtotime($campaign->time_start.'+'.$time_run.'minute'))){
+                Campaign::whereId($campaign->id)->update(['status' =>2]);
+    
+            }
+        }
     }
 }
