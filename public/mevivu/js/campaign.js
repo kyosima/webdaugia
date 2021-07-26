@@ -207,3 +207,48 @@ function countStartDetail(time, order, total,duration, status){
         }, 1000);
     }
 }
+
+
+$( document ).ready(function() {
+    document.getElementById("auction_ip").onkeyup =function (){    
+        this.value = parseFloat(this.value.replace(/,/g, ""))
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");        
+        document.getElementById("auction_cf").value = this.value.replace(/,/g, "")
+        
+    }
+    var amount = document.querySelector('#auction_ip');
+    amount.addEventListener('input', restrictNumber);
+    function restrictNumber (e) {  
+    var newValue = this.value.replace(new RegExp(/[^\d]/,'ig'), "");
+    this.value = newValue;
+    }
+
+    $("#auction-form").submit(function(e) {
+
+        e.preventDefault();
+    
+        var form = $(this);
+        var url = form.attr('action');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+               type: "POST",
+               url: url,
+               data: form.serialize(),
+               error: function(data){
+                    console.log(data);
+               },
+               success: function(data)
+               {
+                   console.log(data); 
+               }
+             });
+    
+        
+    });
+});
+

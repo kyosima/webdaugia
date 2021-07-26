@@ -31,5 +31,10 @@ class CampaignDetail extends Model
 		return $this->hasOne(Product::class, 'id', 'product_id');
 	}
 
+	public function auctions()
+    {
+        return $this->hasMany(CampaignAuction::class, 'campaign_detail_id', 'id');
+    }
+
 	
 }

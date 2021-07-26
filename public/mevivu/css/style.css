@@ -3364,11 +3364,9 @@ section.order-success .success-color {
 	list-style: none;
 }
 
-<<<<<<< HEAD
 
 
 
-=======
 .profile_sidebar ul li a, .profile_sidebar .card-footer a {
     padding: 5px 0;
     display: block;
@@ -3390,7 +3388,6 @@ a:focus {
 a.active{
 	color:#FF0000 !important;
 }
->>>>>>> truong
 /*--------------------------------- Responsive Media Quaries -----------------------------*/
 
 @media only screen and (min-width: 1200px) {
@@ -4049,4 +4046,13 @@ a.active{
 .featured__item__pic__campaign__detail .featured__item__pic{
 	height: 400px;
 	
+}
+.auction-area{
+	border-radius: 5px;
+	border: 1px solid #ddd;
+	padding: 10px;
+}
+.auction-area #auction_ip{
+	text-align: center;
+	font-size: 30px;
 }

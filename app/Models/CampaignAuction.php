@@ -21,9 +21,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class CampaignNoti extends Model
+class CampaignAuction extends Model
 {
-	protected $table = 'campaign_noti';
+	protected $table = 'campaign_auction';
 
 	protected $casts = [
 		'price' => 'int',
@@ -36,7 +36,7 @@ class CampaignNoti extends Model
 		'campaign_id',
 		'user_id'
 	];
-	public function campaign() {
-        return $this->belongsTo(Campaign::class);
-    }
+	public function CampaignDetail(){
+		return $this->hasOne(CampaignDetail::class, 'id', 'campaign_detail_id');
+	}
 }

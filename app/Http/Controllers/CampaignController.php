@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 use App\Models\Campaign;
 use App\Models\Product;
 use App\Models\CampaignDetail;
+use App\Models\CampaignAuction;
+use Illuminate\Support\Facades\Auth;
+use App\Events\CampaignEvent;
+
 use Carbon\Carbon;
 
 
@@ -26,7 +30,7 @@ class CampaignController extends Controller
         $campaigns_run = Campaign::whereStatus(1)->orderBy( 'id','asc')->get();
         $campaigns_end = Campaign::whereStatus(2)->orderBy( 'id','asc')->get();
         
-        return view('public.campaign.campaign',['campaigns_coming'=>$campaigns_coming, 'campaigns_run'=>$campaigns_run, 'campaigns_end'=>$campaigns_end]);
+        return view('public.campaign.campaigns',['campaigns_coming'=>$campaigns_coming, 'campaigns_run'=>$campaigns_run, 'campaigns_end'=>$campaigns_end]);
     }
 
     /**
@@ -73,7 +77,7 @@ class CampaignController extends Controller
             }
         }
         $campaign = Campaign::whereSlug($slug)->first();    
-        return view('public.campaign.detail', ['campaign'=>$campaign]);
+        return view('public.campaign.campaign', ['campaign'=>$campaign]);
     }
 
     public function getCampaignProductDetail($slug1, $slug2)
@@ -84,7 +88,7 @@ class CampaignController extends Controller
         $details = CampaignDetail::whereCampaignId($campaign->id)->orderBy( 'id','asc')->get()->toArray();
         $detail = CampaignDetail::whereCampaignId($campaign->id)->whereProductId($product->id)->firstOrFail();
         $order = array_search($detail->id, array_column($details, 'id'));
-        return view('public.campaign.campaign_product', ['campaign'=>$campaign, 'details'=>$details,'order'=>$order, 'product'=>$product, 'detail'=>$detail]);
+        return view('public.campaign.campaign_detail', ['campaign'=>$campaign, 'details'=>$details,'order'=>$order, 'product'=>$product, 'detail'=>$detail]);
 
     }
 
@@ -154,4 +158,23 @@ class CampaignController extends Controller
             }
         }
     }
+
+    public function postAuction(Request $request){
+        $user = Auth::user();
+        $amount = $_POST['amount'];
+        $detail_id = $_POST['detail_id'];
+        CampaignAuction::insert(['user_id' => $user->id, 'campaign_detail_id' => $detail_id, 'price'=>$amount]);
+        CampaignDetail::whereId($detail_id)->update(['price_end'=>$amount]);
+        $id = $request->id;
+        $auction = CampaignAuction::whereCampaignDetailId($detail_id)->orderBy('id','desc')->first();
+
+        event(new CampaignEvent( $auction));
+        return 'success';
+    }
+
+    public function getAuction(Request $request){
+        $auction = CampaignAuction::whereCampaignDetailId($request->id)->orderBy('desc', 'id')->first();
+        return $aution;
+    }
+
 }

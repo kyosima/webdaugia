@@ -1,5 +1,6 @@
 @extends('public.layout')
 @section('content')
+<script src="{{asset('public/mevivu/js/pusher.js')}}"></script>
 
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-section">
@@ -20,7 +21,21 @@
     </div>
 </section>
 <!-- Breadcrumb Section End -->
-
+<div aria-live="polite" aria-atomic="true" style="position: fixed; min-height: 200px; width: 100%; height: 200px; z-index: 9">
+    <div class="toast" style="position: absolute; top: 0; right: 0;" data-delay="10000"> 
+      <div class="toast-header">
+        <img src="..." class="rounded mr-2" alt="...">
+        <strong class="mr-auto">Giá đã cập nhật</strong>
+        <small id=""></small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+        Hello, world! This is a toast message.
+      </div>
+    </div>
+</div>
 <!-- Product Details Section Begin -->
 <section class="product-details spad">
     <div class="container">
@@ -87,6 +102,34 @@
                             <h5 class="text-dark">Sản phẩm đã kết thúc đấu giá</h5>
                         </div>         
                     @endif
+                    <div class="current-price-area">
+                        <div class="product__warraper">
+                            <p class="product__details__price">
+                                <span>Giá khởi điểm: <span class="n__price">{{getCurrency($detail->price_start)}}</span></span>
+                            </p>
+                            <p class="product__details__price">
+                                <span>Giá hiện tại: <span class="n__price" id="current-price">{{getCurrency($detail->price_end)}}</span></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="auction-area">
+                        <h3 class="text-center">Đấu giá sản phẩm này</h3>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" id="auction_ip" pattern="[0-9]">
+                                <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">đ</span>
+                                </div>
+                            </div>
+                        <form id="auction-form" class="form text-center" action="{{url('/dau-gia/gui-dau-gia')}}" method="POST">
+                            <div class="input-group mb-3">
+                                <input type="hidden" id="detail_id" value="{{$detail->id}}" name="detail_id">
+                                <input type="hidden" id="auction_cf" name="amount">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-info" type="submit">Đấu giá</button>
+                            </div>
+                        </form>
+                    </div>
                     <ul>
                         {{-- <li><b>Danh mục</b> <span>{{$product->category->title}}</span></li> --}}
                         <li><b>Chia sẻ</b>
@@ -161,5 +204,9 @@
 <!-- Related Product Section End -->
 
 
-
+  <script>
+    $(document).ready(function(){
+      $('.toast').toast('show');
+    });
+    </script>
 @endsection

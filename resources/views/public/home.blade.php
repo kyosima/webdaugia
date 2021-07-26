@@ -260,7 +260,7 @@
 <!-- Latest Product Section End -->
 
 <!-- Blog Section Begin -->
-<section class="from-blog spad">
+{{-- <section class="from-blog spad">
     <div class="container">
         <div class="row">
             
@@ -328,7 +328,7 @@
             
         </div>
     </div>
-</section>
+</section> --}}
 <!-- Blog Section End -->
 
 

@@ -1,111 +1,133 @@
 @extends('public.layout')
 @section('content')
 
-
-<!-- banner Section start -->
-<section class="banner">
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9 pr-md-1">
-                <div id="demo" class="carousel slide" data-ride="carousel">
-                    <!-- The slideshow -->
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="{{asset('public/mevivu/img/banner/banner-3.jpg')}}" alt="Los Angeles" width="100%">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <div class="breadcrumb__option">
+                        <a href="{{URL::to('/')}}">Trang chủ</a>
+                        
+                        <a href="{{URL::to('dau-gia/')}}">Đấu giá</a>
+                        <span>{{$campaign->title}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__pic">
+                    <div class="">
+                        <img class="--large"
+                            src="{{getImage($campaign->avatar)}}" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__text">
+                    <h3 class="product__detail__title">{{$campaign->title}}</h3>
+                    <div class="campaign-time-start">
+                        <div id="clock-c" class=" text-white">Thời gian bắt đầu: {{date('d/m/Y H:i:s',strtotime($campaign->time_start))}}</div>
+                    </div>
+                    <div class="product__details__tab__desc">
+                        {!!$campaign->description!!}
+                    </div>
+                    <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                    <ul>
+                        {{-- <li><b>Danh mục</b> <span>{{$product->category->title}}</span></li> --}}
+                        <li><b>Chia sẻ</b>
+                            <div class="share">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <hr>
+        @if($campaign->status == 0)
+            <div class="col-lg-12">
+                <div id="campaign-counter-title" class="section-title">
+                    <h2>Thời gian mở đấu giá</h2>
+                </div>
+                <div class="campaign__count_time_run">
+                    <div id="campaign-counter" data-url="{{url('dau-gia/bat-dau/'.$campaign->id)}}">
+                        <div id="timer">
+                            <div class="number-list">
+                            <div class="item day">00</div>
+                            <div class="item hour">00</div>
+                            <div class="item minute">00</div>
+                            <div class="item second">00</div>
+                            </div>
+                            <div class="unit-list">
+                            <div class="item">Day</div>
+                            <div class="item">Hour</div>
+                            <div class="item">Minutes</div>
+                            <div class="item">Seconds</div>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Left and right controls -->
-                    <a class="carousel-control-prev" href="#demo" data-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </a>
-                    <a class="carousel-control-next" href="#demo" data-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </a>
-
                 </div>
             </div>
-            <div class="col-lg-3 pl-md-1 banner-left d-none d-md-block">
-                <div class="mb-2">
-                    <img src="{{asset('public/mevivu/img/banner/banner-4.jpg')}}" alt="Los Angeles" width="100%">
-                </div>
-                <div>
-                    <img src="{{asset('public/mevivu/img/banner/banner-5.jpg')}}" alt="Los Angeles" width="100%">
-                </div>
-            </div>
-        </div>
-    </div>
-    
-</section>
-<!-- banner Section end -->
-
-<!-- Product Section Begin -->
-<section class="product spad">
-<div class="container">
-        <div class="row">
+            <script>
+                countStart('{{$campaign->time_start}}','{{count($campaign->campaign_details()->get())}}', {{$campaign->time_range}});
+            </script>
+        @elseif($campaign->status == 1)
             <div class="col-lg-12">
-                <div class="section-title">
-                    <h2>Sản phẩm đang đấu giá</h2>
+                <div id="campaign-counter-title" class="section-title">
+                    <h2>Thời gian mở đấu giá</h2>
                 </div>
-            </div>
-            <div class="categories__slider owl-carousel">
-            @foreach($campaigns_run as $item)
-                @include('public.campaign.include.campaign_grid', ['item'=>$item])
-            @endforeach
-            </div>
-            <div class="col-lg-12 text-center">
-                <a href="{{URL::to('/loai-dau-gia')}}" class="btn btn-info">Xem thêm</a>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Product Section End -->
-<section class="product spad">
-    <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <h2>Sản phẩm Chuẩn bị đấu giá</h2>
+                <div class="campaign__count_time_run">
+                    <div id="campaign-counter" data-url="{{url('dau-gia/bat-dau/'.$campaign->id)}}">
+                        <div id="timer">
+                            <div class="number-list">
+                            <div class="item day">00</div>
+                            <div class="item hour">00</div>
+                            <div class="item minute">00</div>
+                            <div class="item second">00</div>
+                            </div>
+                            <div class="unit-list">
+                            <div class="item">Day</div>
+                            <div class="item">Hour</div>
+                            <div class="item">Minutes</div>
+                            <div class="item">Seconds</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="categories__slider owl-carousel">
-                @foreach($campaigns_coming as $item)
-                    @include('public.campaign.include.campaign_grid', ['item'=>$item])
-                @endforeach
-                </div>
-                <div class="col-lg-12 text-center">
-                    <a href="{{URL::to('/loai-dau-gia')}}" class="btn btn-info">Xem thêm</a>
-                </div>
             </div>
-        </div>
-    </section>
-    <!-- Product Section End -->
-
-<!-- Product Section Begin -->
-<section class="product spad">
-<div class="container">
+            <script>
+                countRun('{{$campaign->time_start}}','{{$campaign->campaign_details()->get()}}');
+            </script>
+         @else
+            <div class="alert alert-success text-center ">
+                <h4 class="text-dark">Đấu giá đã kết thúc</h4>
+            </div>
+        @endif
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title">
-                    <h2>Sản phẩm đấu giá gần đây</h2>
+                    <h2>Sản phẩm đấu giá</h2>
                 </div>
-            </div>
-            <div class="categories__slider owl-carousel">
-                @foreach($campaigns_end as $item)
-                    @include('public.campaign.include.campaign_grid', ['item'=>$item])
-
-                @endforeach
-            </div>
-            <div class="col-lg-12 text-center">
-                <a href="{{URL::to('/loai-dau-gia')}}" target="_blank" class="btn btn-info">Xem thêm</a>
+                @for($i=0; $i< count($details = $campaign->campaign_details()->get()); $i++)
+                    @include('public.campaign.include.campaign_detail_grid', ['duration'=>$campaign->time_range,'order'=>$i, 'total'=>count($details) ,'item'=>$details[$i], 'product'=>$details[$i]->product()->first()])
+                @endfor
             </div>
         </div>
     </div>
 </section>
-<!-- Product Section End -->
-
-<!-- Product Section Begin -->
-
 
 
 

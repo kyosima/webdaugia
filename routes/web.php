@@ -133,11 +133,18 @@ Route::group(['prefix' => 'dau-gia'], function(){
 
 
 });
+Route::group(['prefix' => 'dau-gia', 'middleware' => 'auth'], function(){
+    Route::post('/gui-dau-gia', [CampaignController::class, 'postAuction'])->name('campaign.postAuction');
+    Route::post('/cap-nhat-dau-gia/{id}', [CampaignController::class, 'getAuction'])->name('campaign.getAuction');
+
+});
+
 
 
 Route::group(['prefix' => 'pusher'], function(){
 
     Route::get('start-campaign/{id}', [PusherController::class, 'startCampaign']);
+    
 
 
 });
