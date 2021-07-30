@@ -160,16 +160,26 @@ class CampaignController extends Controller
     }
 
     public function postAuction(Request $request){
-        $user = Auth::user();
-        $amount = $_POST['amount'];
-        $detail_id = $_POST['detail_id'];
-        CampaignAuction::insert(['user_id' => $user->id, 'campaign_detail_id' => $detail_id, 'price'=>$amount]);
-        CampaignDetail::whereId($detail_id)->update(['price_end'=>$amount]);
-        $id = $request->id;
-        $auction = CampaignAuction::whereCampaignDetailId($detail_id)->orderBy('id','desc')->first();
-
-        event(new CampaignEvent( $auction));
-        return 'success';
+        if(!Auth::check()){
+            return redirect('/dang-nhap');
+        }else{
+            $user = Auth::user();
+            $amount = $_POST['amount'];
+            $detail_id = $_POST['detail_id'];
+            $campaign_detail = CampaignDetail::find($detail_id);
+            if(($amount% $campaign_detail->detail_price_step) != 0){
+                return 'Giá bạn đưa ra phải theo giá bước nhảy';
+            }elseif($amount > $campaign_detail->price_end){
+                CampaignAuction::insert(['user_id' => $user->id, 'campaign_detail_id' => $detail_id, 'price'=>$amount]);
+                CampaignDetail::whereId($detail_id)->update(['price_end'=>$amount, 'user_id'=>$user->id]);
+                $id = $request->id;
+                $auction = CampaignAuction::whereCampaignDetailId($detail_id)->orderBy('id','desc')->first();
+                event(new CampaignEvent( $auction));
+                return 'Đấu giá của bạn đã được gửi đi';
+            }else{
+                return 'Giá bạn đưa ra phải lớn hơn giá hiện tại';
+            }
+        }
     }
 
     public function getAuction(Request $request){

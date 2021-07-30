@@ -217,17 +217,15 @@ $( document ).ready(function() {
         document.getElementById("auction_cf").value = this.value.replace(/,/g, "")
         
     }
-    var amount = document.querySelector('#auction_ip');
-    amount.addEventListener('input', restrictNumber);
-    function restrictNumber (e) {  
-    var newValue = this.value.replace(new RegExp(/[^\d]/,'ig'), "");
-    this.value = newValue;
+        var amount = document.querySelector('#auction_ip');
+        amount.addEventListener('input', restrictNumber);
+        function restrictNumber (e) {  
+        var newValue = this.value.replace(new RegExp(/[^\d]/,'ig'), "");
+        this.value = newValue;
     }
 
     $("#auction-form").submit(function(e) {
-
         e.preventDefault();
-    
         var form = $(this);
         var url = form.attr('action');
         $.ajaxSetup({
@@ -236,19 +234,18 @@ $( document ).ready(function() {
             }
         });
         $.ajax({
-               type: "POST",
-               url: url,
-               data: form.serialize(),
-               error: function(data){
-                    console.log(data);
-               },
-               success: function(data)
-               {
-                   console.log(data); 
-               }
-             });
-    
-        
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            error: function(data){
+                console.log(data);
+            },
+            success: function(response)
+            {
+                $('.notice-auction').css('display', 'block');
+                $('.notice-auction .alert').text(response); 
+            }
+        });
     });
 });
 
