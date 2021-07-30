@@ -21,21 +21,18 @@
     </div>
 </section>
 <!-- Breadcrumb Section End -->
-<div aria-live="polite" aria-atomic="true" style="position: fixed; min-height: 200px; width: 100%; height: 200px; z-index: 9">
-    <div class="toast" style="position: absolute; top: 0; right: 0;" data-delay="10000"> 
+    <div class="toast hide fade text-dark" style="position: fixed; top: 250px; right: 0; z-index:9  " data-delay="10000"> 
       <div class="toast-header">
-        <img src="..." class="rounded mr-2" alt="...">
-        <strong class="mr-auto">Giá đã cập nhật</strong>
+        <strong class="mr-auto">Thông báo</strong>
         <small id=""></small>
         <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="toast-body">
-        Hello, world! This is a toast message.
+          <p class="text-dark">Giá đã thay đổi thành: <b class="text-danger" id="price-update"></b></p>
       </div>
     </div>
-</div>
 <!-- Product Details Section Begin -->
 <section class="product-details spad">
     <div class="container">
@@ -102,10 +99,13 @@
                             <h5 class="text-dark">Sản phẩm đã kết thúc đấu giá</h5>
                         </div>         
                     @endif
-                    <div class="current-price-area">
+                    <div id="price-detail-{{$detail->id}}" class="current-price-area">
                         <div class="product__warraper">
                             <p class="product__details__price">
                                 <span>Giá khởi điểm: <span class="n__price">{{getCurrency($detail->price_start)}}</span></span>
+                            </p>
+                            <p class="product__details__price">
+                                <span>Giá bước nhảy: <span class="n__price">{{getCurrency($detail->detail_price_step)}}</span></span>
                             </p>
                             <p class="product__details__price">
                                 <span>Giá hiện tại: <span class="n__price" id="current-price">{{getCurrency($detail->price_end)}}</span></span>
@@ -118,6 +118,11 @@
                                 <input type="text" class="form-control" id="auction_ip" pattern="[0-9]">
                                 <div class="input-group-append">
                                 <span class="input-group-text" id="basic-addon2">đ</span>
+                                </div>
+                            </div>
+                            <div class="notice-auction" style="display: none">
+                                <div class="alert alert-danger text-center">
+                                    
                                 </div>
                             </div>
                         <form id="auction-form" class="form text-center" action="{{url('/dau-gia/gui-dau-gia')}}" method="POST">
