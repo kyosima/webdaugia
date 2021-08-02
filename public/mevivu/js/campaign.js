@@ -1,3 +1,5 @@
+const { isBuffer } = require("lodash");
+
 function countStart(time,total, duration){ 
     // var t = '2014/01/01 23:59:59:0'.split(/[- :]/);
     console.log(time);
@@ -130,6 +132,7 @@ function countRunDetail(time, order, total,duration, status){
     if(parseInt(status) == 0){
         startDetail(parseInt(order));
     }
+    $('.auction-area').css('display', 'block');
     // var t = '2014/01/01 23:59:59:0'.split(/[- :]/);
     var t = time.split(' ');
     var a = t[0].split('-');
@@ -154,6 +157,7 @@ function countRunDetail(time, order, total,duration, status){
         diff = diff-(m*60);
         var s = diff;
         if((d == 0) && (h==0) && (m == 0) && (s ==0)){
+            console.log('end ' + order);
             stopDetail(order);
             clearInterval(timer);
             if((parseInt(order)+1) == parseInt(total)){
@@ -208,44 +212,27 @@ function countStartDetail(time, order, total,duration, status){
     }
 }
 
-
-$( document ).ready(function() {
-    document.getElementById("auction_ip").onkeyup =function (){    
-        this.value = parseFloat(this.value.replace(/,/g, ""))
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");        
-        document.getElementById("auction_cf").value = this.value.replace(/,/g, "")
-        
-    }
-        var amount = document.querySelector('#auction_ip');
-        amount.addEventListener('input', restrictNumber);
-        function restrictNumber (e) {  
-        var newValue = this.value.replace(new RegExp(/[^\d]/,'ig'), "");
-        this.value = newValue;
-    }
-
-    $("#auction-form").submit(function(e) {
-        e.preventDefault();
-        var form = $(this);
-        var url = form.attr('action');
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+function addCampaintoWishlist(e){
+    id = $(e).data('detailid');
+    url = $(e).data('url');
+    $.ajax({
+        type: "GET",
+        url: url+'/'+id,
+        data: {}, // serializes the form's elements.
+        success: function(response)
+        {
+            text =$('#add-detail-wishlist-'+id +' i').text();
+            if(text == 'favorite_border'){
+                $('#add-detail-wishlist-'+id +' i').text('favorite');
+                $('#add-detail-wishlist-'+id).attr('data-status',1);
+            }else{
+                $('#add-detail-wishlist-'+id +' i').text('favorite_border');
+                $('#add-detail-wishlist-'+id).attr('data-status',0);
             }
-        });
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: form.serialize(),
-            error: function(data){
-                console.log(data);
-            },
-            success: function(response)
-            {
-                $('.notice-auction').css('display', 'block');
-                $('.notice-auction .alert').text(response); 
-            }
-        });
+            console.log(response); // show response from the php script.
+        },
+        error: function(data) {
+            console.log(data);
+        }
     });
-});
-
+}

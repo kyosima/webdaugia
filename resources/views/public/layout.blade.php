@@ -47,6 +47,7 @@ $category = CategoryPost::select('title', 'slug')->get();
     <link rel="stylesheet" href="{{asset('public/mevivu/css/owl.carousel.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('public/mevivu/css/slicknav.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('public/mevivu/css/style.css')}}" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <script src="{{asset('public/mevivu/js/campaign.js')}}"></script>
 

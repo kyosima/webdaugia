@@ -5,12 +5,10 @@ use App\Models\Campaign;
 use App\Models\Product;
 use App\Models\CampaignDetail;
 use App\Models\CampaignAuction;
+use App\Models\CampaignWishlist;
 use Illuminate\Support\Facades\Auth;
 use App\Events\CampaignEvent;
-
 use Carbon\Carbon;
-
-
 use Illuminate\Http\Request;
 
 class CampaignController extends Controller
@@ -167,17 +165,19 @@ class CampaignController extends Controller
             $amount = $_POST['amount'];
             $detail_id = $_POST['detail_id'];
             $campaign_detail = CampaignDetail::find($detail_id);
-            if(($amount% $campaign_detail->detail_price_step) != 0){
+            if($campaign_detail->status !=1){
+                return 'Sản phẩm đã kết thúc đấu giá';
+            }elseif($amount <= $campaign_detail->price_end){
+                return 'Giá bạn đưa ra phải lớn hơn giá hiện tại';
+            }elseif(($amount% $campaign_detail->detail_price_step) != 0){
                 return 'Giá bạn đưa ra phải theo giá bước nhảy';
-            }elseif($amount > $campaign_detail->price_end){
+            }else{
                 CampaignAuction::insert(['user_id' => $user->id, 'campaign_detail_id' => $detail_id, 'price'=>$amount]);
                 CampaignDetail::whereId($detail_id)->update(['price_end'=>$amount, 'user_id'=>$user->id]);
                 $id = $request->id;
                 $auction = CampaignAuction::whereCampaignDetailId($detail_id)->orderBy('id','desc')->first();
                 event(new CampaignEvent( $auction));
                 return 'Đấu giá của bạn đã được gửi đi';
-            }else{
-                return 'Giá bạn đưa ra phải lớn hơn giá hiện tại';
             }
         }
     }
@@ -185,6 +185,24 @@ class CampaignController extends Controller
     public function getAuction(Request $request){
         $auction = CampaignAuction::whereCampaignDetailId($request->id)->orderBy('desc', 'id')->first();
         return $aution;
+    }
+
+    public function addWishList(Request $request){
+        if(!Auth::check()){
+            return redirect('/dang-nhap');
+        }else{
+            $user = Auth::user();
+            $checkWishList = CampaignWishlist::whereUserId($user->id)->whereCampaignDetailId($request->id)->first();
+            $detail = CampaignDetail::whereId($request->id)->first();
+            $product= $detail->product()->first();
+            if($checkWishList == null){
+                CampaignWishlist::insert(['user_id'=>$user->id, 'campaign_detail_id'=>$request->id]);
+                return 'Đã thêm sản phẩm '.$product->title.' vào danh sách đấu giá';
+            }else{
+                CampaignWishlist::whereId($checkWishList->id)->delete();
+                return 'Đã xóa sản phẩm '.$product->title.' khỏi danh sách đấu giá';
+            }
+        }
     }
 
 }

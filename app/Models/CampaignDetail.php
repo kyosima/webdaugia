@@ -24,11 +24,16 @@ class CampaignDetail extends Model
 		'product_id',
 		'detail_price_start',
 		'detail_price_step',
+		'video',
 		'status'
 	];
 
 	public function product(){
 		return $this->hasOne(Product::class, 'id', 'product_id');
+	}
+
+	public function wishlist(){
+		return $this->hasOne(CampaignWishlist::class, 'campaign_detail_id', 'id');
 	}
 
 	public function auctions()

@@ -44,7 +44,8 @@ class CampaignController extends AdminController
     public function postCampaign(Request $request){
             CampaignDetail::whereId($_POST['campaign_detail_id'])->update([
                 'detail_price_start'=>$_POST['detail_price_start'],
-                'detail_price_step'=>$_POST['detail_price_step']
+                'detail_price_step'=>$_POST['detail_price_step'],
+                'video'=>$_POST['video']
             ]);
        
         return 'Thành công';
@@ -72,6 +73,7 @@ class CampaignController extends AdminController
         $show->field('product_id', __('Product id'));
         $show->field('price_start', __('Price start'));
         $show->field('price_end', __('Price end'));
+        $show->field('video', __('Video'));
         $show->field('price_step', __('Price step'));
         $show->field('time_start', __('Time start'));
         $show->field('time_end', __('Time end'));

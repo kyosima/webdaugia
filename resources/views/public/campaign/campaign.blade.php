@@ -60,7 +60,7 @@
         @if($campaign->status == 0)
             <div class="col-lg-12">
                 <div id="campaign-counter-title" class="section-title">
-                    <h2>Thời gian mở đấu giá</h2>
+                    <h2>Thời gian đến khi mở đấu giá còn</h2>
                 </div>
                 <div class="campaign__count_time_run">
                     <div id="campaign-counter" data-url="{{url('dau-gia/bat-dau/'.$campaign->id)}}">
@@ -87,7 +87,7 @@
         @elseif($campaign->status == 1)
             <div class="col-lg-12">
                 <div id="campaign-counter-title" class="section-title">
-                    <h2>Thời gian mở đấu giá</h2>
+                    <h2>Thời gian đã đấu giá</h2>
                 </div>
                 <div class="campaign__count_time_run">
                     <div id="campaign-counter" data-url="{{url('dau-gia/bat-dau/'.$campaign->id)}}">

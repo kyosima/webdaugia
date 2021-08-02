@@ -13,6 +13,8 @@
             <h2 class="product__detail__title text-bold">{{$product->title}}</h2>
           
             @if($item->status == 0)
+            <h2>Thời gian đến khi mở đấu giá còn</h2>
+
                 <div class="detail-counter" id="detail-counter-{{$order}}" data-url="{{url('dau-gia/bat-dau/detail/'.$item->id)}}"  data-urlcancel="{{url('dau-gia/ket-thuc/detail/'.$item->id)}}">
                     <div id="timer">
                         <div class="number-list">
@@ -30,9 +32,11 @@
                       </div>
                 </div>
                 <script> 
-                    countStartDetail('{{$campaign->time_start}}', '{{$order}}',{{$total}}, {{$duration}},{{$item->status}});
+                    countStartDetail('{{$campaign->time_start}}', '{{$order}}','{{$total}}', '{{$duration}}',{{$item->status}});
                 </script>
             @elseif($item->status == 1)
+            <h4>Thời gian đấu giá còn lại</h4>
+
                 <div class="detail-counter" style="display: block" id="detail-counter-{{$order}}" data-url="{{url('dau-gia/bat-dau/detail/'.$item->id)}}"  data-urlcancel="{{url('dau-gia/ket-thuc/detail/'.$item->id)}}">
                     <div id="timer">
                         <div class="number-list">
@@ -50,7 +54,7 @@
                     </div>
                 </div>
             <script> 
-                countRunDetail('{{$campaign->time_start}}', '{{$order}}',{{$total}}, {{$duration}},{{$item->status}});
+                countRunDetail('{{$campaign->time_start}}', '{{$order}}','{{$total}}', '{{$duration}}','{{$item->status}}');
             </script>
             @else
                 <div class="alert alert-warning text-center ">
@@ -64,6 +68,13 @@
                 <h4 class="price__start">Giá khởi điểm: {{getCurrency($item->detail_price_start)}}</h4>
             </div>
             <div class="text-right">
+                <button class="btn btn-danger btn-add-detail-wishlist" id="add-detail-wishlist-{{$item->id}}" data-detailid="{{$item->id}}" data-url="{{url('dau-gia/yeu-thich')}}" data-status="0" onclick="addCampaintoWishlist(this)">
+                    @if($item->wishlist()->first()==null)
+                    <i class="material-icons">favorite_border</i>
+                        @else
+                    <i class="material-icons">favorite</i>
+                        @endif
+                </button>
                 <a class="btn btn-info" href="{{url('dau-gia/'.$campaign->slug.'/'.$product->slug)}}"  target="_blank">Xem chi tiết</a>
             </div>
         </div>

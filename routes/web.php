@@ -125,17 +125,18 @@ Route::get('/order-success', [CheckoutController::class, 'orderSuccess'])->name(
 
 // wishlist
 
+Route::group(['prefix' => 'dau-gia', 'middleware' => 'auth'], function(){
+    Route::post('/gui-dau-gia', [CampaignController::class, 'postAuction'])->name('campaign.postAuction');
+    Route::post('/cap-nhat-dau-gia/{id}', [CampaignController::class, 'getAuction'])->name('campaign.getAuction');
+    Route::get('/yeu-thich/{id}', [CampaignController::class, 'addWishList'])->name('campaign.addWishList');
+});
+
 Route::group(['prefix' => 'dau-gia'], function(){
     Route::get('/bat-dau/{id}', [CampaignController::class,'startCampaign'])->name('campaign.start');
     Route::get('/bat-dau/detail/{id}', [CampaignController::class,'startDetail'])->name('campaign.startdetail');
     Route::get('/ket-thuc/detail/{id}', [CampaignController::class,'stopDetail'])->name('campaign.stopdetail');
     Route::get('/{slug1}/{slug2}', [CampaignController::class, 'getCampaignProductDetail'])->name('campaign.campaignproduct');
 
-
-});
-Route::group(['prefix' => 'dau-gia', 'middleware' => 'auth'], function(){
-    Route::post('/gui-dau-gia', [CampaignController::class, 'postAuction'])->name('campaign.postAuction');
-    Route::post('/cap-nhat-dau-gia/{id}', [CampaignController::class, 'getAuction'])->name('campaign.getAuction');
 
 });
 

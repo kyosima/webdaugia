@@ -155,6 +155,8 @@
             '<input name="campaign_detail_id" value="' + $('#campaign-box-'+id +' .form input[name=campaign_detail_id]').val() + '">' +
             '<input name="detail_price_start" value="' + $('#campaign-box-'+id +' .form input[name=detail_price_start]').val() + '">' +
             '<input name="detail_price_step" value="' + $('#campaign-box-'+id +' .form input[name=detail_price_step]').val() + '">' +
+            '<input name="video" value="' + $('#campaign-box-'+id +' .form input[name=video]').val() + '">' +
+
 
             '</form>'
         );

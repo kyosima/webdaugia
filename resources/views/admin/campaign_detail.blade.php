@@ -29,6 +29,13 @@
                             <input style="width: 120px; text-align: right;" type="number" min='0' id="" name="detail_price_step" value="{{$detail->detail_price_step}}" class="form-control " >
                         </div>
                     </div> 
+                    <div class="input-group">
+                        <label>Video</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">Youtube</span>
+                            <input style="width: 150px; text-align: right;" type="text"  id="" name="video" value="{{$detail->video}}" class="form-control " >
+                        </div>
+                    </div> 
                     <div class="form-group text-center">
                         <div class="notice-k">
                             <p></p>
@@ -77,6 +84,7 @@
             '<input name="campaign_detail_id" value="' + $('#campaign-box-'+id +' .form input[name=campaign_detail_id]').val() + '">' +
             '<input name="detail_price_start" value="' + $('#campaign-box-'+id +' .form input[name=detail_price_start]').val() + '">' +
             '<input name="detail_price_step" value="' + $('#campaign-box-'+id +' .form input[name=detail_price_step]').val() + '">' +
+            '<input name="video" value="' + $('#campaign-box-'+id +' .form input[name=video]').val() + '">' +
 
             '</form>'
         );
