@@ -363,6 +363,58 @@
             width: 100% !important;
         }
 
+        /* LOAD CSS */
+        .blockUI {}
+
+        .blockOverlay {
+            z-index: 1000;
+            border: none;
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            background: rgb(255, 255, 255);
+            opacity: 0.6;
+            cursor: wait;
+            position: absolute;
+        }
+
+        .blockUI.blockOverlay::before {
+            height: 1em;
+            width: 1em;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -.5em;
+            margin-top: -.5em;
+            content: "";
+            -webkit-animation: spin 1s ease-in-out infinite;
+            animation: spin 1s ease-in-out infinite;
+            background: url('https://namptsport.com/wp-content/plugins/woocommerce/assets/images/icons/loader.svg') center center;
+            background-size: cover;
+            line-height: 1;
+            text-align: center;
+            font-size: 2em;
+            color: rgba(0, 0, 0, .75);
+        }
+
+        @-webkit-keyframes spin {
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg)
+            }
+        }
+
+        @keyframes spin {
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg)
+            }
+        }
+
     </style>
 
     <!-- form start -->
@@ -456,8 +508,8 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-pencil fa-fw"></i></span>
                                 <input required type="text" id="bill_address_address" name="bill_address[address]"
-                                    value="{{ $bill->bill_address->address }}" class="form-control bill_address_address"
-                                    placeholder="Input Tên KH">
+                                    value="{{ $bill->bill_address->address }}"
+                                    class="form-control bill_address_address" placeholder="Input Tên KH">
                             </div>
                         </div>
                     </div>
@@ -562,6 +614,7 @@
             // KHI NHAN NUT LUU
 
             $(document).on('click', 'button.save-action', function() {
+                $('.blockUI').addClass('blockOverlay');
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -569,26 +622,29 @@
                 });
                 $.ajax({
                     type: "PUT",
-                    url: "{{route('admin.orders.updateQtyProduct', $bill->id)}}",
+                    url: "{{ route('admin.orders.updateQtyProduct', $bill->id) }}",
                     data: {
                         item_id: id,
-                        edited_price: $('input[name="order_item_price['+id+']"]').val(),
-                        edited_qty: $('input[name="order_item_qty['+id+']"]').val()
+                        edited_price: $('input[name="order_item_price[' + id + ']"]')
+                            .val(),
+                        edited_qty: $('input[name="order_item_qty[' + id + ']"]').val()
                     },
                     success: function(response) {
                         $('.wrapper_table').html(response[0]);
                         $('.box-body.order-data-row').html(response[1]);
-                        
+
                         $('.function').css('display', 'block')
                         $('.wc-order-add-item').css('display', 'none')
-
+                    },
+                    complete: function() {
+                        $('.blockUI').removeClass('blockOverlay');
                     }
                 });
             })
         });
 
         // KHI NHAN NUT HUY
-        $('.cancel-action').click(function(){
+        $('.cancel-action').click(function() {
             $('.function').css('display', 'block')
             $('.wc-order-add-item').css('display', 'none')
             $('a.edit-order-item').css('display', 'block')
@@ -609,6 +665,7 @@
         // KHI NHAN NUT THEM SAN PHAM
         $('#btn-ok').click(function() {
             $('#wc-backbone-modal-dialog').css('display', 'none')
+            $('.blockUI').addClass('blockOverlay');
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -623,6 +680,9 @@
                 success: function(response) {
                     $('.wrapper_table').html(response[0]);
                     $('.box-body.order-data-row').html(response[1]);
+                },
+                complete: function() {
+                    $('.blockUI').removeClass('blockOverlay');
                 }
             });
         })
@@ -630,7 +690,8 @@
         //KHI NHAN NUT XOA SAN PHAM
         $(document).on('click', 'a.delete-order-item', function() {
             let item_id = $(this).parents('tr.order-item').data('order_item_id');
-            if(confirm("Bạn chắc chắn muốn xóa những mục được chọn chứ?")){
+            if (confirm("Bạn chắc chắn muốn xóa những mục được chọn chứ?")) {
+                $('.blockUI').addClass('blockOverlay');
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -648,12 +709,15 @@
                     success: function(response) {
                         $('.wrapper_table').html(response[0]);
                         $('.box-body.order-data-row').html(response[1]);
+                    },
+                    complete: function() {
+                        $('.blockUI').removeClass('blockOverlay');
                     }
                 });
             }
         });
 
-        
+
 
     });
 </script>

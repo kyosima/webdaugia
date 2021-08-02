@@ -1,4 +1,5 @@
-<table class="order_items" style="width: 100%; background: #fff;">
+<div class="blockUI"></div>
+<table class="order_items" style="width: 100%; background: #fff; position: relative;">
     <thead>
         <tr>
             <th class="order-item">Sản phẩm</th>
@@ -26,8 +27,7 @@
 
                     <div class="edit" style="display: none;">
                         <input type="text" name="order_item_price[{{$product->id}}]" placeholder="0" value="{{ $product->getOriginal('pivot_end_price') }}"
-                            class="line_total wc_input_price"
-                            data-tip="" data-total="">
+                            class="line_total wc_input_price">
                     </div>
                 </td>
                 <td class="qty">
