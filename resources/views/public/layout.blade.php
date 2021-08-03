@@ -222,7 +222,7 @@ $category = CategoryPost::select('title', 'slug')->get();
                                 <div class="seach_form" style="display:none;">
                                     <form action="{{route('search.searchProduct')}}" method="get">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm..." name="keyword">
+                                            <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm..." name="keyword" minlength="3">
                                             <div class="input-group-append">
                                                 <button class="btn btn-ocean" type="submit">Tìm kiếm</button>
                                             </div>
