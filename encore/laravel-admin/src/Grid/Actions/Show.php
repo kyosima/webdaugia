@@ -11,7 +11,7 @@ class Show extends RowAction
      */
     public function name()
     {
-        return __('admin.show');
+        return __('Xem');
     }
 
     /**

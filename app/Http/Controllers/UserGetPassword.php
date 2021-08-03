@@ -19,7 +19,7 @@ class UserGetPassword extends Controller
     }
     public function postSendRequireGetPassword(Request $request){
         if($user = User::where('email', $request->in_email)->first()){
-            $url = URL::temporarySignedRoute('getAcceptPassword', now()->addMinutes(120));
+            $url = URL::temporarySignedRoute('getAcceptPassword', now()->addMinutes(15));
             $send = [
                 'name' => $user->name, 
                 'url' => $url

@@ -11,14 +11,17 @@ class HomeController extends Controller
 {
     //
     public function home(){
-        $arr = CategoryPost::where('slug', 'kien-thuc')->first();
-        $kienthuc1 = $arr ? $arr->posts()->orderBy('id', 'DESC')->first() : array();
+        // $cat = CategoryPost::where('slug', 'kien-thuc')->first();
+        // $kienthuc1 = $cat ? $cat->getPostFirst() : array();
 
-        $arr = CategoryPost::where('slug', 'kien-thuc')->first();
-        $kienthuc2 = $arr ? $arr->posts()->whereNotIn('id', [$kienthuc1->id])->orderBy('id', 'DESC')->get() : array();
-        $arr = CategoryPost::where('slug', 'tin-tuc-dau-gia')->first();
-        $tindaugia = $arr ? $arr->posts()->orderBy('id', 'DESC')->take(2)->get() : array();
-        
+        // $kienthuc2 = $cat ? $cat->getPostNotInHasTake([$kienthuc1->id], 8) : array();
+
+        // $cat = CategoryPost::where('slug', 'tin-tuc-dau-gia')->first();
+       
+        // $tindaugia = $cat ? $cat->getPostHasTake(2) : array();
+        $kienthuc1 = [];
+        $kienthuc2 = [];
+        $tindaugia = [];
         return view('public.home', compact(['kienthuc1', 'kienthuc2', 'tindaugia']));
     }
     public function contact(){

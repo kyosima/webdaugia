@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Restore extends RowAction
 {
-    public $name = 'Restore';
+    public $name = 'Khôi phục';
 
     public function handle (Model $model)
     {
         $model->restore();
 
-        return $this->response()->success('Restore')->refresh();
+        return $this->response()->success('Khôi phục')->refresh();
     }
 
     public function dialog()
     {
-        $this->confirm('Are you sure you want to restore?');
+        $this->confirm('bạn có muốn khôi phục lại?');
     }
 }

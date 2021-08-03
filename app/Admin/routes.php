@@ -12,14 +12,19 @@ Route::group([
     'middleware'    => config('admin.route.middleware'),
     'as'            => config('admin.route.prefix') . '.',
 ], function (Router $router) {
+    $router->get('products/get/{id}/{campaign_id}', 'ProductController@getProduct');
 
-    $router->get('/', 'HomeController@index')->name('home');
+    $router->get('campaigns/remove/{id}', 'CampaignController@removeCampaignDetail');
+
+    $router->post('campaigns/postCampaign', 'CampaignController@postCampaign');
+
+    $router->get('/', 'HomeController@index')->name('home');    
 
     $router->resource('users', UserController::class);
 
     $router->resource('posts', PostsController::class);
 
-    $router->resource('category', CategoryPostController::class);
+    $router->resource('categories', CategoryPostController::class);
 
     $router->resource('products', ProductController::class);
 
@@ -34,6 +39,9 @@ Route::group([
     $router->post('orders/add-new-product/{id}', 'OrderController@addProductToOrder')->name('orders.addProductToOrder');
 
     $router->delete('orders/delete-product/{id}', 'OrderController@deleteProduct')->name('orders.deleteProduct');
+    $router->resource('product-categories', ProductCategoryController::class);
+    
+    $router->resource('campaigns', CampaignController::class);
 
     $router->put('/kiem-tra-duong-dan', 'PostsController@createSlug');
 

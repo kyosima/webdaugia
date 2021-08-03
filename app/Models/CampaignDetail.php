@@ -1,46 +1,45 @@
 <?php
 
-/**
- * Created by Reliese Model.
- */
-
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * Class CampaignDetail
- * 
- * @property int $id
- * @property int $id_ofcampaign
- * @property int $id_ofproduct
- * @property float $price_start
- * @property float $price_step
- * @property float $price_end
- * @property int $id_userwin
- *
- * @package App\Models
- */
 class CampaignDetail extends Model
 {
-	protected $table = 'campaign_details';
-	public $timestamps = false;
+    use HasFactory;
+
+    protected $table = 'campaign_details';
 
 	protected $casts = [
-		'id_ofcampaign' => 'int',
-		'id_ofproduct' => 'int',
-		'price_start' => 'float',
-		'price_step' => 'float',
-		'price_end' => 'float',
-		'id_userwin' => 'int'
+		'detail_price_start' => 'int',
+		'detail_price_step' => 'int',
+		'status' => 'int'
 	];
 
+
+
 	protected $fillable = [
-		'id_ofcampaign',
-		'id_ofproduct',
-		'price_start',
-		'price_step',
-		'price_end',
-		'id_userwin'
+		'campaign_id',
+		'product_id',
+		'detail_price_start',
+		'detail_price_step',
+		'video',
+		'status'
 	];
+
+	public function product(){
+		return $this->hasOne(Product::class, 'id', 'product_id');
+	}
+
+	public function wishlist(){
+		return $this->hasOne(CampaignWishlist::class, 'campaign_detail_id', 'id');
+	}
+
+	public function auctions()
+    {
+        return $this->hasMany(CampaignAuction::class, 'campaign_detail_id', 'id');
+    }
+
+	
 }

@@ -1,7 +1,7 @@
-@php
+{{-- @php
 use App\Models\CategoryPost;
 $category = CategoryPost::select('title', 'slug')->get();
-@endphp
+@endphp --}}
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -27,6 +27,8 @@ $category = CategoryPost::select('title', 'slug')->get();
     <link rel="stylesheet" href="{{ asset('public/mevivu/css/elegant-icons.css') }}" type="text/css">
     {{-- <link rel="stylesheet" href="{{asset('public/mevivu/css/nice-select.css')}}" type="text/css"> --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="{{asset('public/mevivu/js/jquery-3.3.1.min.js')}}"></script>
+
     <style>
         .select2-container {
             width: 100% !important;
@@ -46,10 +48,15 @@ $category = CategoryPost::select('title', 'slug')->get();
         }
 
     </style>
-    <link rel="stylesheet" href="{{ asset('public/mevivu/css/jquery-ui.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('public/mevivu/css/owl.carousel.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('public/mevivu/css/slicknav.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('public/mevivu/css/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{asset('public/mevivu/css/jquery-ui.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('public/mevivu/css/owl.carousel.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('public/mevivu/css/slicknav.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('public/mevivu/css/style.css')}}" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script src="{{asset('public/mevivu/js/campaign.js')}}"></script>
+
+
 </head>
 
 <body>
@@ -82,8 +89,20 @@ $category = CategoryPost::select('title', 'slug')->get();
             @endguest
             @auth
                 <div class="header__top__right__auth">
-                    <a href="{{ URL::to('/dang-ky') }}">Xin chào, {{ Auth::user()->name }}</a>
-                </div>
+                    <span class="dropdow_custom" data-toggle=".dropdown_custom">
+                        Xin chào, {{Auth::user()->name}}
+                    </span>
+                    <div class="dropdown_custom" style="display:none;">
+                        <a class="dropdown-item" href="{{URL::to('trang-ca-nhan')}}"><i class="fa fa-address-card-o"></i> Thông tin</a>
+                        <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Đơn hàng</a>
+                        <a class="dropdown-item" href="#"><i class="fa fa-hourglass-half"></i> Đấu giá</a>
+                        <a class="dropdown-item" href="#"><i class="fa fa-heart-o"></i> Yêu thích</a>
+                        <a class="dropdown-item" href="{{URL::to('doi-mat-khau')}}"><i class="fa fa-key"></i> Đổi mật khẩu</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{URL::to('/thoat-tai-khoan')}}"><i class="fa fa-sign-out"></i> Thoát tài khoản</a>
+                    </div>
+                </div> 
+                
             @endauth
         </div>
         <nav class="humberger__menu__nav mobile-menu">
@@ -99,14 +118,41 @@ $category = CategoryPost::select('title', 'slug')->get();
                 </li>
                 <li><a href="{{ URL::to('/blog') }}">Blog</a>
                     <ul class="header__menu__dropdown">
-                        @foreach ($category as $value)
-                            <li><a href="{{ URL::to('/danh-muc-bai-viet/' . $value->slug) }}">{{ $value->title }}</a>
-                            </li>
-                        @endforeach
+                        {{-- @foreach($category as $value)
+                        <li><a href="{{URL::to('/danh-muc-bai-viet/'.$value->slug)}}">{{$value->title}}</a></li>
+                        @endforeach   --}}
                     </ul>
                 </li>
                 <li><a href="{{ URL::to('/lien-he') }}">Liên hệ</a></li>
             </ul>
+        <ul>
+                            <li><a href="{{URL::to('/')}}/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                            <li><a href="{{URL::to('/cua-hang')}}">Giới thiệu</a></li>
+                            <li><a href="{{URL::to('/cua-hang')}}">Danh sách đại lý</a></li>
+                            <li><a href="{{URL::to('/cua-hang')}}">Sản phẩm</a>
+                            <ul class="header__menu__dropdown">
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Koi</a></li>
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Cám cá</a></li>
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Vật liệu</a></li>    
+                                </ul>
+                            </li>
+                            <li><a href="{{URL::to('/dau-gia')}}">Đấu giá</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Đang diễn ra</a></li>
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Đã diễn ra</a></li>
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Chuẩn bị diễn ra</a></li>    
+                                </ul>
+                            </li>
+                            <li><a href="{{URL::to('/blog')}}">Blog</a>
+                                <ul class="header__menu__dropdown">
+                                    {{-- @foreach($category as $value)
+                                    <li><a href="{{URL::to('/danh-muc-bai-viet/'.$value->slug)}}">{{$value->title}}</a></li>
+                                    @endforeach   --}}
+                                </ul>
+                            </li>
+                            
+                            <li><a href="{{URL::to('/lien-he')}}">Liên hệ</a></li>
+                        </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
         <div class="humberger__menu__contact">
@@ -142,19 +188,20 @@ $category = CategoryPost::select('title', 'slug')->get();
                                 </div>
                             @endguest
                             @auth
-                                <div class="header__top__right__auth_login">
-                                    <span class="dropdow_custom" data-toggle=".dropdown_custom">
-                                        Xin chào, {{ Auth::user()->name }}
-                                    </span>
-                                    <div class="dropdown_custom" style="display:none;">
-                                        <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Đơn hàng</a>
-                                        <a class="dropdown-item" href="#"><i class="fa fa-hourglass-half"></i> Đấu giá</a>
-                                        <a class="dropdown-item" href="#"><i class="fa fa-heart-o"></i> Yêu thích</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="{{ URL::to('/thoat-tai-khoan') }}"><i
-                                                class="fa fa-sign-out"></i> Thoát tài khoản</a>
-                                    </div>
-                                </div>
+                            <div class="header__top__right__auth_login">
+                                <span class="dropdow_custom" data-toggle=".dropdown_custom">
+                                    Xin chào, {{Auth::user()->name}}
+                                </span>
+                                <div class="dropdown_custom" style="display:none;">
+                                    <a class="dropdown-item" href="{{URL::to('trang-ca-nhan')}}"><i class="fa fa-address-card-o"></i> Thông tin</a>
+                                    <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Đơn hàng</a>
+                                    <a class="dropdown-item" href="#"><i class="fa fa-hourglass-half"></i> Đấu giá</a>
+                                    <a class="dropdown-item" href="#"><i class="fa fa-heart-o"></i> Yêu thích</a>
+                                    <a class="dropdown-item" href="{{URL::to('doi-mat-khau')}}"><i class="fa fa-key"></i> Đổi mật khẩu</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{URL::to('/thoat-tai-khoan')}}"><i class="fa fa-sign-out"></i> Thoát tài khoản</a>
+                                </div>     
+                            </div> 
                             @endauth
                         </div>
                     </div>
@@ -173,12 +220,14 @@ $category = CategoryPost::select('title', 'slug')->get();
                         <ul>
                             <li class="search_all">
                                 <div class="seach_form" style="display:none;">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-ocean" type="submit">Tìm kiếm</button>
+                                    <form action="{{route('search.searchProduct')}}" method="get">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm..." name="keyword">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-ocean" type="submit">Tìm kiếm</button>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                                 <a href="#" class="search_icon"><i class="fa fa-search"></i></a>
                             </li>
@@ -284,15 +333,14 @@ $category = CategoryPost::select('title', 'slug')->get();
                 <div class="col-lg-9">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="./index.html"><i class="fa fa-home" aria-hidden="true"></i></a>
-                            </li>
-                            <li><a href="{{ URL::to('/cua-hang') }}">Giới thiệu</a></li>
-                            <li><a href="{{ URL::to('/cua-hang') }}">Danh sách đại lý</a></li>
-                            <li><a href="{{ URL::to('/cua-hang') }}">Sản phẩm</a>
-                                <ul class="header__menu__dropdown">
-                                    <li><a href="{{ URL::to('/loai-dau-gia') }}">Koi</a></li>
-                                    <li><a href="{{ URL::to('/loai-dau-gia') }}">Cám cá</a></li>
-                                    <li><a href="{{ URL::to('/loai-dau-gia') }}">Vật liệu</a></li>
+                            <li><a href="{{URL::to('/')}}/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                            <li><a href="{{URL::to('/cua-hang')}}">Giới thiệu</a></li>
+                            <li><a href="{{URL::to('/cua-hang')}}">Danh sách đại lý</a></li>
+                            <li><a href="{{URL::to('/cua-hang')}}">Sản phẩm</a>
+                            <ul class="header__menu__dropdown">
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Koi</a></li>
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Cám cá</a></li>
+                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Vật liệu</a></li>    
                                 </ul>
                             </li>
                             <li><a href="{{ URL::to('/dau-gia') }}">Đấu giá</a>
@@ -304,11 +352,9 @@ $category = CategoryPost::select('title', 'slug')->get();
                             </li>
                             <li><a href="{{ URL::to('/blog') }}">Blog</a>
                                 <ul class="header__menu__dropdown">
-                                    @foreach ($category as $value)
-                                        <li><a
-                                                href="{{ URL::to('/danh-muc-bai-viet/' . $value->slug) }}">{{ $value->title }}</a>
-                                        </li>
-                                    @endforeach
+                                    {{-- @foreach($category as $value)
+                                    <li><a href="{{URL::to('/danh-muc-bai-viet/'.$value->slug)}}">{{$value->title}}</a></li>
+                                    @endforeach   --}}
                                 </ul>
                             </li>
 

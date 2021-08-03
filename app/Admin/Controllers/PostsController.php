@@ -17,6 +17,7 @@ use Encore\Admin\Facades\Admin;
 use App\Admin\Actions\Post\Restore;
 use App\Admin\Extensions\Tools\RestorePost;
 use App\Admin\Actions\Post\BatchRestore;
+use Carbon\Carbon;
 
 class PostsController extends Controller
 {
@@ -62,7 +63,7 @@ class PostsController extends Controller
     {
         return $content
             ->header(trans('Sửa bài viết'))
-            ->description(trans('admin.description'))
+            // ->description(trans('admin.description'))
             ->body($this->form()->edit($id));
     }
 
@@ -89,13 +90,24 @@ class PostsController extends Controller
     {
         $grid = new Grid(new Posts);
 
-        $grid->id('ID');
-        $grid->title('title');
-        $grid->desc_short('Mô tả ngắn');
-        // $grid->slug('slug');
-        // $grid->body('body');
-        // $grid->avatar('avatar');
-        $grid->column('created_at', __('Ngày tạo'))->filter('range', 'date');
+        $grid->id('ID')->sortable();
+        // $grid->title('Tiêu đề');
+        $grid->column('title', 'Tiêu đề');
+        // $grid->column('avatar', 'avatar')->image(url('/'), 100, 100);
+        $grid->category('Danh mục')->display(function ($category) {
+
+            $category = array_map(function ($category) {
+                return "<span class='label label-success'>{$category['title']}</span>";
+            }, $category);
+        
+            return join('&nbsp;', $category);
+        }, 'Danh mục');
+        $grid->desc_short('Mô tả ngắn')->display(function($desc_short) {
+            return Str::limit($desc_short, 150, '...');
+        });;
+        $grid->column('created_at', __('Ngày tạo'))->display(function ($created_at) {
+            return date("d/m/Y",strtotime($created_at));
+            })->filter('range', 'date');
         $grid->expandFilter();
         $grid->filter(function($filter){
 
@@ -105,9 +117,9 @@ class PostsController extends Controller
                 $filter->equal('ID')->integer();
             });
             $filter->column(1/2, function ($filter) {
-                $filter->contains('title')->placeholder('Tiêu đề...');
+                $filter->contains('title', 'Tiêu đề')->placeholder('Tiêu đề...');
             });
-            $filter->scope('trashed', 'Recycle Bin')->onlyTrashed();
+            $filter->scope('trashed', 'Thùng rác')->onlyTrashed();
         });
         $grid->actions(function ($actions) {
             if (\request('_ scope_') == 'trashed') {
@@ -122,6 +134,9 @@ class PostsController extends Controller
             }
             
         });
+        $grid->disableExport();
+        $grid->disableColumnSelector();
+        
         return $grid;
     }
 
@@ -151,6 +166,7 @@ class PostsController extends Controller
      *
      * @return Form
      */
+
     protected function form()
     {
         $form = new Form(new Posts);
@@ -169,6 +185,8 @@ class PostsController extends Controller
 
             $form->checkbox('category' ,'Danh mục')->options(CategoryPost::all()->pluck('title','id')); 
 
+            $form->radio('status', 'Trạng thái')->options(['1' => 'Hiện', '0'=> 'Ẩn'])->default('1');
+            $form->datetime('timer_at', 'Thời gian đăng');
             // Add a form item to this column
             $form->inputImage('avatar', 'Ảnh đại điện')->value('/public/upload/product_default.png');
 
@@ -177,8 +195,10 @@ class PostsController extends Controller
         
         $form->setWidth(12, 12);
         $form->saving(function (Form $form) {
-            $form->slug = SlugService::createSlug(Posts::class, 'slug',  $form->title);
             $form->avatar = Str::after($form->avatar, URL('/'));
+            if(!$form->timer_at){
+                $form->timer_at = Carbon::now();
+            }
         });
 
         return $form;

@@ -15,9 +15,9 @@ class BatchDelete extends BatchAction
     public function script()
     {
         $trans = [
-            'delete_confirm' => trans('admin.delete_confirm'),
-            'confirm'        => trans('admin.confirm'),
-            'cancel'         => trans('admin.cancel'),
+            'delete_confirm' => 'bạn có chắc muốn xóa?',
+            'confirm'        => 'Chấp nhận',
+            'cancel'         => 'Hủy',
         ];
 
         return <<<EOT

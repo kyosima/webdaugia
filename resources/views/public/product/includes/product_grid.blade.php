@@ -1,7 +1,7 @@
 <div class="col-lg-4 col-md-6 col-sm-6" >
     <div class="product__discount__item" data-id="{{$item->id}}">
-            <div class="product__discount__item__pic set-bg"
-                data-setbg="@getimage({{$item->avatar}})">
+            <div class="product__discount__item__pic set-bg">
+                {{-- data-setbg="{{getImage($item->avatar)}}"> --}}
                 <div class="product__discount__percent">{{$item->discount}}%</div>
                 <ul class="product__item__pic__hover">
                     <li class="wishlist-add"><button data-href="{{route('wishlist.addToWishList')}}"><i class="fa fa-heart"></i></button></li>

@@ -85,7 +85,9 @@ class CategoryPostController extends Controller
         $grid->id('ID');
         $grid->title('Tiêu đề', 'Title');
         $grid->slug('Đường dẫn', 'slug');
-        $grid->column('created_at', __('Ngày tạo'))->filter('range', 'date');
+        $grid->column('created_at', __('Ngày tạo'))->display(function ($created_at) {
+            return date("d/m/Y",strtotime($created_at));
+            })->filter('range', 'date');
         // $grid->updated_at(trans('admin.updated_at'));
         $grid->filter(function($filter){
 

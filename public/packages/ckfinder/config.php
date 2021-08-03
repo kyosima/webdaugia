@@ -71,8 +71,7 @@ $config['images'] = array(
 );
 
 /*=================================== Backends ========================================*/
-// https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_backends
-
+// https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_backend
 $config['backends'][] = array(
     'name'         => 'default',
     'adapter'      => 'local',
@@ -102,6 +101,14 @@ $config['resourceTypes'][] = array(
     'directory'         => 'images',
     'maxSize'           => 0,
     'allowedExtensions' => 'bmp,gif,jpeg,jpg,png',
+    'deniedExtensions'  => '',
+    'backend'           => 'default'
+);
+$config['resourceTypes'][] = array(
+    'name'              => 'Videos',
+    'directory'         => 'Videos',
+    'maxSize'           => 0,
+    'allowedExtensions' => 'mp4',
     'deniedExtensions'  => '',
     'backend'           => 'default'
 );

@@ -61,7 +61,7 @@
                         </a>
                         <a href="{{URL::to('/chi-tiet-san-pham')}}" class="latest-product__item">
                             <div class="latest-product__item__pic">
-                                <img src="@getimage(2.jpg)" alt="">
+                                <img src="" alt="">
                             </div>
                             <div class="latest-product__item__text">
                                 <h6>Crab Pool Security</h6>

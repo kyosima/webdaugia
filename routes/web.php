@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\PusherController;
 
 use App\Http\Controllers\CampaignTypeController;
 use App\Http\Controllers\BlogController;
@@ -12,13 +13,14 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\ProductCategoryController;
-
-
+use App\Http\Controllers\SearchProductController;
 use App\Http\Controllers\UserLoginController;
 
 use App\Http\Controllers\UserRegisterController;
 use App\Http\Controllers\UserGetPassword;
 use App\Http\Controllers\WishListController;
+use App\Http\Controllers\UserProfileController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,13 +36,9 @@ use App\Http\Controllers\WishListController;
 Route::get('/', [HomeController::class, 'home'])->name('trangchu');
 Route::get('/lien-he', [HomeController::class, 'contact']);
 
-Route::get('/cua-hang', [CategoryProductController::class, 'index']);
+    // Route::get('/cua-hang', [CategoryProductController::class, 'index']);
 
 Route::get('/chi-tiet-san-pham', [ProductDetailController::class, 'index']);
-
-Route::get('/dau-gia', [CampaignController::class, 'index']);
-
-Route::get('/loai-dau-gia', [CampaignTypeController::class, 'index']);
 
 Route::get('/blog', [BlogController::class, 'index']);
 
@@ -49,14 +47,27 @@ Route::get('/danh-muc-bai-viet/{categoryPost:slug}', [BlogController::class, 'ca
 Route::get('/bai-viet/{post:slug}', [BlogController::class, 'detail']);
 
 //start login, register
+Route::get('socket', 'SocketController@index');
+Route::post('sendmessage', 'SocketController@sendMessage');
+Route::get('writemessage', 'SocketController@writemessage');
 
+Route::get('/dang-nhap', [UserLoginController::class, 'index'])->name('get.login');
 
 Route::post('/dang-nhap', [UserLoginController::class, 'postLogin'])->name('post.login');
 
 Route::group(['prefix' => '/', 'middleware' => 'auth'], function(){
 
     Route::get('thoat-tai-khoan', [UserLoginController::class, 'getLogout']);
+    //profile user
 
+    Route::get('/trang-ca-nhan', [UserProfileController::class, 'index']);
+
+    Route::put('/thay-doi-thong-tin-ca-nhan', [UserProfileController::class, 'putChangeProfile'])->name('put.changeprofile');
+
+    Route::get('/doi-mat-khau', [UserProfileController::class, 'getChangePassword']);
+
+    Route::put('/doi-mat-khau', [UserProfileController::class, 'putChangePassword'])->name('put.changepassword');
+    //profile user
 });
 
 
@@ -77,14 +88,9 @@ Route::put('xac-nhan-lay-lai-mat-khau', [UserGetPassword::class, 'postAcceptGetP
 
 Route::resources([
     'san-pham' => 'ProductController',
-    'danh-muc' => 'ProductCategoryController',
+    'cua-hang' => 'ProductCategoryController',
+    'dau-gia' => 'CampaignController',
 ]);
-
-// Route::fallback(function() {
-//     return view('404');
-// });
-//get password
-
 
 
 
@@ -127,6 +133,35 @@ Route::delete('/wishlist-remove', [WishListController::class, 'removeFromWishLis
 
 Route::post('/change-to-cart', [WishListController::class, 'changeWishToCart'])->name('wishlist.changeWishToCart');
 
+// SEARCH PRODUCT
+Route::get('/search', [SearchProductController::class, 'searchProduct'])->name('search.searchProduct');
+
+
+Route::group(['prefix' => 'dau-gia', 'middleware' => 'auth'], function(){
+    Route::post('/gui-dau-gia', [CampaignController::class, 'postAuction'])->name('campaign.postAuction');
+    Route::post('/cap-nhat-dau-gia/{id}', [CampaignController::class, 'getAuction'])->name('campaign.getAuction');
+    Route::get('/yeu-thich/{id}', [CampaignController::class, 'addWishList'])->name('campaign.addWishList');
+});
+
+Route::group(['prefix' => 'dau-gia'], function(){
+    Route::get('/bat-dau/{id}', [CampaignController::class,'startCampaign'])->name('campaign.start');
+    Route::get('/bat-dau/detail/{id}', [CampaignController::class,'startDetail'])->name('campaign.startdetail');
+    Route::get('/ket-thuc/detail/{id}', [CampaignController::class,'stopDetail'])->name('campaign.stopdetail');
+    Route::get('/{slug1}/{slug2}', [CampaignController::class, 'getCampaignProductDetail'])->name('campaign.campaignproduct');
+
+
+});
+
+
+
+Route::group(['prefix' => 'pusher'], function(){
+
+    Route::get('start-campaign/{id}', [PusherController::class, 'startCampaign']);
+    
+
+
+});
+//get password
 
 
 
