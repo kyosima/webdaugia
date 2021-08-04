@@ -1,9 +1,9 @@
 <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
     <div class="featured__item">
         <div class="featured__item__pic set-bg" data-setbg="{{getImage($item->avatar)}}">
-            <ul class="featured__item__pic__hover">
+            {{-- <ul class="featured__item__pic__hover">
                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
-            </ul>
+            </ul> --}}
         </div>
         <div class="featured__item__text">
             <h5><a href="{{url('dau-gia/'.$item->slug)}}">{{$item->title}}</a></h5>

@@ -40,9 +40,9 @@
             <div class="col-lg-6 col-md-6">
                 <div class="product__details__text">
                     <h3 class="product__detail__title">{{$product->title}}</h3>
-                    <div class="star-rating" title="Rated 5.00 out of 5">
+                    {{-- <div class="star-rating" title="Rated 5.00 out of 5">
                         <span style="width:{{rand(50,100)}}%"><strong class="rating">5.00</strong> out of 5</span>
-                    </div>
+                    </div> --}}
                     @include('public.product.includes.price_detail',['item'=>$product])
                     <ul>
                         <li><b>Trạng thái</b> <span>Còn hàng</span></li>
@@ -78,10 +78,10 @@
                             <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
                                 aria-selected="true">Mô tả</a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
                                 aria-selected="false">Đánh giá <span>(1)</span></a>
-                        </li>
+                        </li> --}}
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
@@ -90,12 +90,12 @@
                                 <p>{!! $product->desc_long!!}</p>
                             </div>
                         </div>
-                        <div class="tab-pane" id="tabs-3" role="tabpanel">
+                        {{-- <div class="tab-pane" id="tabs-3" role="tabpanel">
                             <div class="product__details__tab__desc">
                                 <h6>Đánh giá</h6>
                                 <p>đánh giá</p>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

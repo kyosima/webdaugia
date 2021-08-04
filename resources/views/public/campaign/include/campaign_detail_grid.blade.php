@@ -10,8 +10,7 @@
             </div>
         </div>
         <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12">
-            <h2 class="product__detail__title text-bold">{{$product->title}}</h2>
-          
+            <h2 class="product__detail__title text-bold">SP{{$order+1}} - {{$product->title}}</h2>
             @if($item->status == 0)
             <h2>Thời gian đến khi mở đấu giá còn</h2>
 
@@ -68,6 +67,7 @@
                 <h4 class="price__start">Giá khởi điểm: {{getCurrency($item->detail_price_start)}}</h4>
             </div>
             <div class="text-right">
+                @if($campaign->status != 2)
                 <button class="btn btn-danger btn-add-detail-wishlist" id="add-detail-wishlist-{{$item->id}}" data-detailid="{{$item->id}}" data-url="{{url('dau-gia/yeu-thich')}}" data-status="0" onclick="addCampaintoWishlist(this)">
                     @if($item->wishlist()->first()==null)
                     <i class="material-icons">favorite_border</i>
@@ -75,6 +75,7 @@
                     <i class="material-icons">favorite</i>
                         @endif
                 </button>
+                @endif
                 <a class="btn btn-info" href="{{url('dau-gia/'.$campaign->slug.'/'.$product->slug)}}"  target="_blank">Xem chi tiết</a>
             </div>
         </div>

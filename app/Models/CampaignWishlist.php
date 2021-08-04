@@ -33,5 +33,7 @@ class CampaignWishlist extends Model
 		'user_id' => 'int',
 		'campaign_detail_id' => 'int'
 	];
-
+	public function campaign_detail(){
+		return $this->belongsTo(CampaignDetail::class, 'campaign_detail_id','id');
+	}
 }

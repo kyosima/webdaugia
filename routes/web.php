@@ -89,7 +89,6 @@ Route::put('xac-nhan-lay-lai-mat-khau', [UserGetPassword::class, 'postAcceptGetP
 Route::resources([
     'san-pham' => 'ProductController',
     'cua-hang' => 'ProductCategoryController',
-    'dau-gia' => 'CampaignController',
 ]);
 
 
@@ -126,17 +125,19 @@ Route::get('/order-success', [CheckoutController::class, 'orderSuccess'])->name(
 // wishlist
 
 Route::group(['prefix' => 'dau-gia', 'middleware' => 'auth'], function(){
-    Route::post('/gui-dau-gia', [CampaignController::class, 'postAuction'])->name('campaign.postAuction');
-    Route::post('/cap-nhat-dau-gia/{id}', [CampaignController::class, 'getAuction'])->name('campaign.getAuction');
-    Route::get('/yeu-thich/{id}', [CampaignController::class, 'addWishList'])->name('campaign.addWishList');
+    Route::get('/san-pham-dau-gia-yeu-thich', [CampaignController::class, 'getWishlist'])->name('campaign.getWishlist');
+
+    Route::get('/lich-su-dau-gia', [CampaignController::class, 'getHistory'])->name('campaign.getHistory');
 });
 
 Route::group(['prefix' => 'dau-gia'], function(){
+    Route::post('/gui-dau-gia', [CampaignController::class, 'postAuction'])->name('campaign.postAuction');
+    Route::post('/cap-nhat-dau-gia/{id}', [CampaignController::class, 'getAuction'])->name('campaign.getAuction');
+    Route::get('/yeu-thich/{id}', [CampaignController::class, 'addWishList'])->name('campaign.addWishList');
     Route::get('/bat-dau/{id}', [CampaignController::class,'startCampaign'])->name('campaign.start');
     Route::get('/bat-dau/detail/{id}', [CampaignController::class,'startDetail'])->name('campaign.startdetail');
     Route::get('/ket-thuc/detail/{id}', [CampaignController::class,'stopDetail'])->name('campaign.stopdetail');
     Route::get('/{slug1}/{slug2}', [CampaignController::class, 'getCampaignProductDetail'])->name('campaign.campaignproduct');
-
 
 });
 
@@ -149,6 +150,9 @@ Route::group(['prefix' => 'pusher'], function(){
 
 
 });
+Route::resources([
+    'dau-gia' => 'CampaignController',
+]);
 //get password
 
 

@@ -43,21 +43,12 @@
         <div class="row">
             @include('public.product.includes.sidebar')
             <div class="col-lg-9 col-md-7">
-                <div class="product__discount">
-                    <div class="section-title product__discount__title">
-                        <h2>Đang giảm giá</h2>
-                    </div>
-                    <div class="row">
-                        <div class="product__discount__slider owl-carousel">
-                        @foreach($products_onsale as $item)
-                            @include('public.product.includes.product_grid',['item'=>$item])
-                        @endforeach
-                        </div>
-                    </div>
-                </div>
+                
                 <div class="filter__item">
                     <div class="row">
                         <div class="col-lg-6 col-md-6">
+                            <b class="text-light">Các sản phẩm bạn đã đấu giá được</b>
+
                             {{-- <div class="filter__sort">
                                 <span>Sắp xếp theo</span>
                                 <select>
@@ -76,19 +67,19 @@
                         </div> -->
                         <div class="col-lg-6 col-md-6">
                             <div class="filter__found">
-                                <h6><span>{{count($products)}}</span> sản phẩm</h6>
+                                <h6><span>{{count($campaign_detail_win)}}</span> sản phẩm</h6>
                             </div>
                         </div>
                         
                     </div>
                 </div>
                 <div class="row">
-                    @foreach($products as $item)
-                            @include('public.product.includes.product_grid',['item'=>$item])
+                    @foreach($campaign_detail_win as $item)
+                            @include('public.campaign.include.history_grid',['item'=>$item->product()->first(), 'detail'=>$item,'campaign'=>$item->campaign()->first()])
                     @endforeach
                 </div>
                 <div class="product__pagination text-center">
-                    {{ $products->links() }}
+                    {{ $campaign_detail_win->links() }}
                 </div>
             </div>
         </div>

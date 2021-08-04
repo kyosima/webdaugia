@@ -1,4 +1,3 @@
-const { isBuffer } = require("lodash");
 
 function countStart(time,total, duration){ 
     // var t = '2014/01/01 23:59:59:0'.split(/[- :]/);
@@ -156,10 +155,11 @@ function countRunDetail(time, order, total,duration, status){
         var m = Math.floor(diff/(60));
         diff = diff-(m*60);
         var s = diff;
-        if((d == 0) && (h==0) && (m == 0) && (s ==0)){
+        if((d == -1) ){
             console.log('end ' + order);
             stopDetail(order);
             clearInterval(timer);
+            $('.auction-area').css('display','none')
             if((parseInt(order)+1) == parseInt(total)){
                 $('#detail-counter-'+order).empty().append('<div class="alert alert-warning text-center "><h5 class="text-dark">Sản phẩm đã kết thúc đấu giá</h5></div>');
                 $('.campaign__count_time_run').empty().append('<div class="alert alert-success text-center "><h4 class="text-dark">Đấu giá đã kết thúc</h4></div>');

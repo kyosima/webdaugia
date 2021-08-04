@@ -63,17 +63,9 @@ class CampaignController extends Controller
         //
         $campaign = Campaign::whereSlug($slug)->first();    
         $now = Carbon::now();
-        $details = CampaignDetail::whereCampaignId($campaign->id)->orderBy( 'id','asc')->get();
+    
         $this->checkCampaign($campaign);
-        for($i=0; $i<count($details); $i++){
-            if($details[$i]->status != 2){
-                if((strtotime($campaign->time_start.'+'.($campaign->time_range +$i).'minute') >= strtotime($now))&&(strtotime($now) >= strtotime($campaign->time_start.'+'.$i.'minute'))){
-                    CampaignDetail::whereId($details[$i]->id)->update(['status'=>1]);
-                }elseif(strtotime($campaign->time_start.'+'.($campaign->time_range +$i).'minute') < strtotime($now)){
-                    CampaignDetail::whereId($details[$i]->id)->update(['status'=>2]);
-                }
-            }
-        }
+       
         $campaign = Campaign::whereSlug($slug)->first();    
         return view('public.campaign.campaign', ['campaign'=>$campaign]);
     }
@@ -83,6 +75,8 @@ class CampaignController extends Controller
     
         $campaign = Campaign::whereSlug($slug1)->firstOrFail();
         $product = Product::whereSlug($slug2)->firstOrFail();
+        $this->checkCampaign($campaign);
+
         $details = CampaignDetail::whereCampaignId($campaign->id)->orderBy( 'id','asc')->get()->toArray();
         $detail = CampaignDetail::whereCampaignId($campaign->id)->whereProductId($product->id)->firstOrFail();
         $order = array_search($detail->id, array_column($details, 'id'));
@@ -139,13 +133,13 @@ class CampaignController extends Controller
     public function stopDetail(Request $request){
         $id = $request->id;
         CampaignDetail::whereId($id)->update(['status'=>2]);
+        CampaignWishlist::whereCampaignDetailId($request->id)->delete();
         return 'Stop details successfully';
     }
 
     public function checkCampaign($campaign){
         $now = Carbon::now();
         $details = CampaignDetail::whereCampaignId($campaign->id)->orderBy( 'id','asc')->get();
-
         $time_run = $campaign->time_range + count($details)-1;
         if($campaign->status != 2){
             if(strtotime($campaign->time_start) <= strtotime($now) && (strtotime($now) <= strtotime($campaign->time_start.'+'.$time_run.'minute'))){
@@ -155,11 +149,27 @@ class CampaignController extends Controller
     
             }
         }
+        for($i=0; $i<count($details); $i++){
+            $this->checkCampaignDetail($details[$i], $campaign, $i);
+        }
+    }
+    
+    public function checkCampaignDetail($detail, $campaign, $i){
+        $now = Carbon::now();
+        if($detail->status != 2){
+            if((strtotime($campaign->time_start.'+'.($campaign->time_range +$i).'minute') >= strtotime($now))&&(strtotime($now) >= strtotime($campaign->time_start.'+'.$i.'minute'))){
+                CampaignDetail::whereId($detail->id)->update(['status'=>1]);
+            }elseif(strtotime($campaign->time_start.'+'.($campaign->time_range +$i).'minute') < strtotime($now)){
+                CampaignDetail::whereId($detail->id)->update(['status'=>2]);
+                CampaignWishlist::whereCampaignDetailId($detail->id)->get();
+
+            }
+        }
     }
 
     public function postAuction(Request $request){
         if(!Auth::check()){
-            return redirect('/dang-nhap');
+            return false;
         }else{
             $user = Auth::user();
             $amount = $_POST['amount'];
@@ -167,9 +177,11 @@ class CampaignController extends Controller
             $campaign_detail = CampaignDetail::find($detail_id);
             if($campaign_detail->status !=1){
                 return 'Sản phẩm đã kết thúc đấu giá';
+            }elseif($amount <= $campaign_detail->detail_price_start){
+                return 'Giá bạn đưa ra phải lớn hơn giá khởi điểm';
             }elseif($amount <= $campaign_detail->price_end){
                 return 'Giá bạn đưa ra phải lớn hơn giá hiện tại';
-            }elseif(($amount% $campaign_detail->detail_price_step) != 0){
+            }elseif(($amount % $campaign_detail->detail_price_step) != 0){
                 return 'Giá bạn đưa ra phải theo giá bước nhảy';
             }else{
                 CampaignAuction::insert(['user_id' => $user->id, 'campaign_detail_id' => $detail_id, 'price'=>$amount]);
@@ -203,6 +215,18 @@ class CampaignController extends Controller
                 return 'Đã xóa sản phẩm '.$product->title.' khỏi danh sách đấu giá';
             }
         }
+    }
+
+    public function getHistory(){
+        $user = Auth::user();
+        $campaign_detail_win = CampaignDetail::whereUserId($user->id)->whereStatus(2)->latest()->paginate(10);
+        return view('public.campaign.history', ['campaign_detail_win'=>$campaign_detail_win]); 
+    }
+
+    public function getWishlist(){
+        $user = Auth::user();
+        $campaign_detail_wishlist = CampaignWishlist::whereUserId($user->id)->latest()->paginate(10);
+        return view('public.campaign.wishlist', ['campaign_detail_wishlist'=>$campaign_detail_wishlist]); 
     }
 
 }

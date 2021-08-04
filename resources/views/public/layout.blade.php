@@ -90,8 +90,8 @@ $category = CategoryPost::select('title', 'slug')->get();
                     <div class="dropdown_custom" style="display:none;">
                         <a class="dropdown-item" href="{{URL::to('trang-ca-nhan')}}"><i class="fa fa-address-card-o"></i> Thông tin</a>
                         <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Đơn hàng</a>
-                        <a class="dropdown-item" href="#"><i class="fa fa-hourglass-half"></i> Đấu giá</a>
-                        <a class="dropdown-item" href="#"><i class="fa fa-heart-o"></i> Yêu thích</a>
+                        <a class="dropdown-item" href=""><i class="fa fa-hourglass-half"></i> Lịch sử đấu giá</a>
+                        <a class="dropdown-item" href="{{url('dau-gia/san-pham-dau-gia-yeu-thich')}}"><i class="fa fa-heart-o"></i> Yêu thích</a>
                         <a class="dropdown-item" href="{{URL::to('doi-mat-khau')}}"><i class="fa fa-key"></i> Đổi mật khẩu</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{URL::to('/thoat-tai-khoan')}}"><i class="fa fa-sign-out"></i> Thoát tài khoản</a>
@@ -105,11 +105,11 @@ $category = CategoryPost::select('title', 'slug')->get();
                 <li class="active"><a href="./index.html">Home</a></li>
                 <li><a href="{{URL::to('/cua-hang')}}">Cửa hàng</a></li>
                 <li><a href="{{URL::to('/dau-gia')}}">Đấu giá</a>
-                    <ul class="header__menu__dropdown">
+                    {{-- <ul class="header__menu__dropdown">
                         <li><a href="{{URL::to('/loai-dau-gia')}}">Đang diễn ra</a></li>
                         <li><a href="{{URL::to('/loai-dau-gia')}}">Đã diễn ra</a></li>
                         <li><a href="{{URL::to('/loai-dau-gia')}}">Chuẩn bị diễn ra</a></li>    
-                    </ul>
+                    </ul> --}}
                 </li>
                 <li><a href="{{URL::to('/blog')}}">Blog</a>
                     <ul class="header__menu__dropdown">
@@ -190,8 +190,8 @@ $category = CategoryPost::select('title', 'slug')->get();
                                 <div class="dropdown_custom" style="display:none;">
                                     <a class="dropdown-item" href="{{URL::to('trang-ca-nhan')}}"><i class="fa fa-address-card-o"></i> Thông tin</a>
                                     <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Đơn hàng</a>
-                                    <a class="dropdown-item" href="#"><i class="fa fa-hourglass-half"></i> Đấu giá</a>
-                                    <a class="dropdown-item" href="#"><i class="fa fa-heart-o"></i> Yêu thích</a>
+                                    <a class="dropdown-item" href="{{url('dau-gia/lich-su-dau-gia')}}"><i class="fa fa-hourglass-half"></i>Lịch sử đấu giá</a>
+                                    <a class="dropdown-item" href="{{url('dau-gia/san-pham-dau-gia-yeu-thich')}}"><i class="fa fa-heart-o"></i> Yêu thích</a>
                                     <a class="dropdown-item" href="{{URL::to('doi-mat-khau')}}"><i class="fa fa-key"></i> Đổi mật khẩu</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{URL::to('/thoat-tai-khoan')}}"><i class="fa fa-sign-out"></i> Thoát tài khoản</a>
@@ -298,18 +298,15 @@ $category = CategoryPost::select('title', 'slug')->get();
                             <span>CÁC DÒNG CÁ KOI</span>
                         </div>
                         <ul style="display: none;">
-                            <li><a href="#">Fresh Meat</a></li>
-                            <li><a href="#">Vegetables</a></li>
-                            <li><a href="#">Fruit & Nut Gifts</a></li>
-                            <li><a href="#">Fresh Berries</a></li>
-                            <li><a href="#">Ocean Foods</a></li>
-                            <li><a href="#">Butter & Eggs</a></li>
-                            <li><a href="#">Fastfood</a></li>
-                            <li><a href="#">Fresh Onion</a></li>
-                            <li><a href="#">Papayaya & Crisps</a></li>
-                            <li><a href="#">Oatmeal</a></li>
-                            <li><a href="#">Fresh Bananas</a></li>
-                        </ul>
+                            <?php 
+                                $categories = App\Models\ProductCategory::whereParentId(0)->latest()->get();
+                            ?>
+                            @foreach($categories as $category)
+                             <li><a href="{{url('cua-hang/'.$category->slug)}}">{{$category->title}}</a></li>
+                            @endforeach
+                           
+                        </ul>                           
+
                     </div>
                 </div>
                 <div class="col-lg-9">
@@ -319,25 +316,28 @@ $category = CategoryPost::select('title', 'slug')->get();
                             <li><a href="{{URL::to('/cua-hang')}}">Giới thiệu</a></li>
                             <li><a href="{{URL::to('/cua-hang')}}">Danh sách đại lý</a></li>
                             <li><a href="{{URL::to('/cua-hang')}}">Sản phẩm</a>
-                            <ul class="header__menu__dropdown">
-                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Koi</a></li>
-                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Cám cá</a></li>
-                                    <li><a href="{{URL::to('/loai-dau-gia')}}">Vật liệu</a></li>    
+                                <ul class="header__menu__dropdown">
+                                    <?php 
+                                        $categories = App\Models\ProductCategory::whereParentId(0)->latest()->get();
+                                    ?>
+                                    @foreach($categories as $category)
+                                        <li><a href="{{url('cua-hang/'.$category->slug)}}">{{$category->title}}</a></li>
+                                    @endforeach
                                 </ul>
                             </li>
                             <li><a href="{{URL::to('/dau-gia')}}">Đấu giá</a>
-                                <ul class="header__menu__dropdown">
+                                {{-- <ul class="header__menu__dropdown">
                                     <li><a href="{{URL::to('/loai-dau-gia')}}">Đang diễn ra</a></li>
                                     <li><a href="{{URL::to('/loai-dau-gia')}}">Đã diễn ra</a></li>
                                     <li><a href="{{URL::to('/loai-dau-gia')}}">Chuẩn bị diễn ra</a></li>    
-                                </ul>
+                                </ul> --}}
                             </li>
                             <li><a href="{{URL::to('/blog')}}">Blog</a>
-                                <ul class="header__menu__dropdown">
-                                    {{-- @foreach($category as $value)
+                                {{-- <ul class="header__menu__dropdown">
+                                    @foreach($category as $value)
                                     <li><a href="{{URL::to('/danh-muc-bai-viet/'.$value->slug)}}">{{$value->title}}</a></li>
-                                    @endforeach   --}}
-                                </ul>
+                                    @endforeach  
+                                </ul> --}}
                             </li>
                             
                             <li><a href="{{URL::to('/lien-he')}}">Liên hệ</a></li>

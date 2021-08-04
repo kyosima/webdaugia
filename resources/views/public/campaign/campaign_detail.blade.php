@@ -59,7 +59,7 @@
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="product__details__text">
-                    <h3 class="product__detail__title">{{$product->title}}</h3>
+                    <h3 class="product__detail__title">SP{{$order+1}}-{{$product->title}}</h3>
                     
                     @if($detail->status ==0)
                     <h4>Thời gian đấu giá còn lại</h4>
@@ -71,7 +71,6 @@
                                     @else
                                 <i class="material-icons">favorite</i>
                                     @endif
-                                Thêm vào danh sách đấu giá
                             </button>
                         </div>
                         
@@ -102,7 +101,6 @@
                                     @else
                                 <i class="material-icons">favorite</i>
                                     @endif
-                                Thêm vào danh sách đấu giá
                             </button>
                         </div>
                         <h4>Thời gian đấu giá còn lại</h4>
@@ -125,21 +123,36 @@
                         <script>
                             countRunDetail('{{$campaign->time_start}}',{{$order}}, {{count($details)}},{{$campaign->time_range}}, {{$detail->status}});
                         </script>
-                    @else
-                        <div class="alert alert-warning text-center ">
-                            <h5 class="text-dark">Sản phẩm đã kết thúc đấu giá</h5>
-                        </div>         
+                   
+                    @endif
+                    @if($detail->status==2)
+                        <div class="alert alert-info">
+                            <h5 class="text-center text-dark">Người chiến thắng</h5>
+                            <h3 class="text-center text-danger">
+                                @if($detail->user_id == null)
+                                    Chưa có
+                                @else
+                                    {{ App\Models\UserInfo::whereId($detail->user_id)->value('fullname')}}
+                                @endif
+                            </h3>
+                        </div>
                     @endif
                     <div id="price-detail-{{$detail->id}}" class="current-price-area">
                         <div class="product__warraper">
                             <p class="product__details__price">
-                                <span>Giá khởi điểm: <span class="n__price">{{getCurrency($detail->price_start)}}</span></span>
+                                <span class="text-light">Giá khởi điểm: <span class="n__price text-danger">{{getCurrency($detail->detail_price_start)}}</span></span>
                             </p>
                             <p class="product__details__price">
-                                <span>Giá bước nhảy: <span class="n__price">{{getCurrency($detail->detail_price_step)}}</span></span>
+                                <span class="text-light">Giá bước nhảy: <span class="n__price text-danger">{{getCurrency($detail->detail_price_step)}}</span></span>
                             </p>
                             <p class="product__details__price">
-                                <span>Giá hiện tại: <span class="n__price" id="current-price">{{getCurrency($detail->price_end)}}</span></span>
+                                @if($detail->status!=2)
+                                    <span class="text-light">Giá hiện tại:
+                                @else
+                                    <span class="text-light">Giá cuối cùng:
+                                @endif
+                                     <span class="n__price text-danger" id="current-price">{{getCurrency($detail->price_end)}}</span>
+                                </span>
                             </p>
                         </div>
                     </div>
@@ -281,8 +294,14 @@
             },
             success: function(response)
             {
-                $('.notice-auction').css('display', 'block');
-                $('.notice-auction .alert').text(response); 
+                if (response == false) {
+                    // data.redirect contains the string URL to redirect to
+                    window.location.href = "{{url('/dang-nhap')}}";
+                } else {
+                    $('.notice-auction').css('display', 'block');
+                    $('.notice-auction .alert').text(response); 
+                }
+             
             }
         });
     });

@@ -35,11 +35,18 @@ class CampaignDetail extends Model
 	public function wishlist(){
 		return $this->hasOne(CampaignWishlist::class, 'campaign_detail_id', 'id');
 	}
+	
+	public function wishlists(){
+		return $this->hasOne(CampaignWishlist::class, 'campaign_detail_id', 'id');
+	}
 
 	public function auctions()
     {
         return $this->hasMany(CampaignAuction::class, 'campaign_detail_id', 'id');
     }
 
-	
+    public function campaign()
+    {
+        return $this->belongsTo(Campaign::class, 'campaign_id', 'id');
+    }
 }

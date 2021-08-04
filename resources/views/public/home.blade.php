@@ -47,27 +47,11 @@
                 <h2>Sản phẩm nổi bật</h2>
             </div>
             <div class="categories__slider owl-carousel">
-            @for($i = 1; $i < 7; $i++)
-                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="{{asset('storage/app/public/images/'.$i.'.jpg')}}">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <a href="#">Betta</a>
-                            <h6><a href="{{URL::to('/chi-tiet-san-pham')}}">Crab Pool Security</a></h6>
-                            <h5>{{number_format(rand(100000, 1000000))}} đ</h5>
-                            <div class="star-rating" title="Rated 5.00 out of 5">
-                                <span style="width:{{rand(50,100)}}%"><strong class="rating">5.00</strong> out of 5</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endfor 
+                <?php $products = App\Models\Product::whereIsHighlight(1)->latest()->get();?>
+                @foreach($products as $item)
+                        @include('public.product.includes.home_product_grid',['item'=>$item])
+                @endforeach
+    
             </div>
         </div>
     </div>
@@ -75,7 +59,7 @@
 <!-- Categories Section End -->
 
 <!-- Featured Section Begin -->
-<section class="featured spad">
+{{-- <section class="featured spad">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -115,7 +99,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> --}}
 <!-- Featured Section End -->
 
 <!-- Banner Begin -->
@@ -144,81 +128,69 @@
             <div class="col-lg-4 col-md-6">
                 <div class="latest-product__text">
                     <h4>Sản phẩm mới</h4>
-                    <div class="latest-product__slider owl-carousel">
-                        <div class="latest-prdouct__slider__item">
-                        @for($i = 1; $i < 4; $i++)
-                            <a href="{{URL::to('/chi-tiet-san-pham')}}" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('storage/app/public/images/'.$i.'.jpg')}}" alt="">
+                        <?php $products = App\Models\Product::latest()->paginate(10);?>
+                            <div class="latest-product__slider owl-carousel">
+                                <div class="latest-prdouct__slider__item">
+                                    @for($i=0; $i< count($products)/2; $i++)
+                                    <a href="{{route('san-pham.show',['san_pham'=>$products[$i]->slug])}}" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="{{getImage($products[$i]->avatar)}}" alt="">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>{{$products[$i]->title}}</h6>
+                                            <span>@include('public.product.includes.price',['item'=>$products[$i]])</span>
+                                        </div>
+                                    </a>
+                                    @endfor
+                                
                                 </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
+                                <div class="latest-prdouct__slider__item">
+                                    @for($i=count($products)/2; $i< count($products); $i++)
+                                        <a href="{{route('san-pham.show',['san_pham'=>$products[$i]->slug])}}" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="{{getImage($products[$i]->avatar)}}" alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>{{$products[$i]->title}}</h6>
+                                                <span>@include('public.product.includes.price',['item'=>$products[$i]])</span>
+                                            </div>
+                                        </a>
+                                    @endfor
                                 </div>
-                            </a>
-                        @endfor 
-                        </div>
-                        <!-- <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('public/mevivu/img/latest-product/lp-1.jpg')}}" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('public/mevivu/img/latest-product/lp-2.jpg')}}" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('public/mevivu/img/latest-product/lp-3.jpg')}}" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                        </div> -->
-                    </div>
+                            </div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="latest-product__text">
                     <h4>Sản phẩm đánh giá cao</h4>
+                    <?php $products = App\Models\Product::latest()->paginate(10);?>
                     <div class="latest-product__slider owl-carousel">
                         <div class="latest-prdouct__slider__item">
-                        @for($i = 4; $i < 7; $i++)
-                            <a href="{{URL::to('/chi-tiet-san-pham')}}" class="latest-product__item">
+                            @for($i=0; $i< count($products)/2; $i++)
+                            <a href="{{route('san-pham.show',['san_pham'=>$products[$i]->slug])}}" class="latest-product__item">
                                 <div class="latest-product__item__pic">
-                                    <img src="{{asset('storage/app/public/images/'.$i.'.jpg')}}" alt="">
+                                    <img src="{{getImage($products[$i]->avatar)}}" alt="">
                                 </div>
                                 <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
+                                    <h6>{{$products[$i]->title}}</h6>
+                                    <span>@include('public.product.includes.price',['item'=>$products[$i]])</span>
                                 </div>
                             </a>
-                        @endfor 
+                            @endfor
+                        
                         </div>
                         <div class="latest-prdouct__slider__item">
-                        @for($i = 1; $i < 4; $i++)
-                            <a href="{{URL::to('/chi-tiet-san-pham')}}" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('storage/app/public/images/'.$i.'.jpg')}}" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                        @endfor 
+                            @for($i=count($products)/2; $i< count($products); $i++)
+                                <a href="{{route('san-pham.show',['san_pham'=>$products[$i]->slug])}}" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="{{getImage($products[$i]->avatar)}}" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>{{$products[$i]->title}}</h6>
+                                        <span>@include('public.product.includes.price',['item'=>$products[$i]])</span>
+                                    </div>
+                                </a>
+                            @endfor
                         </div>
                     </div>
                 </div>
@@ -226,30 +198,34 @@
             <div class="col-lg-4 col-md-6">
                 <div class="latest-product__text">
                     <h4>Sản phẩm tốt</h4>
+                    <?php $products = App\Models\Product::latest()->paginate(10);?>
                     <div class="latest-product__slider owl-carousel">
-                    @for($i = 4; $i < 7; $i++)
-                            <a href="{{URL::to('/chi-tiet-san-pham')}}" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('storage/app/public/images/'.$i.'.jpg')}}" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                        @endfor 
                         <div class="latest-prdouct__slider__item">
-                        @for($i = 1; $i < 4; $i++)
-                            <a href="{{URL::to('/chi-tiet-san-pham')}}" class="latest-product__item">
+                            @for($i=0; $i< count($products)/2; $i++)
+                            <a href="{{route('san-pham.show',['san_pham'=>$products[$i]->slug])}}" class="latest-product__item">
                                 <div class="latest-product__item__pic">
-                                    <img src="{{asset('storage/app/public/images/'.$i.'.jpg')}}" alt="">
+                                    <img src="{{getImage($products[$i]->avatar)}}" alt="">
                                 </div>
                                 <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
+                                    <h6>{{$products[$i]->title}}</h6>
+                                    <span>@include('public.product.includes.price',['item'=>$products[$i]])</span>
                                 </div>
                             </a>
-                        @endfor   
+                            @endfor
+                        
+                        </div>
+                        <div class="latest-prdouct__slider__item">
+                            @for($i=count($products)/2; $i< count($products); $i++)
+                                <a href="{{route('san-pham.show',['san_pham'=>$products[$i]->slug])}}" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="{{getImage($products[$i]->avatar)}}" alt="">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>{{$products[$i]->title}}</h6>
+                                        <span>@include('public.product.includes.price',['item'=>$products[$i]])</span>
+                                    </div>
+                                </a>
+                            @endfor
                         </div>
                     </div>
                 </div>

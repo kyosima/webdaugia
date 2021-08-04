@@ -36,7 +36,5 @@ class CampaignAuction extends Model
 		'campaign_id',
 		'user_id'
 	];
-	public function CampaignDetail(){
-		return $this->hasOne(CampaignDetail::class, 'id', 'campaign_detail_id');
-	}
+
 }
