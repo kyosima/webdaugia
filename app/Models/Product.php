@@ -12,6 +12,7 @@ use Encore\Admin\Traits\ModelTree;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Money\Money;
 
 /**
  * Class Product
@@ -100,8 +101,9 @@ class Product extends Model
     }
 
 	public function bills(){
-    	return $this->belongsToMany(Bill::class, 'bill_detail', 'id_ofbill', 'id_ofproduct');
+    	return $this->belongsToMany(Bill::class, 'bill_detail', 'id_ofproduct', 'id_ofbill')->withPivot(['end_price','SL']);
     }
+	
 
     public function brand()
     {

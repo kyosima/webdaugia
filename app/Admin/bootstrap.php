@@ -3,6 +3,7 @@ use Encore\Admin\Form;
 use App\Admin\Extensions\Form\CKEditor;
 use App\Admin\Extensions\Form\InputImage;
 use App\Admin\Extensions\Form\InputGallery;
+use App\Admin\Extensions\Form\InputProductOrder;
 use App\Admin\Extensions\Form\InputProduct;
 
 Use Encore\Admin\Admin;
@@ -45,6 +46,7 @@ Form::extend('inputImage', InputImage::class);
 
 Form::extend('inputGallery', InputGallery::class);
 
+Form::extend('inputProductOrder', InputProductOrder::class);
 Form::extend('inputProduct', InputProduct::class);
 
 

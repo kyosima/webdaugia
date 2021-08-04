@@ -1,6 +1,8 @@
 <?php
 
+use Encore\Admin\Facades\Admin;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
 Admin::routes();
 
@@ -26,6 +28,17 @@ Route::group([
 
     $router->resource('products', ProductController::class);
 
+    $router->resource('coupons', CouponController::class);
+
+    $router->resource('orders', OrderController::class);
+
+    $router->put('orders/orders-update/{id}', 'OrderController@updateOrder')->name('orders.updateOrder');
+
+    $router->put('orders/update-qty-product/{id}', 'OrderController@updateQtyProduct')->name('orders.updateQtyProduct');
+
+    $router->post('orders/add-new-product/{id}', 'OrderController@addProductToOrder')->name('orders.addProductToOrder');
+
+    $router->delete('orders/delete-product/{id}', 'OrderController@deleteProduct')->name('orders.deleteProduct');
     $router->resource('product-categories', ProductCategoryController::class);
     
     $router->resource('campaigns', CampaignController::class);

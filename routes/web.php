@@ -13,13 +13,13 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\ProductCategoryController;
-
-
+use App\Http\Controllers\SearchProductController;
 use App\Http\Controllers\UserLoginController;
 
 use App\Http\Controllers\UserRegisterController;
 use App\Http\Controllers\UserGetPassword;
-use App\Http\Controllers\ UserProfileController;
+use App\Http\Controllers\WishListController;
+use App\Http\Controllers\UserProfileController;
 
 
 /*
@@ -33,7 +33,7 @@ use App\Http\Controllers\ UserProfileController;
 |
 */
 
-Route::get('/', [HomeController::class, 'home']);
+Route::get('/', [HomeController::class, 'home'])->name('trangchu');
 Route::get('/lien-he', [HomeController::class, 'contact']);
 
     // Route::get('/cua-hang', [CategoryProductController::class, 'index']);
@@ -123,6 +123,18 @@ Route::get('/getLocation', [CheckoutController::class, 'getLocation'])->name('ch
 Route::get('/order-success', [CheckoutController::class, 'orderSuccess'])->name('checkout.orderSuccess');
 
 // wishlist
+
+Route::get('/wish-list', [WishListController::class, 'index'])->name('wishlist.index');
+
+Route::post('/wish-list', [WishListController::class, 'addToWishList'])->name('wishlist.addToWishList');
+
+Route::delete('/wishlist-remove', [WishListController::class, 'removeFromWishList'])->name('wishlist.removeFromWishList');
+
+Route::post('/change-to-cart', [WishListController::class, 'changeWishToCart'])->name('wishlist.changeWishToCart');
+
+// SEARCH PRODUCT
+Route::get('/search', [SearchProductController::class, 'searchProduct'])->name('search.searchProduct');
+
 
 Route::group(['prefix' => 'dau-gia', 'middleware' => 'auth'], function(){
     Route::get('/san-pham-dau-gia-yeu-thich', [CampaignController::class, 'getWishlist'])->name('campaign.getWishlist');

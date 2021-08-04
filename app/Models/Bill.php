@@ -58,4 +58,6 @@ class Bill extends Model
     public function bill_detail(){
         return $this->belongsToMany(Product::class, 'bill_detail', 'id_ofbill', 'id_ofproduct')->withPivot(['end_price','SL']);
     }
+
+	
 }

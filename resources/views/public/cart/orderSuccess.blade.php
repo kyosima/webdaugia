@@ -37,12 +37,12 @@
                                 @foreach ($products as $item)
                                     <tr class="order-item">
                                         <td class="table__product-name product-name">
-                                            <a href="{{ route('san-pham.index') . '/'.$item->slug }}">{{ $item->title }}</a>
+                                            <a href="{{ route('san-pham.index').'/'.$item->slug }}">{{ $item->title }}</a>
                                             <strong class="product-quantity">x &nbsp;{{ $item->quantity }}</strong>
                                         </td>
                                         <td class="table__product-total product-total">
                                             <span
-                                                class="price-amount">{{ number_format($item->quantity * $item->price, 0, ',', '.') }}₫</span>
+                                                class="price-amount">@money($item->quantity * $item->price)</span>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -53,15 +53,15 @@
                                     <th scope="row">Tổng số phụ:</th>
                                     <td>
                                         <span
-                                            class="price-amount">{{ number_format($bill->bill_total, 0, ',', '.') }}₫</span>
+                                            class="price-amount">@money($bill->bill_total)</span>
                                     </td>
                                 </tr>
-                                @if ($order->bill_promo > 0)
+                                @if ($bill->bill_promo > 0)
                                     <tr>
                                         <th scope="row">Giảm giá:</th>
                                         <td>
                                             <span
-                                                class="price-amount">{{ number_format($bill->bill_promo, 0, ',', '.') }}₫</span>
+                                                class="price-amount">@money($bill->bill_promo)</span>
                                         </td>
                                     </tr>
                                 @endif
@@ -72,13 +72,7 @@
                                 <tr>
                                     <th scope="row">Tổng cộng:</th>
                                     <td>
-                                        @if ($bill->bill_promo > 0)
-                                            <span
-                                                class="price-amount">{{ number_format($bill->bill_total - $bill->bill_promo, 0, ',', '.') }}₫</span>
-                                        @else
-                                            <span
-                                                class="price-amount">{{ number_format($bill->bill_total, 0, ',', '.') }}₫</span>
-                                        @endif
+                                        <span class="price-amount" style="color: red">@money($bill->bill_total)</span>
                                     </td>
                                 </tr>
                             </tfoot>
@@ -89,7 +83,7 @@
                     <div class="customer-details">
                         <h2 class="customer-details-title">Địa chỉ thanh toán</h2>
                         <address>
-                            {{ $info->name }}<br>{{ $street }}<br>{{ $phuong }}<br>{{ $quan }}<br>{{ $thanhpho }}
+                            {{ $info->name }},<br>{{ $street }},<br>{{ $phuong }},<br>{{ $quan }},<br>{{ $thanhpho }}
                             <p class="customer-details--phone">{{ $info->phone }}</p>
                             <p class="customer-details--email">{{ $info->email }}</p>
                         </address>
@@ -100,31 +94,25 @@
                     <div class="is-well col-inner entry-content">
                         <p
                             class="success-color thankyou-order-received">
-                            <strong>Cảm ơn {{$info->name}}. Đơn hàng của bạn đã được nhận.</strong></p>
+                            <strong>Cảm ơn {{$info->name}}. Đơn hàng của quý khách đang được xử lý.</strong></p>
 
                         <ul class="order-overview">
                             <li class="order-overview__order order">
                                 Mã đơn hàng: <strong>{{$bill->id}}</strong>
                             </li>
                             <li class="order-overview__date date">
-                                Ngày: <strong>22 Tháng Sáu, 2021</strong>
+                                Ngày: <strong>{{Carbon::now('Asia/Ho_Chi_Minh')->format('l d F Y')}}</strong>
                             </li>
                             <li class="order-overview__email email">
                                 Số điện thoại: <strong>{{$info->phone}}</strong>
                             </li>
                             <li class="order-overview__total total">
                                 Tổng cộng: <strong>
-                                    @if ($bill->bill_promo > 0)
-                                    <span
-                                        class="price-amount">{{ number_format($bill->bill_total - $bill->bill_promo, 0, ',', '.') }}₫</span>
-                                    @else
-                                        <span
-                                            class="price-amount">{{ number_format($bill->bill_total, 0, ',', '.') }}₫</span>
-                                    @endif
+                                    <span class="price-amount">@money($bill->bill_total)</span>
                                 </strong>
                             </li>
                             <li class="order-overview__payment-method method">
-                                Phương thức thanh toán: <strong>{{ $bill->payment_method == 1 ? 'COD' : 'Chuyển khoản ngân hàng' }}</strong>
+                                Phương thức thanh toán: <strong>{{ $bill->payment_method == 1 ? 'Trả tiền mặt khi nhận hàng' : 'Chuyển khoản ngân hàng'}}</strong>
                             </li>
 
                         </ul>

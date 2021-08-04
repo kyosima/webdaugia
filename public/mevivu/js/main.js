@@ -209,7 +209,13 @@ for(let i = 0; i < queryLenth; i++){
     /*--------------------------
         Select
     ----------------------------*/
-    $("select").select2();
+    $("select").select2({
+        allowClear: true,
+    });
+
+    $("select").on('change', function() {
+        $(this).trigger('blur');
+    });
 
     /*------------------
 		Single Product

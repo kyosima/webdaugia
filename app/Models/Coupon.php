@@ -28,7 +28,6 @@ use Illuminate\Database\Eloquent\Model;
 class Coupon extends Model
 {
 	protected $table = 'coupons';
-	public $incrementing = false;
 
 	protected $casts = [
 		'id' => 'int',

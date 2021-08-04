@@ -10,11 +10,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
+
 class CheckoutController extends Controller
 {
     //
-    public function index(){
-        if(Cart::instance('shopping')->count() == 0) {
+    public function index()
+    {
+        if (Cart::instance('shopping')->count() == 0) {
             return redirect('/');
         }
         $cities = DB::table('province')->get();
@@ -22,40 +24,57 @@ class CheckoutController extends Controller
     }
 
     // thuc hien dua len db va send mail cho user + admin
-    public function checkout(Request $request){
+    public function checkout(Request $request)
+    {
         $cart = Cart::instance('shopping')->content();
+
+        $validation = $request->validate([
+            'payment_method' => 'required|in:cod,banking',
+            'customer_Name' => 'required',
+            'customer_Phone' => ['required', 'regex:/((09|03|07|08|05)+([0-9]{8})\b)|(84)\d{9}/'],
+            'customer_Email' => 'required|email',
+            'customer_City' => 'required',
+            'customer_District' => 'required',
+            'customer_Ward' => 'required',
+            'customer_Address' => 'required',
+            'bill_total' => 'required',
+            'bill_subtotal' => 'required',
+            'bill_soluong' => 'required',
+        ]);
 
         $fullAddress = $request->customer_Address . ', ' . $request->phuong . ', ' . $request->quan . ', ' . $request->thanhpho;
 
-        return DB::transaction(function() use ($request, $cart, $fullAddress){
+        return DB::transaction(function () use ($request, $cart, $fullAddress) {
             try {
                 $bill = Bill::create([
                     'id_ofuser' => auth()->user() ? auth()->user()->id : null,
                     'note' => $request->customer_Note,
-                    'payment_method' => 1,
-                    'bill_total' => intval(str_replace(".","",$request->bill_total)),
-                    'bill_promo' => intval(str_replace(".","",$request->bill_promo)),
+                    'payment_method' => $request->payment_method == "cod" ? 1 : 0,
+                    'bill_subtotal' => intval(str_replace(".", "", $request->bill_subtotal)),
+                    'bill_total' => intval(str_replace(".", "", $request->bill_total)),
+                    'bill_promo' => intval(str_replace(".", "", $request->bill_promo)),
                     'bill_coupon' => $request->bill_coupon,
                     'bill_soluong' => $request->bill_soluong,
                 ]);
-        
+
                 $bill_address = new BillAddress();
                 $bill_address->name = $request->customer_Name;
                 $bill_address->email = $request->customer_Email;
                 $bill_address->phone = $request->customer_Phone;
                 $bill_address->address = $fullAddress;
-               
+
                 $bill->bill_address()->save($bill_address);
-        
-                foreach($cart as $item){
+
+                foreach ($cart as $item) {
                     BillDetail::create([
                         'id_ofbill' => $bill->id,
                         'id_ofproduct' => $item->id,
                         'SL' => $item->qty,
+                        'end_price' => $item->price
                     ]);
                 }
-        
-                session()->put('bill',[
+
+                session()->put('bill', [
                     'billId' => $bill->id,
                     'street' => $request->customer_Address,
                     'phuong' => $request->phuong,
@@ -64,20 +83,18 @@ class CheckoutController extends Controller
                 ]);
 
                 Cart::instance('shopping')->destroy();
-                $this->orderSuccess();
-
+                return redirect()->route('checkout.orderSuccess');
             } catch (\Throwable $th) {
                 throw new \Exception('Đã có lỗi xảy ra vui lòng thử lại');
                 return redirect()->back()->withErrors(['error' => $th->getMessage()]);
             }
         });
-
-        
     }
 
     // show cho KH de ktra thong tin
-    public function orderSuccess(){
-        if(session('bill')){
+    public function orderSuccess()
+    {
+        if (session('bill')) {
             $bill = Bill::where('id', session('bill.billId'))->first();
             $info = $bill->bill_address;
 
@@ -87,7 +104,7 @@ class CheckoutController extends Controller
             $quan = session('bill.quan');
             $thanhpho = session('bill.thanhpho');
 
-            // $this->sendMail(session('bill.billId'), $info, $products);
+            $this->sendMail($bill, $info, $products);
 
             session()->forget('bill');
             session()->forget('coupon');
@@ -97,11 +114,9 @@ class CheckoutController extends Controller
         }
     }
 
-    public function sendMail($id, $info, $products)
+    public function sendMail($bill, $info, $products)
     {
-        $bill = Bill::where('id', $id)->first();
         $userEmail = $info->email;
-
         // send mail
         $content = [
             'name' => $info->name,
@@ -110,19 +125,30 @@ class CheckoutController extends Controller
             'address' => $info->address,
             'billID' => $bill->id,
             'items' => $products,
+            'subtotal' => $bill->bill_subtotal,
             'total' => $bill->bill_total,
             'promo' => $bill->bill_promo,
+            'coupon' => $bill->bill_coupon,
+            'payment' => $bill->payment_method,
         ];
+
+        $message = view('emails.sendMailToUser');
+
         Mail::send('emails.sendMailToUser', $content, function ($message) use ($userEmail) {
-            $message->to($userEmail)->subject('MEVIVU');
+            $message->to($userEmail)->subject('Đặt hàng thành công');
         });
+
+        Mail::send('emails.sendMailToAdmin', $content, function ($message) {
+            $message->to('quocminh.brave@gmail.com')->subject('Có đơn hàng mới');
+        });
+        
     }
 
     public function getLocation(Request $request)
     {
         $parentId = $request->parent;
         $type = $request->type;
-        if($parentId && $type == 'city'){
+        if ($parentId && $type == 'city') {
             $location = DB::table('district')->where('_province_id', $parentId)->get();
             return response(['data' => $location]);
         } else {

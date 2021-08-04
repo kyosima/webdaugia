@@ -27,8 +27,8 @@ $(document).ready(function(){
                 $.each(response[0], function(key, value){
                     $('ul.mini-cart').prepend(
                         `<li class="mini-cart-item">
-                        <span class="remove" data-rowid="${value.rowId}" data-href="http://localhost:85/webdaugia/delete-cart">x</span>
-                        <a href="sanpham/${value.options.slug}" style="color: #000;">
+                        <span class="remove" data-rowid="${value.rowId}" data-href="${response[4]}">x</span>
+                        <a href="${response[3]}/${value.options.slug}" style="color: #000;">
                             <img src="${value.options.feature_img}" width="60" height="60">${value.name}
                         </a>
                         <p class="quantity">${value.qty} x <span class="amount">${ new Intl.NumberFormat('vn-VN').format(value.price) }₫</span>
@@ -90,8 +90,8 @@ $(document).ready(function(){
                 $.each(response[0], function(key, value){
                     $('ul.mini-cart').prepend(
                         `<li class="mini-cart-item">
-                        <span class="remove" data-rowid="${value.rowId}" data-href="http://localhost:85/webdaugia/delete-cart">x</span>
-                        <a href="sanpham/${value.options.slug}" style="color: #000;">
+                        <span class="remove" data-rowid="${value.rowId}" data-href="${response[4]}">x</span>
+                        <a href="${response[3]}/${value.options.slug}" style="color: #000;">
                             <img src="${value.options.feature_img}" width="60" height="60">${value.name}
                         </a>
                         <p class="quantity">${value.qty} x <span class="amount">${ new Intl.NumberFormat('vn-VN').format(value.price) }₫</span>
@@ -168,7 +168,7 @@ $(document).ready(function(){
                             $('ul.mini-cart').prepend(
                                 `<li class="mini-cart-item">
                                 <span class="remove" data-rowid="${value.rowId}" data-href="${url}">x</span>
-                                <a href="sanpham/${value.options.slug}" style="color: #000;">
+                                <a href="${response[3]}/${value.options.slug}" style="color: #000;">
                                     <img src="${value.options.feature_img}" width="60" height="60">${value.name}
                                 </a>
                                 <p class="quantity">${value.qty} x <span class="amount">${new Intl.NumberFormat('vn-VN').format(value.price)}₫</span>
@@ -230,7 +230,7 @@ $(document).ready(function(){
     
                         var pathName = $(location).attr('pathname');
                         if(pathName.includes('/cart')){
-                            window.location.replace("http://localhost:85/webdaugia");
+                            window.location.replace(response[4]);
                         }
                     }
     
@@ -250,7 +250,6 @@ $(document).ready(function(){
 	    --------------------- */
         var newVal = 0;
         $(document).on('click', '.qtybtn', function () {
-
             var $button = $(this);
             var oldValue = $button.parent().find('input').val();
             if ($button.hasClass('inc')) {

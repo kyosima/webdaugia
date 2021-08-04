@@ -122,7 +122,7 @@ class PostsController extends Controller
             $filter->scope('trashed', 'Thùng rác')->onlyTrashed();
         });
         $grid->actions(function ($actions) {
-            if (\ request('_ scope_') == 'trashed') {
+            if (\request('_ scope_') == 'trashed') {
                 $actions->add(new Restore());
             }
             $actions->disableView();
@@ -189,6 +189,8 @@ class PostsController extends Controller
             $form->datetime('timer_at', 'Thời gian đăng');
             // Add a form item to this column
             $form->inputImage('avatar', 'Ảnh đại điện')->value('/public/upload/product_default.png');
+
+            $form->datetime('abc', 'saaa')->format('DD-MM-YYYY HH:mm:ss');
         });
         
         $form->setWidth(12, 12);
@@ -198,6 +200,7 @@ class PostsController extends Controller
                 $form->timer_at = Carbon::now();
             }
         });
+
         return $form;
     }
 

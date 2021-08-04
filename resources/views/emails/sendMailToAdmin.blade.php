@@ -27,7 +27,7 @@
                                                         style="padding:36px 48px;display:block">
                                                         <h1
                                                             style="font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:30px;font-weight:300;line-height:150%;margin:0;text-align:left;color:#ffffff">
-                                                            Đơn hàng của bạn đã được tiếp nhận: #{{ $billID }}</h1>
+                                                            Đơn hàng mới #{{ $billID }}</h1>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -52,8 +52,8 @@
                                                                         <div id="m_584358752881652500body_content_inner"
                                                                             style="color:#636363;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:14px;line-height:150%;text-align:left">
 
-                                                                            <p style="margin:0 0 16px">Xin chào 
-                                                                                {{ $name }}. Đơn hàng của quý khách:
+                                                                            <p style="margin:0 0 16px">Bạn vừa nhận được
+                                                                                đơn hàng từ {{ $name }}. Đơn hàng như sau:
                                                                             </p>
 
                                                                             <h2
