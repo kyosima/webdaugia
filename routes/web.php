@@ -144,6 +144,7 @@ Route::group(['prefix' => 'dau-gia', 'middleware' => 'auth'], function(){
 
 Route::group(['prefix' => 'dau-gia'], function(){
     Route::post('/gui-dau-gia', [CampaignController::class, 'postAuction'])->name('campaign.postAuction');
+    Route::post('/tu-dong-dau-gia', [CampaignController::class, 'postAutoAuction'])->name('campaign.postAutoAuction');
     Route::post('/cap-nhat-dau-gia/{id}', [CampaignController::class, 'getAuction'])->name('campaign.getAuction');
     Route::get('/yeu-thich/{id}', [CampaignController::class, 'addWishList'])->name('campaign.addWishList');
     Route::get('/bat-dau/{id}', [CampaignController::class,'startCampaign'])->name('campaign.start');

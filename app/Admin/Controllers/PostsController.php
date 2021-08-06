@@ -190,7 +190,6 @@ class PostsController extends Controller
             // Add a form item to this column
             $form->inputImage('avatar', 'Ảnh đại điện')->value('/public/upload/product_default.png');
 
-            $form->datetime('abc', 'saaa')->format('DD-MM-YYYY HH:mm:ss');
         });
         
         $form->setWidth(12, 12);

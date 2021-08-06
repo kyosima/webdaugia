@@ -157,12 +157,13 @@ function countRunDetail(time, order, total,duration, status){
         var s = diff;
         if((d == -1) ){
             console.log('end ' + order);
+            $('#detail-order-'+order+' #status').text('Kết thúc');
+            $('#detail-order-'+order+' #list-counter').remove();
             stopDetail(order);
             clearInterval(timer);
             $('.auction-area').css('display','none')
             if((parseInt(order)+1) == parseInt(total)){
-                $('#detail-counter-'+order).empty().append('<div class="alert alert-warning text-center "><h5 class="text-dark">Sản phẩm đã kết thúc đấu giá</h5></div>');
-                $('.campaign__count_time_run').empty().append('<div class="alert alert-success text-center "><h4 class="text-dark">Đấu giá đã kết thúc</h4></div>');
+                $('.campaign__count_time_run').empty().append('<div class="alert alert-success text-center "><h5 class="text-dark">Chiến dịch đấu giá đã kết thúc</h5></div>');
                 $('#campaign-counter-title').remove();
             }
         }

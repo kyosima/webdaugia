@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\CampaignDetail;
 use App\Models\CampaignAuction;
 use App\Models\CampaignWishlist;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Events\CampaignEvent;
 use Carbon\Carbon;
@@ -146,7 +147,6 @@ class CampaignController extends Controller
                 Campaign::whereId($campaign->id)->update(['status' =>1]);
             }elseif((strtotime($now) > strtotime($campaign->time_start.'+'.$time_run.'minute'))){
                 Campaign::whereId($campaign->id)->update(['status' =>2]);
-    
             }
         }
         for($i=0; $i<count($details); $i++){
@@ -175,6 +175,42 @@ class CampaignController extends Controller
             $amount = $_POST['amount'];
             $detail_id = $_POST['detail_id'];
             $campaign_detail = CampaignDetail::find($detail_id);
+            $user_id = $user->id;
+            $user_name = $user->name;
+            if($campaign_detail->status !=1){
+                return 'Sản phẩm đã kết thúc đấu giá';
+            }elseif($amount <= $campaign_detail->detail_price_start){
+                return 'Giá bạn đưa ra phải lớn hơn giá khởi điểm';
+            }elseif($amount <= $campaign_detail->price_end){
+                return 'Giá bạn đưa ra phải lớn hơn giá hiện tại';
+            }elseif(($amount % $campaign_detail->detail_price_step) != 0){
+                return 'Giá bạn đưa ra phải theo giá bước nhảy';
+            }elseif($user_id == $campaign_detail->user_id){
+                return 'Bạn đang là người ra giá cao nhất';
+            }else{
+                if(($campaign_detail->user_id_auto_auction != null) &&($campaign_detail->user_id_auto_auction != $user->id) && ($amount < $campaign_detail->max_price_auto_auction)){
+                    $user_id = $campaign_detail->user_id_auto_auction;
+                    $amount = $amount+$campaign_detail->detail_price_step;
+                    $user_name = User::whereId($campaign_detail->user_id_auto_auction)->value('name');
+                }
+                CampaignAuction::insert(['user_id' => $user_id, 'campaign_detail_id' => $detail_id, 'price'=>$amount]);
+                CampaignDetail::whereId($detail_id)->update(['price_end'=>$amount, 'user_id'=>$user_id, 'user_name'=>$user_name]);
+                $auction = CampaignAuction::whereCampaignDetailId($detail_id)->orderBy('id','desc')->first();
+                $campaign_detail = CampaignDetail::find($detail_id);
+                event(new CampaignEvent( $campaign_detail));
+                return 'Đấu giá của bạn đã được gửi đi';
+            }
+        }
+    }
+
+    public function postAutoAuction(Request $request){
+        if(!Auth::check()){
+            return false;
+        }else{
+            $user = Auth::user();
+            $amount = $_POST['amount'];
+            $detail_id = $_POST['detail_id'];
+            $campaign_detail = CampaignDetail::find($detail_id);
             if($campaign_detail->status !=1){
                 return 'Sản phẩm đã kết thúc đấu giá';
             }elseif($amount <= $campaign_detail->detail_price_start){
@@ -184,12 +220,16 @@ class CampaignController extends Controller
             }elseif(($amount % $campaign_detail->detail_price_step) != 0){
                 return 'Giá bạn đưa ra phải theo giá bước nhảy';
             }else{
-                CampaignAuction::insert(['user_id' => $user->id, 'campaign_detail_id' => $detail_id, 'price'=>$amount]);
-                CampaignDetail::whereId($detail_id)->update(['price_end'=>$amount, 'user_id'=>$user->id]);
-                $id = $request->id;
-                $auction = CampaignAuction::whereCampaignDetailId($detail_id)->orderBy('id','desc')->first();
-                event(new CampaignEvent( $auction));
-                return 'Đấu giá của bạn đã được gửi đi';
+                if($amount > $campaign_detail->max_price_auto_auction){
+                    CampaignDetail::whereId($detail_id)->update(['user_id_auto_auction'=>$user->id,'max_price_auto_auction'=>$amount]);
+                    if(($campaign_detail->status ==1) &&($user->id != $campaign_detail->user_id)){
+                        CampaignAuction::insert(['user_id' => $user->id, 'campaign_detail_id' => $detail_id, 'price'=>$campaign_detail->price_end+$campaign_detail->detail_price_step]);
+                        CampaignDetail::whereId($detail_id)->update(['price_end'=>$campaign_detail->price_end+$campaign_detail->detail_price_step, 'user_id'=>$user->id]);
+                        $campaign_detail = CampaignDetail::find($detail_id);
+                        event(new CampaignEvent( $campaign_detail));
+                    }
+                }
+                return 'Đã cài đặt tự động đấu giá';
             }
         }
     }

@@ -38,7 +38,7 @@
 	src: local('Open Sans Light'), local('OpenSans-Light'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/DXI1ORHCpsQm3Vp6mXoaTaRDOzjiPcYnFooOUGCOsRk.woff) format('woff');
   } */
 
-html, body {
+  html, body {
 	height: 100%;
 	font-family: 'Pridi', serif;
 	-webkit-font-smoothing: antialiased;
@@ -115,7 +115,61 @@ ul, ol {
 	padding: 0;
 	margin: 0;
 }
-
+ #timer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+  }
+  .number-list {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+  }
+  .number-list .item {
+	width: 60px;
+	height: 60px;
+	background: #006741;
+	margin-right: 15px;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24px;
+	color: white;
+	font-weight: 700;
+	font-family: sans-serif;
+  }
+  .unit-list {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 10px;
+  }
+  .unit-list .item {
+	width: 60px;
+	margin-right: 15px;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
+	color: #006741;
+	font-weight: 500;
+	font-family: sans-serif;
+  }
+  
+  .timer-end {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24px;
+	color: #006741;
+	font-weight: 700;
+	font-family: sans-serif;
+  }
+  
 /*---------------------
   Helper CSS
 -----------------------*/
@@ -4593,9 +4647,8 @@ a.active{
 	border-radius: 5px;
 	margin: 10px 0px;
 }
-.list-detail ul{
-	height: auto;
-	max-height: 200px;
+.list-detail .lists{
+
 	overflow-y: scroll;
 padding: 0px 20px
 }
@@ -4789,4 +4842,33 @@ padding: 0px 20px
 	to {
 		opacity: 1
 	}
+}
+.search-detail{
+	padding: 10px 0px;
+	
+}
+.camapaign__product{
+	border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px 0px;
+}
+.camapaign__product .featured__item__pic{
+	max-height: 200px;
+}
+.number-list-detail .item{
+	display: inline-block;
+	color: #fff;
+}
+.detail-counter{
+	display: inline-block;
+}
+#detail-shot-desc{
+	overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    padding: 0;
+	line-height: 15px;
+
 }
