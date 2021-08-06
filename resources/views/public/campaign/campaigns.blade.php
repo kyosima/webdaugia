@@ -45,7 +45,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title">
-                    <h2>Chiến dịch đang đấu giá</h2>
+                    <h2>Sản phẩm đang đấu giá</h2>
                 </div>
             </div>
             <div class="categories__slider owl-carousel">
@@ -65,7 +65,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h2>Chiến dịch chuẩn bị đấu giá</h2>
+                        <h2>Sản phẩm Chuẩn bị đấu giá</h2>
                     </div>
                 </div>
                 <div class="categories__slider owl-carousel">
@@ -87,7 +87,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title">
-                    <h2>Chiến dịch đấu giá gần đây</h2>
+                    <h2>Sản phẩm đấu giá gần đây</h2>
                 </div>
             </div>
             <div class="categories__slider owl-carousel">
