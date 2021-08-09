@@ -7,6 +7,8 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends AdminController
 {
@@ -83,6 +85,15 @@ class UserController extends AdminController
         $grid->actions(function ($actions) {
             $actions->disableView();
         });
+
+        $grid->column('Tạo đơn hàng')->display(function(){
+            if(DB::table('campaign_details')->where('user_id', $this->id) ->where('status', 2)->where('is_ordered', 0)->exists()) {
+                return '<a href="./orders/createAuctionOrder/'.$this->id.'" class="btn btn-success"><i class="fa fa-shopping-cart"></i></a>';
+            } else {
+                return '<span>Thành viên chưa có sản phẩm</span>';
+            }
+        });
+
         return $grid;
     }
 
