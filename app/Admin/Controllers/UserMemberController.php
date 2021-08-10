@@ -8,7 +8,9 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class UserController extends AdminController
+use App\Admin\Extensions\UserUpgrade;
+
+class UserMemberController extends AdminController
 {
     /**
      * Title for current resource.
@@ -25,12 +27,13 @@ class UserController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new User());
-        $grid->model()->where('type', '=', 2);
+        $grid->model()->where('type', '=', 1);
+
         $grid->column('id', __('Id'));
-        $grid->column('Tên đại lý')->display(function () {
+        // $grid->column('name', __('Tên đăng nhập'));
+        $grid->column('Tên thành viên')->display(function () {
             return User::find($this->id)->user_info()->first()->fullname;
         });
-        // $grid->column('name', __('Tên đăng nhập'));
         $grid->column('email', __('Email'));
         // $grid->column('email_verified_at', __('Email verified at'));
         // $grid->column('password', __('Password'));
@@ -82,7 +85,6 @@ class UserController extends AdminController
             });
         });
         
-
         $grid->actions(function ($actions) {
             $actions->disableView();
             
@@ -121,9 +123,6 @@ class UserController extends AdminController
         // $rules = ($method === 'PUT') ? 'required' : 'required|unique:demo_users,name';
 
         $form = new Form(new User());
-
-        
-
         $form->column(1/2, function ($form) {
             $form->text('name', __('Tên đăng nhập'))->rules(['required', 'string' , 'min:3', 'max:255', 'unique:users,name,{{id}}'], [
                 'required' => 'Họ và tên không được để trống',
@@ -166,8 +165,10 @@ class UserController extends AdminController
             
         });
         $form->column(12, function ($form) {
-            $form->radio('type', __('Loại Người Dùng'))->options([1 => 'Thành viên', 2 => 'Đại lý'])->default('2');
+            $form->radio('type', __('Loại Người Dùng'))->options([1 => 'Thành viên', 2 => 'Đại lý'])->default('1');
         });
+        
+
         $form->setWidth(12, 12);
         
         $form->saving(function (Form $form) {

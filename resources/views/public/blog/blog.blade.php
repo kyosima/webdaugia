@@ -9,7 +9,7 @@
     <section class="blog spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-md-5">
+                <div class="col-lg-4 col-md-5 d-none d-md-block">
                     <x-sidebarblog />
                 </div>
                 <div class="col-lg-8 col-md-7">

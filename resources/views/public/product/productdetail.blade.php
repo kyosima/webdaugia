@@ -10,7 +10,6 @@
                     <div class="breadcrumb__option">
                         <a href="{{URL::to('/')}}">Trang chủ</a>
                         <a href="{{URL::to('/cua-hang')}}">Betta</a>
-                        <span>Cá cảnh đẹp rực rỡ</span>
                     </div>
                 </div>
             </div>
