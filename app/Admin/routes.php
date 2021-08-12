@@ -41,10 +41,14 @@ Route::group([
     $router->post('orders/add-new-product/{id}', 'OrderController@addProductToOrder')->name('orders.addProductToOrder');
 
     $router->delete('orders/delete-product/{id}', 'OrderController@deleteProduct')->name('orders.deleteProduct');
-    $router->resource('product-categories', ProductCategoryController::class);
     
-    $router->resource('campaigns', CampaignController::class);
+    $router->get('orders/createAuctionOrder/{id}', 'OrderController@createAuctionOrder')->name('orders.createAuctionOrder');
 
+    $router->post('orders/addAutionOrder', 'OrderController@addAutionOrder')->name('orders.addAutionOrder');
+    
+    $router->resource('product-categories', ProductCategoryController::class);
+    $router->resource('campaigns', CampaignController::class);
     $router->put('/kiem-tra-duong-dan', 'PostsController@createSlug');
+
 
 });

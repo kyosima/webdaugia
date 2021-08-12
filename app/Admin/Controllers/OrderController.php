@@ -13,6 +13,8 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
 use App\Admin\Selectable\Products;
+use App\Models\BillAddress;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -69,6 +71,68 @@ class OrderController extends Controller
                 'bill' => $bill,
                 'products' => $products
             ]);
+    }
+
+    public function createAuctionOrder($id, Content $content) {
+        $user = User::findOrFail($id);
+        return $content
+            ->header(trans('Sửa đơn hàng'))
+            ->view('customCreateOrder', [
+                'user' => $user,
+            ]);
+    }
+
+    public function addAutionOrder(Request $request) {
+        $subtotal = 0; 
+        return DB::transaction(function () use ($request, $subtotal) {
+            try {
+                $bill = Bill::create([
+                    'id_ofuser' => $request->user_id,
+                    'note' => $request->note,
+                    'payment_method' => $request->payment_method,
+                    'bill_subtotal' => 0,
+                    'bill_total' => 0,
+                    'bill_promo' => 0,
+                    'bill_soluong' => count($request->order_item_id),
+                ]);
+
+                $bill_address = new BillAddress();
+                $bill_address->name = $request->bill_address['name'];
+                $bill_address->email = $request->bill_address['email'];
+                $bill_address->phone = $request->bill_address['phone'];
+                $bill_address->address = $request->bill_address['address'];
+
+                $bill->bill_address()->save($bill_address);
+
+                foreach ($request->order_item_id as $item) {
+                    BillDetail::create([
+                        'id_ofbill' => $bill->id,
+                        'id_ofproduct' => $item['product_id'],
+                        'SL' => $item['qty'],
+                        'end_price' => $item['price']
+                    ]);
+
+                    $subtotal += floatval($item['price']);
+
+                    // Chuyen status product trong table "Campaign detail"
+                    DB::table('campaign_details')->where('campaign_id', $item['campaign'])
+                                                ->where('product_id', $item['product_id'])
+                                                ->update([
+                                                    'is_ordered' => 1
+                                                ]);
+                }
+
+                $bill->bill_subtotal = $subtotal;
+                $bill->bill_total = $subtotal;
+                $bill->save();
+
+                return redirect()->route('admin.orders.index');
+            } catch (\Throwable $th) {
+                throw new \Exception('Đã có lỗi xảy ra vui lòng thử lại');
+                return redirect()->back()->withErrors(['error' => $th->getMessage()]);
+            }
+        });
+
     }
 
     public function updateOrder(Request $request, $id){
@@ -287,6 +351,7 @@ class OrderController extends Controller
         $grid->actions(function ($actions) {
             $actions->disableView();
         });
+
         return $grid;
     }
 
