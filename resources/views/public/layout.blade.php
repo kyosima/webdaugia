@@ -98,9 +98,9 @@ $category = CategoryPost::select('title', 'slug')->get();
                 <li><a href="{{URL::to('/huong-dan-dau-gia')}}">Hướng dẫn đấu giá</a></li> 
                 <li><a href="{{URL::to('/blog')}}">Blog</a>
                     <ul class="header__menu__dropdown">
-                        @foreach($category as $value)
+                        {{-- @foreach($category as $value)
                         <li><a href="{{URL::to('/danh-muc-bai-viet/'.$value->slug)}}">{{$value->title}}</a></li>
-                        @endforeach  
+                        @endforeach   --}}
                     </ul>
                 </li>
                 

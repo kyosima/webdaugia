@@ -18,16 +18,12 @@ use App\Http\Controllers\UserLoginController;
 
 use App\Http\Controllers\UserRegisterController;
 use App\Http\Controllers\UserGetPassword;
-<<<<<<< HEAD
 use App\Http\Controllers\WishListController;
-use App\Http\Controllers\UserProfileController;
-=======
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\SinglePageController;
 
 
->>>>>>> truong
 
 
 /*

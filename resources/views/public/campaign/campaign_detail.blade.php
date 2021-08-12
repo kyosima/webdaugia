@@ -178,7 +178,11 @@
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="alert alert-info" id="user-detail-{{$detail->id}}">
+                    @if($detail->status != 2)
                     <h5 class="text-center text-dark">Người ra giá cao nhất hiện tại</h5>
+                    @else
+                        <h5 class="text-center text-dark">Người chiến thắng</h5>
+                    @endif
                     <h3 class="text-center text-danger">
                     @if($detail->status==0)
                         <span id="user-top">Chưa có</span>

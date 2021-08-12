@@ -1163,6 +1163,10 @@ span.amount {
 }
 
 .featured__item {
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	padding: 5px 5px 20px;
+	margin-bottom: 20px;
 	border: 1px solid #3c3c3c;
     border-radius: 5px;
     padding: 5px 5px 20px;
@@ -4222,6 +4226,7 @@ a.active{
 /* Wide Mobile = 480px */
 
 @media only screen and (max-width: 767px) {
+	.header__logo img {}
 	.seach_form{
 		position: unset;
 		width: 100%;
@@ -4482,7 +4487,7 @@ a.active{
 	.over_hid {
 		overflow: hidden;
 	}
-
+}
 
 /* Small Device = 320px */
 
