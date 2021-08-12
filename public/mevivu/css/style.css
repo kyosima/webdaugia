@@ -936,10 +936,11 @@ a{
 }
 
 .featured__item {
-	border: 1px solid #ddd;
-	border-radius: 5px;
-	padding:5px 5px 20px;
-	margin-bottom: 20px;
+	border: 1px solid #3c3c3c;
+    border-radius: 5px;
+    padding: 5px 5px 20px;
+    margin-bottom: 20px;
+    box-shadow: rgb(255 255 255 / 19%) 0px 6px 20px, rgb(255 255 255 / 23%) 0px 3px 6px;
 }
 
 .featured__item:hover .featured__item__pic .featured__item__pic__hover {
@@ -951,6 +952,7 @@ a{
 	position: relative;
 	overflow: hidden;
 	background-position: center center;
+	border: 1px solid #ff0000;
 }
 
 .featured__item__pic__hover {
