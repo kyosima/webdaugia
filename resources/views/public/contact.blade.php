@@ -71,7 +71,20 @@
         </div>
     </div>
     <!-- Map End -->
-
+    <!-- Contact Form Begin -->
+    <div class="contact-form spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="contact__form__title">
+                        <h2>Thông Tin Đại Lý</h2>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!-- Contact Form End -->
     <!-- Contact Form Begin -->
     <div class="contact-form spad">
         <div class="container">

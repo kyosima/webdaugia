@@ -22,6 +22,8 @@ Route::group([
 
     $router->resource('users', UserController::class);
 
+    $router->resource('users-member', UserMemberController::class);
+
     $router->resource('posts', PostsController::class);
 
     $router->resource('categories', CategoryPostController::class);

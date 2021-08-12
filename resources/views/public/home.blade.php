@@ -107,7 +107,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="banner__pic">
+                <div class="banner__pic pb-3">
                     <img src="{{asset('public/mevivu/img/banner/banner-1.jpg')}}" alt="">
                 </div>
             </div>

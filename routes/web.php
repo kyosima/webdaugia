@@ -18,8 +18,16 @@ use App\Http\Controllers\UserLoginController;
 
 use App\Http\Controllers\UserRegisterController;
 use App\Http\Controllers\UserGetPassword;
+<<<<<<< HEAD
 use App\Http\Controllers\WishListController;
 use App\Http\Controllers\UserProfileController;
+=======
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\AgentController;
+use App\Http\Controllers\SinglePageController;
+
+
+>>>>>>> truong
 
 
 /*
@@ -46,6 +54,10 @@ Route::get('/danh-muc-bai-viet/{categoryPost:slug}', [BlogController::class, 'ca
 
 Route::get('/bai-viet/{post:slug}', [BlogController::class, 'detail']);
 
+Route::get('/blog/tim-kiem', [BlogController::class, 'search']);
+
+
+
 //start login, register
 Route::get('socket', 'SocketController@index');
 Route::post('sendmessage', 'SocketController@sendMessage');
@@ -70,13 +82,27 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function(){
     //profile user
 });
 
+//danh sách đại lý
+
+Route::get('/danh-sach-dai-ly', [AgentController::class, 'index']);
 
 
 Route::get('/dang-ky', [UserRegisterController::class, 'index']);
 
 Route::post('/dang-ky', [UserRegisterController::class, 'postRegister'])->name('post.register');
 
+//các trang đơn
+
+Route::get('/nha-lai-tao', [SinglePageController::class, 'breeders']);
+
+Route::get('/chinh-sach-dai-ly', [SinglePageController::class, 'policyAgent']);
+
+Route::get('/huong-dan-dau-gia', [SinglePageController::class, 'auctionGuide']);
+
+Route::get('/gioi-thieu', [SinglePageController::class, 'introduce']);
+
 //end login, register
+
 //get password
 Route::get('gui-yeu-cau-lay-mat-khau', [UserGetPassword::class, 'getPassword'])->name('getpassword');
 

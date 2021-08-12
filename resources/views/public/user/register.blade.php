@@ -7,9 +7,9 @@
             <div class="col-lg-12">
                 <x-alert />
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-6">
             <div class="card">
-                <div class="card-header text-center">Đăng ký đại lý</div>
+                <div class="card-header text-center">Đăng ký</div>
                 <div class="card-body">
                     <form action="{{route('post.register')}}" method="post">
                         @csrf

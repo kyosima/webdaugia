@@ -4,7 +4,7 @@
     <section class="blog-details spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-md-5 order-md-1 order-2">
+                <div class="col-lg-4 col-md-5 order-md-1 order-2 d-none d-md-block">
                     <x-sidebarblog />
                 </div>
                 <div class="col-lg-8 col-md-7 order-md-1 order-1">

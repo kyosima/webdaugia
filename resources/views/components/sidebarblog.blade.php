@@ -3,12 +3,12 @@ use App\Models\Posts;
 $posts_new = Posts::orderBy('id', 'DESC')->take(5)->get();
 @endphp
 <div class="blog__sidebar">
-    <div class="blog__sidebar__search">
-        <form action="#">
-            <input type="text" placeholder="Search...">
+    <!-- <div class="blog__sidebar__search">
+        <form action="" method="get">
+            <input type="text" name="keyword" id="blog_search" placeholder="TÌm kiếm...">
             <button type="submit"><span class="icon_search"></span></button>
         </form>
-    </div>
+    </div> -->
     
     <div class="blog__sidebar__item">
         <h4>Bài viết mới</h4>

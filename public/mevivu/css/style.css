@@ -1097,17 +1097,17 @@ span.amount {
 
 .categories__slider.owl-carousel .owl-nav button {
 	font-size: 18px;
-	color: #1c1c1c;
-	height: 70px;
+	color: white;
+	height: 30px;
 	width: 30px;
-	line-height: 70px;
+	line-height: 30px;
 	text-align: center;
 	border: 1px solid #ebebeb;
 	position: absolute;
 	left: -35px;
 	top: 50%;
 	-webkit-transform: translateY(-35px);
-	background: #ffffff;
+	/* background: #0ca2e8; */
 }
 
 .categories__slider.owl-carousel .owl-nav button.owl-next {
@@ -1163,10 +1163,11 @@ span.amount {
 }
 
 .featured__item {
-	border: 1px solid #ddd;
-	border-radius: 5px;
-	padding: 5px 5px 20px;
-	margin-bottom: 20px;
+	border: 1px solid #3c3c3c;
+    border-radius: 5px;
+    padding: 5px 5px 20px;
+    margin-bottom: 20px;
+    box-shadow: rgb(255 255 255 / 19%) 0px 6px 20px, rgb(255 255 255 / 23%) 0px 3px 6px;
 }
 
 .featured__item:hover .featured__item__pic .featured__item__pic__hover {
@@ -1178,6 +1179,7 @@ span.amount {
 	position: relative;
 	overflow: hidden;
 	background-position: center center;
+	border: 1px solid #ff0000;
 }
 
 .featured__item__pic__hover {
@@ -1283,17 +1285,17 @@ span.amount {
 
 .latest-product__slider.owl-carousel .owl-nav {
 	position: absolute;
-	right: 20px;
+	right: 0;
 	top: -75px;
 }
 
 .latest-product__slider.owl-carousel .owl-nav button {
 	height: 30px;
 	width: 30px;
-	background: #F3F6FA;
+	background: #0ca2e8;
 	border: 1px solid #e6e6e6;
 	font-size: 14px;
-	color: #636363;
+	color: white;
 	margin-right: 10px;
 	line-height: 30px;
 	text-align: center;
@@ -1365,7 +1367,7 @@ span.amount {
 	display: flex;
 	align-items: center;
 	padding: 15px 0 15px;
-	background: #7fad39;
+	/* background: #0ca2e8; */
 }
 
 .breadcrumb__text h2 {
@@ -1383,9 +1385,9 @@ span.amount {
 	position: relative;
 }
 
-.breadcrumb__option a:after {
+.breadcrumb__option a:not(:last-child):after {
 	position: absolute;
-	right: -12px;
+	right: -18px;
 	top: 13px;
 	height: 1px;
 	width: 10px;
@@ -3266,7 +3268,7 @@ section.order-success .success-color {
 -----------------------*/
 
 .blog__sidebar {
-	padding-top: 50px;
+	/* padding-top: 50px; */
 }
 
 .blog__sidebar__item {
@@ -3893,7 +3895,8 @@ section.order-success .success-color {
 .sec_login .nice-select {
 	line-height: 25px !important;
 	height: 38px;
-	padding-right: 84px;
+	/* padding-right: 84px; */
+	width:100%;
 }
 
 .sec_login .nice-select.open .list {
@@ -4056,7 +4059,7 @@ a.active{
 		overflow-y: auto;
 		z-index: 99;
 		padding: 20px;
-		padding-top: 50px;
+		/* padding-top: 50px; */
 		opacity: 0;
 		display: block;
 		-webkit-transition: all, 0.6s;
@@ -4133,10 +4136,10 @@ a.active{
 		font-weight: 700;
 	}
 	.humberger__menu__cart {
-		margin-bottom: 25px;
+		margin-bottom: 1rem;
 	}
 	.humberger__menu__widget {
-		margin-bottom: 20px;
+		margin-bottom: 1rem;
 	}
 	.humberger__menu__widget .header__top__right__language {
 		margin-right: 20px;
@@ -4219,7 +4222,11 @@ a.active{
 /* Wide Mobile = 480px */
 
 @media only screen and (max-width: 767px) {
-	.header__logo img {
+	.seach_form{
+		position: unset;
+		width: 100%;
+	}
+	.header__logo img{
 		width: 38%;
 	}
 	.hero__categories {
@@ -4244,7 +4251,7 @@ a.active{
 	}
 	.categories__slider.owl-carousel .owl-nav {
 		text-align: center;
-		margin-top: 40px;
+		/* margin-top: 20px; */
 	}
 	.categories__slider.owl-carousel .owl-nav button {
 		position: relative;
@@ -4317,7 +4324,7 @@ a.active{
 		overflow-y: auto;
 		z-index: 99;
 		padding: 20px;
-		padding-top: 50px;
+		/* padding-top: 50px; */
 		opacity: 0;
 		display: block;
 		-webkit-transition: all, 0.6s;
@@ -4394,10 +4401,10 @@ a.active{
 		font-weight: 700;
 	}
 	.humberger__menu__cart {
-		margin-bottom: 25px;
+		margin-bottom: 1rem;
 	}
 	.humberger__menu__widget {
-		margin-bottom: 20px;
+		margin-bottom: 1rem;
 	}
 	.humberger__menu__widget .header__top__right__language {
 		margin-right: 20px;
@@ -4475,7 +4482,7 @@ a.active{
 	.over_hid {
 		overflow: hidden;
 	}
-}
+
 
 /* Small Device = 320px */
 

@@ -31,7 +31,7 @@ class UserLoginController extends Controller
 
     public function getLogout(){
         Auth::logout();
-        return redirect('/dang-nhap');
+        return redirect('/');
     }
 
 }
