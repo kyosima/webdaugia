@@ -177,29 +177,30 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
-                <div class="auction-area" >
-                    <div class="alert alert-info" id="user-detail-{{$detail->id}}">
-                        <h5 class="text-center text-dark">Người ra giá cao nhất hiện tại</h5>
-                        <h3 class="text-center text-danger">
-                        @if($detail->status==0)
+                <div class="alert alert-info" id="user-detail-{{$detail->id}}">
+                    <h5 class="text-center text-dark">Người ra giá cao nhất hiện tại</h5>
+                    <h3 class="text-center text-danger">
+                    @if($detail->status==0)
+                        <span id="user-top">Chưa có</span>
+                    @elseif($detail->status==1)
+                            @if($detail->user_id == null)
                             <span id="user-top">Chưa có</span>
-                        @elseif($detail->status==1)
-                                @if($detail->user_id == null)
-                                <span id="user-top">Chưa có</span>
-                            @else
-                            <span id="user-top">{{ App\Models\UserInfo::whereId($detail->user_id)->value('fullname')}}</span>
-                            @endif
-                        @elseif($detail->status==2)
-                                
-                                        @if($detail->user_id == null)
-                                        <span id="user-top">Chưa có</span>
-                                        @else
-                                        <span id="user-top">{{ App\Models\UserInfo::whereId($detail->user_id)->value('fullname')}}</span>
-                                        @endif
-                                
+                        @else
+                        <span id="user-top">{{ App\Models\UserInfo::whereId($detail->user_id)->value('fullname')}}</span>
                         @endif
-                        </h3>
-                    </div>
+                    @elseif($detail->status==2)
+                            
+                                    @if($detail->user_id == null)
+                                    <span id="user-top">Chưa có</span>
+                                    @else
+                                    <span id="user-top">{{ App\Models\UserInfo::whereId($detail->user_id)->value('fullname')}}</span>
+                                    @endif
+                            
+                    @endif
+                    </h3>
+                </div>
+                <div class="auction-area"  @if($detail->status !=1) style="display:none"@endif>
+                   
                     <h4 class="text-center">Tự động đấu giá sản phẩm này</h4>
                     <p class="text-center">Đưa ra mức giá cao nhất bạn có thể đấu giá cho sản phẩm này</p>
                     <div class="input-group mb-3">

@@ -203,6 +203,7 @@ function countStartDetail(time, order, total,duration, status){
             $('#detail-counter-'+order+ ' .minute').text(m);
             $('#detail-counter-'+order+ ' .second').text(s);
             if((d == 0) && (h==0) && (m == 0) && (s ==0)){
+                $('#detail-order-'+order+' #status').text('Đang chạy');   
                 clearInterval(timer);
                 countRunDetail(time, order, total, duration,status);
             }

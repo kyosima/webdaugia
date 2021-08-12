@@ -28,12 +28,12 @@
                         <div class="detail-counter" id="detail-counter-{{$order}}" data-url="{{url('dau-gia/bat-dau/detail/'.$item->id)}}"  data-urlcancel="{{url('dau-gia/ket-thuc/detail/'.$item->id)}}">
                             <div id="timer-detail">
                                 <div class="number-list-detail">
-                                <div class="item day">00</div>
-                                <div class="item hour">00</div>
-                                <div class="item minute">00</div>
-                                <div class="item second">00</div>
+                                <div class="item day">00</div>ngày : 
+                                <div class="item hour">00</div>giờ : 
+                                <div class="item minute">00</div>phút : 
+                                <div class="item second">00</div>giây
                                 </div>
-                                
+                        
                             </div>
                         </div>
                         <script> 
