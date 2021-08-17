@@ -42,7 +42,7 @@
 <!-- Product Details Section Begin -->
 <section class="product-details spad">
     <div class="container">
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-12">
                 <h3 class="product__detail__title">SP{{$order+1}}-{{$product->title}}</h3>
                 <div class="text-left my-1">
@@ -58,8 +58,8 @@
                     @endif
                 </div>
             </div>
-        </div>
-        <div class="row">
+        </div> --}}
+        {{-- <div class="row">
             <div class="col-lg-6 col-md-6 col-xs-6">
                 <h6>Video</h6>
                 <iframe width="100%" height="300"src="{{$detail->video}}">
@@ -69,14 +69,11 @@
                 <h6>Mô tả</h6>
                 <p>{!! $product->desc_long!!}</p>
             </div>
-        </div>
+        </div> --}}
         <div class="row">
-            <div class="col-lg-6 col-md-6">
-                <div class="product__details__text">
-                    
-                    @if($detail->status ==0)
+            <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
+                @if($detail->status ==0)
                         <h5>Thời gian đấu đến khi đấu giá</h5>
-
                         <div class="detail-counter" style="display: block" id="detail-counter-{{$order}}" data-url="{{url('dau-gia/bat-dau/detail/'.$detail->id)}}"  data-urlcancel="{{url('dau-gia/ket-thuc/detail/'.$detail->id)}}">
                             <div id="timer">
                                 <div class="number-list">
@@ -118,11 +115,82 @@
                         <script>
                             countRunDetail('{{$campaign->time_start}}',{{$order}}, {{count($details)}},{{$campaign->time_range}}, {{$detail->status}});
                         </script>
-                   
                     @endif
-                 
+            </div>
+            <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
+                <h5>Thông tin sản phẩm</h5>
+                <div class="buttons-view">
+                    <a class="btn-detail-view" data-url="{{url('dau-gia/lay-hinh-anh/')}}" data-id="{{$detail->id}}" onclick="getImage(this)">Hình ảnh</a>
+                    <a class="btn-detail-view" data-url="{{url('dau-gia/lay-video/')}}" data-id="{{$detail->id}}" onclick="getVideo(this)">Video</a>
+                    @if($campaign->status != 2)
+                    <a class="btn-detail-view" id="add-detail-wishlist-{{$detail->id}}" data-detailid="{{$detail->id}}" data-url="{{url('dau-gia/yeu-thich')}}" data-status="0" onclick="addCampaintoWishlist(this)">
+                        @if($detail->wishlist()->first()==null)
+                            <i class="material-icons">favorite_border</i>
+                                @else
+                            <i class="material-icons">favorite</i>
+                        @endif
+                        <span>Yêu thích</span>
+                    </a>
+                    @endif
+            
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__text">
+                    
                     <div id="price-detail-{{$detail->id}}" class="current-price-area">
-                        <div class="product__warraper">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="alert alert-light text-center">
+                                    <small class="text-dark">Giá khởi điểm</small><br/>
+                                    <b class="text-danger">{{getCurrency($detail->detail_price_start)}}</b>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="alert alert-light text-center">
+                                    <small class="text-dark">Giá bước nhảy</small><br/>
+                                    <b class="text-danger">{{getCurrency($detail->detail_price_step)}}</b>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="alert alert-warning text-center">
+                                    @if($detail->status!=2)
+                                        <small class="text-dark">Giá hiện tại</small><br/>
+                                    @else
+                                        <small class="text-dark">Giá cuối cùng</small><br/>
+                                    @endif
+                                    <b class="text-danger" id="current-price">{{getCurrency($detail->detail_price_start)}}</b>
+                                </div>
+                            </div>
+                            @if($detail->status!=2)
+                                <div class="col-6">
+                                    <div class="alert alert-info text-center">
+                                        <small class="text-dark">Giá tiếp theo</small><br/>
+                                        <b class="text-danger" id="next-price">{{getCurrency($detail->detail_price_step + $detail->price_end)}}</b>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="auction-area" @if($detail->status !=1) style="display:none"@endif>
+                            <h4 class="text-center">Đấu giá sản phẩm này</h4>
+                            <form id="auction-form" class="form text-center" action="{{url('/dau-gia/gui-dau-gia')}}" method="POST">
+                                <div class="input-group mb-3">
+                                    <input type="hidden" id="detail_id" value="{{$detail->id}}" name="detail_id">
+                                    <input type="hidden" id="auction-cf-{{$detail->id}}" value="{{$detail->price_end + $detail->detail_price_step}}" name="amount">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-info" type="submit">Đấu giá</button>
+                                </div>
+                                <div class="notice-auction" style="display: none">
+                                    <div class="alert alert-danger text-center">
+                                        
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        {{-- <div class="product__warraper">
                             <p class="product__details__price">
                                 <span class="text-light">Giá khởi điểm: <span class="n__price text-danger">{{getCurrency($detail->detail_price_start)}}</span></span>
                             </p>
@@ -143,26 +211,10 @@
                                     <span class="text-light">Giá tiếp theo: <span class="n__price text-danger" id="next-price">{{getCurrency($detail->detail_price_step + $detail->price_end)}}</span></span>
                                 </p>
                             @endif
-                        </div>
+                        </div> --}}
                     </div>
                     
-                        <div class="auction-area" @if($detail->status !=1) style="display:none"@endif>
-                            <h4 class="text-center">Đấu giá sản phẩm này</h4>
-                            <form id="auction-form" class="form text-center" action="{{url('/dau-gia/gui-dau-gia')}}" method="POST">
-                                <div class="input-group mb-3">
-                                    <input type="hidden" id="detail_id" value="{{$detail->id}}" name="detail_id">
-                                    <input type="hidden" id="auction-cf-{{$detail->id}}" value="{{$detail->price_end + $detail->detail_price_step}}" name="amount">
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-info" type="submit">Đấu giá</button>
-                                </div>
-                                <div class="notice-auction" style="display: none">
-                                    <div class="alert alert-danger text-center">
-                                        
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                       
                     {{-- <ul>
                         <li><b>Danh mục</b> <span>{{$product->category->title}}</span></li>
                         <li><b>Chia sẻ</b>
@@ -232,7 +284,7 @@
             
             
         </div>
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-12">
                 <div class="product__details__pic">
                     <div class="product__details__pic__item">
@@ -247,7 +299,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </section>
 <!-- Product Details Section End -->
@@ -279,7 +331,24 @@
 </section> --}}
 <!-- Related Product Section End -->
 
-
+<div id="detail-media" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        {{-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> --}}
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+          {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+        </div>
+      </div>
+    </div>
+  </div>
   <script>
     $(document).ready(function(){
       $('.toast').toast('show');
@@ -300,72 +369,79 @@
     }
 
     $("#auction-form").submit(function(e) {
-        e.preventDefault();
-        var form = $(this);
-        var url = form.attr('action');
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: form.serialize(),
-            error: function(data){
-                console.log(data);
-            },
-            success: function(response)
-            {
-                if (response == false) {
-                    // data.redirect contains the string URL to redirect to
-                    window.location.href = "{{url('/dang-nhap')}}";
-                } else {
-                    $('.notice-auction').css('display', 'block');
-                    $('.notice-auction .alert').text(response); 
-                    var notice = setInterval(function() {
-                        $('.notice-auction').css('display', 'none');
-                        clearInterval(notice);
-                        
-                    }, 5000)
+        var answer = window.confirm("Xác nhận đấu giá!");
+        if (answer) {
+            e.preventDefault();
+            var form = $(this);
+            var url = form.attr('action');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-             
-            }
-        });
+            });
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(),
+                error: function(data){
+                    console.log(data);
+                },
+                success: function(response)
+                {
+                    if (response == false) {
+                        // data.redirect contains the string URL to redirect to
+                        window.location.href = "{{url('/dang-nhap')}}";
+                    } else {
+                        $('.notice-auction').css('display', 'block');
+                        $('.notice-auction .alert').text(response); 
+                        var notice = setInterval(function() {
+                            $('.notice-auction').css('display', 'none');
+                            clearInterval(notice);
+                            
+                        }, 5000)
+                    }
+                
+                }
+            });
+        }
+        
     });
     $("#auto-form").submit(function(e) {
-        e.preventDefault();
-        var form = $(this);
-        var url = form.attr('action');
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: form.serialize(),
-            error: function(data){
-                console.log(data);
-            },
-            success: function(response)
-            {
-                if (response == false) {
-                    // data.redirect contains the string URL to redirect to
-                    window.location.href = "{{url('/dang-nhap')}}";
-                } else {
-                    $('.notice-auto').css('display', 'block');
-                    $('.notice-auto .alert').text(response); 
-                    var notice = setInterval(function() {
-                        $('.notice-auto').css('display', 'none');
-                        clearInterval(notice);
-                        
-                    }, 5000)
+        var answer = window.confirm("Xác nhận tự động đấu giá!");
+        if (answer) {
+            e.preventDefault();
+            var form = $(this);
+            var url = form.attr('action');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-             
-            }
-        });
+            });
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(),
+                error: function(data){
+                    console.log(data);
+                },
+                success: function(response)
+                {
+                    if (response == false) {
+                        // data.redirect contains the string URL to redirect to
+                        window.location.href = "{{url('/dang-nhap')}}";
+                    } else {
+                        $('.notice-auto').css('display', 'block');
+                        $('.notice-auto .alert').text(response); 
+                        var notice = setInterval(function() {
+                            $('.notice-auto').css('display', 'none');
+                            clearInterval(notice);
+                            
+                        }, 5000)
+                    }
+                
+                }
+            });
+        }
     });
 });
 

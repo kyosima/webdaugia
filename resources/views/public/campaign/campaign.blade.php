@@ -32,7 +32,7 @@
                                     <div class="col-lg-12 col-md-12 col-xs-12">
                                         @if($campaign->status == 0)
                                             <div class="col-lg-12">
-                                                <div id="campaign-counter-title" class="section-title">
+                                                <div id="campaign-counter-title" class="">
                                                     <h4>Thời gian đến khi mở đấu giá còn</h4>
                                                 </div>
                                                 <div class="campaign__count_time_run">
@@ -59,7 +59,7 @@
                                             </script>
                                         @elseif($campaign->status == 1)
                                             <div class="col-lg-12">
-                                                <div id="campaign-counter-title" class="section-title">
+                                                <div id="campaign-counter-title" class="">
                                                     <h4>Thời gian đã đấu giá</h4>
                                                 </div>
                                                 <div class="campaign__count_time_run">
@@ -117,10 +117,7 @@
                     
                 </div>
                 <div class="col-lg-8 col-md-8">
-                    <h4 class="text-danger">Danh sách sản phẩm</h4>
-
                     <div class="list-detail">
-                        <ul class="lists">
                             <div class="search-detail">
                                 <label class="text-light">Tìm kiếm sản phẩm</label>
                                 <input id="filter" class="form-control" placeholder="Nhập tên sản phẩm..." type="text">
@@ -130,12 +127,31 @@
                                     @include('public.campaign.include.campaign_detail_grid', ['duration'=>$campaign->time_range,'order'=>$i, 'total'=>count($details) ,'item'=>$details[$i], 'product'=>$details[$i]->product()->first()])
                                 @endfor
                             </div>
-                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+  
+  <!-- Modal -->
+  <div id="detail-media" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        {{-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> --}}
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+          {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+        </div>
+      </div>
+    </div>
+  </div>
     <script>
 
         $("#filter").keyup(function() {

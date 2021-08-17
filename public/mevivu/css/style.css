@@ -1183,7 +1183,7 @@ span.amount {
 	position: relative;
 	overflow: hidden;
 	background-position: center center;
-	border: 1px solid #ff0000;
+	border: 1px solid #fff;
 }
 
 .featured__item__pic__hover {
@@ -4650,7 +4650,6 @@ a.active{
 	padding: 10px;
 	border: 1px solid #ddd;
 	border-radius: 5px;
-	margin: 10px 0px;
 }
 
 .list-detail{
@@ -4860,9 +4859,8 @@ padding: 0px 20px
 	
 }
 .camapaign__product{
-	border: 1px solid #ddd;
-    border-radius: 5px;
-    margin: 10px 0px;
+	border-bottom: 1px solid #ddd;
+    padding: 5px 21px;
 }
 .camapaign__product .featured__item__pic{
 	max-height: 200px;
@@ -4884,3 +4882,57 @@ padding: 0px 20px
 	line-height: 15px;
 
 }
+.campaign-detail-about{
+	font-size: 13px !important;
+}
+.campaign-detail-about #detail-shot-desc p{
+	font-size: 12px !important;
+	line-height: 13px
+}
+.campaign-detail-about .product__detail__title {
+	font-size: 14px;	
+}
+
+.campaign-detail-about ul{
+	list-style: none;
+}
+
+.btn-quick-view{
+	font-size: 11px;
+	padding: 2px 3px;
+	color: #000;
+	background: #fff;
+	border-radius: 3px;
+	margin-right: 5px;;
+}
+.btn-quick-view i{
+	font-size: 11px;
+	color: red;
+}
+.btn-detail-view{
+	font-size: 15px;
+	padding: 5px 10px;
+	color: #000;
+	background: #fff;
+	border-radius: 3px;
+	margin-right: 5px;;
+}
+.buttons-view{
+	display: flex;
+    vertical-align: middle;
+    justify-content: center;
+	padding: 15px 10px;
+}
+.btn-detail-view i{
+	font-size: 15px;
+	color: red;
+}
+@media only screen and (max-width: 600px) {
+	.camapaign__product .featured__item__pic {
+		max-height: 100px;
+	}
+  }
+  #detail-media .modal-content{
+	  background: #000;
+	  border: 1px solid #fff;
+  }

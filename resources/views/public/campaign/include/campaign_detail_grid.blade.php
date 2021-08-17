@@ -1,6 +1,6 @@
 <section class="camapaign__product" id="detail-order-{{$order}}">
     <div class="row">
-        <div class="col-4">
+        <div class="col-3 px-1">
             <div class="featured__item__pic__campaign__detail">
                 <div class="featured__item__pic set-bg" data-setbg="{{getImage($product->avatar)}}">
                     <ul class="featured__item__pic__hover">
@@ -9,8 +9,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-8">
-            <h4 class="product__detail__title text-bold">SP{{$order+1}} - {{$product->title}}</h4>
+        <div class="col-9 px-1 campaign-detail-about">
+            <b class="product__detail__title text-bold text-light">CK{{$order+1}} - {{$product->title}}</b>
             <ul class="text-light">
                 <li><b>Giá khởi điểm: </b><span id="" class="text-danger">{{getCurrency($item->detail_price_start)}}</span></li>
                 <li><b>Trạng thái: </b><span id="status" class="text-danger">
@@ -23,7 +23,7 @@
                     @endif
                 </span></li>
              
-                @if($item->status == 0)
+                {{-- @if($item->status == 0)
                     <li><b>Bộ đếm: </b><span id="" class="text-danger"> 
                         <div class="detail-counter" id="detail-counter-{{$order}}" data-url="{{url('dau-gia/bat-dau/detail/'.$item->id)}}"  data-urlcancel="{{url('dau-gia/ket-thuc/detail/'.$item->id)}}">
                             <div id="timer-detail">
@@ -59,16 +59,18 @@
                         </script>
                         </span>
                     </li>                             
-                @endif
+                @endif --}}
                  
-                <li><b>Mô tả: </b><span id="detail-shot-desc" class="text-danger">{!!$product->desc_short!!}</span></li>
+                <li><span id="detail-shot-desc" class="text-danger">{!!$product->desc_short!!}</span></li>
 
             </ul>
          
-            <div class="row">
-                <div class="col-6">
+            <div class="row my-2">
+                <div class="col-12 text-center">
+                    <a class="btn-quick-view" data-url="{{url('dau-gia/lay-hinh-anh/')}}" data-id="{{$item->id}}" onclick="getImage(this)">Hình ảnh</a>
+                    <a class="btn-quick-view" data-url="{{url('dau-gia/lay-video/')}}" data-id="{{$item->id}}" onclick="getVideo(this)">Video</a>
                     @if($campaign->status != 2)
-                    <a class="text-danger btn-add-detail-wishlist" id="add-detail-wishlist-{{$item->id}}" data-detailid="{{$item->id}}" data-url="{{url('dau-gia/yeu-thich')}}" data-status="0" onclick="addCampaintoWishlist(this)">
+                    <a class="btn-quick-view" id="add-detail-wishlist-{{$item->id}}" data-detailid="{{$item->id}}" data-url="{{url('dau-gia/yeu-thich')}}" data-status="0" onclick="addCampaintoWishlist(this)">
                         @if($item->wishlist()->first()==null)
                             <i class="material-icons">favorite_border</i>
                                 @else
@@ -77,9 +79,7 @@
                         <span>Yêu thích</span>
                     </a>
                     @endif
-                </div>
-                <div class="col-6 text-right">
-                    <a class="text-info" href="{{url('dau-gia/'.$campaign->slug.'/'.$product->slug)}}"  target="_blank">Xem chi tiết</a>
+                    <a class="btn-quick-view bg-warning" href="{{url('dau-gia/'.$campaign->slug.'/'.$product->slug)}}"  target="_blank">Đấu giá</a>
                 </div>
             </div>
         

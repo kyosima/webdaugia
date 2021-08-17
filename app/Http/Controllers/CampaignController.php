@@ -188,7 +188,7 @@ class CampaignController extends Controller
             }elseif($user_id == $campaign_detail->user_id){
                 return 'Bạn đang là người ra giá cao nhất';
             }else{
-                if(($campaign_detail->user_id_auto_auction != null) &&($campaign_detail->user_id_auto_auction != $user->id) && ($amount < $campaign_detail->max_price_auto_auction)){
+                if(($campaign_detail->user_id_auto_auction != null) &&($campaign_detail->user_id_auto_auction != $user->id) && ($amount <= $campaign_detail->max_price_auto_auction)){
                     $user_id = $campaign_detail->user_id_auto_auction;
                     $amount = $amount+$campaign_detail->detail_price_step;
                     $user_name = User::whereId($campaign_detail->user_id_auto_auction)->value('name');
@@ -267,6 +267,16 @@ class CampaignController extends Controller
         $user = Auth::user();
         $campaign_detail_wishlist = CampaignWishlist::whereUserId($user->id)->latest()->paginate(10);
         return view('public.campaign.wishlist', ['campaign_detail_wishlist'=>$campaign_detail_wishlist]); 
+    }
+
+    public function getImageDetail(Request $request){
+        $detail = CampaignDetail::find($request->id);
+        return view('public.campaign.include.gallery',['product'=>$detail->product()->first()]);
+    }
+
+    public function getVideoDetail(Request $request){
+        $detail = CampaignDetail::find($request->id);
+        return view('public.campaign.include.video',['detail'=>$detail]);
     }
 
 }

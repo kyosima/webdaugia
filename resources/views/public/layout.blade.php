@@ -16,6 +16,7 @@ $category = CategoryPost::select('title', 'slug')->get();
     <link rel="canonical" href="{{URL('/')}}">
     <link rel="icon" href="{{asset('public/mevivu/img/logo.png')}}" type="image/gif" sizes="32x32">
     <title>Đấu giá | Template</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <!-- Google Font -->
     <!-- <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet"> -->
@@ -28,6 +29,7 @@ $category = CategoryPost::select('title', 'slug')->get();
     {{-- <link rel="stylesheet" href="{{asset('public/mevivu/css/nice-select.css')}}" type="text/css"> --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="{{asset('public/mevivu/js/jquery-3.3.1.min.js')}}"></script>
+    <link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
 
     <style>
         .select2-container {
@@ -431,6 +433,8 @@ $category = CategoryPost::select('title', 'slug')->get();
     <script src="{{asset('public/mevivu/js/main.js')}}"></script>
     <script src="{{asset('public/mevivu/js/jquery.countdown.min.js')}}"></script>
     <script src="{{asset('public/mevivu/js/search-blog.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+
 </body>
 
 </html>

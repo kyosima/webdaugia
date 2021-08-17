@@ -238,3 +238,40 @@ function addCampaintoWishlist(e){
         }
     });
 }
+
+function getImage(e){
+    id = $(e).data('id');
+    url = $(e).data('url');
+    $.ajax({
+        type: "GET",
+        url: url+'/'+id,
+        data: {}, // serializes the form's elements.
+        success: function(response)
+        {
+            $('#detail-media .modal-body').empty().html(response);
+            $('#detail-media').modal('show');
+            console.log(response); // show response from the php script.
+        },
+        error: function(data) {
+            console.log(data);
+        }
+    });
+}
+function getVideo(e){
+    id = $(e).data('id');
+    url = $(e).data('url');
+    $.ajax({
+        type: "GET",
+        url: url+'/'+id,
+        data: {}, // serializes the form's elements.
+        success: function(response)
+        {
+            $('#detail-media .modal-body').empty().html(response);
+            $('#detail-media').modal('show');
+            console.log(response); // show response from the php script.
+        },
+        error: function(data) {
+            console.log(data);
+        }
+    });
+}
