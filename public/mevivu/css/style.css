@@ -128,15 +128,15 @@ ul, ol {
 	width: 100%;
   }
   .number-list .item {
-	width: 60px;
-	height: 60px;
-	background: #006741;
+	width: 40px;
+	height: 40px;
+	background: #bc1919;
 	margin-right: 15px;
 	border-radius: 10px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 24px;
+	font-size: 20px;
 	color: white;
 	font-weight: 700;
 	font-family: sans-serif;
@@ -148,16 +148,16 @@ ul, ol {
 	margin-top: 10px;
   }
   .unit-list .item {
-	width: 60px;
-	margin-right: 15px;
-	border-radius: 10px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 18px;
-	color: #006741;
-	font-weight: 500;
-	font-family: sans-serif;
+	width: 50px;
+    margin-right: 5px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #fff;
+    font-weight: 500;
+    font-family: sans-serif;
   }
   
   .timer-end {
@@ -1180,10 +1180,10 @@ span.amount {
 
 .featured__item__pic {
 	height: 270px;
-	position: relative;
-	overflow: hidden;
-	background-position: center center;
-	border: 1px solid #fff;
+    position: relative;
+    overflow: hidden;
+    background-position: center center;
+    border: 1px solid white;
 }
 
 .featured__item__pic__hover {
@@ -1268,8 +1268,9 @@ span.amount {
 }
 
 .featured__item__text h5 {
-	color: #fff;
-	font-weight: 600;
+	height: 50px;
+    color: #fff;
+    font-weight: 600;
 }
 
 /*---------------------
@@ -1295,14 +1296,13 @@ span.amount {
 
 .latest-product__slider.owl-carousel .owl-nav button {
 	height: 30px;
-	width: 30px;
-	background: #0ca2e8;
-	border: 1px solid #e6e6e6;
-	font-size: 14px;
-	color: white;
-	margin-right: 10px;
-	line-height: 30px;
-	text-align: center;
+    width: 30px;
+    border: 1px solid #e6e6e6;
+    font-size: 14px;
+    color: white;
+    margin-right: 10px;
+    line-height: 30px;
+    text-align: center;
 }
 
 .latest-product__slider.owl-carousel .owl-nav button span {
@@ -4635,7 +4635,7 @@ a.active{
 }
 .auction-area #auction_ip{
 	text-align: center;
-	font-size: 30px;
+	font-size: 25px;
 }
 .sidebar .panel-title{
     vertical-align: middle;
@@ -4650,6 +4650,7 @@ a.active{
 	padding: 10px;
 	border: 1px solid #ddd;
 	border-radius: 5px;
+	height: 350px;
 }
 
 .list-detail{
@@ -4935,4 +4936,35 @@ padding: 0px 20px
   #detail-media .modal-content{
 	  background: #000;
 	  border: 1px solid #fff;
+  }
+  .pagination-link{
+	  justify-content: center;
+	  display: flex;
+	  margin: 10px 0px;
+  }
+  .pagination-link .pager{
+	  list-style: none;
+	  display: flex;
+  }
+  .pagination-link .pager li:first-child, .pagination-link .pager li:last-child{
+	  height: auto;
+	  width: 130px;
+	  border-radius: 5px;
+  }
+  .pagination-link .pager li.active,  .pagination-link .pager li.disable{
+	  background-color: #ddd;
+  }
+  .pagination-link .pager li{
+	  margin: 0px 5px;
+	  background-color: #fff;
+	  height: 30px;
+	  width: 30px;
+	  display: flex;
+	  justify-content: center;
+	  border-radius: 50%;
+
+  }
+  .pagination-link .pager li span,  .pagination-link .pager li a{
+	  display: block;
+	  margin: auto;
   }

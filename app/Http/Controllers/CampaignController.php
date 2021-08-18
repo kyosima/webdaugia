@@ -67,8 +67,10 @@ class CampaignController extends Controller
     
         $this->checkCampaign($campaign);
        
-        $campaign = Campaign::whereSlug($slug)->first();    
-        return view('public.campaign.campaign', ['campaign'=>$campaign]);
+        $campaign = Campaign::whereSlug($slug)->first();  
+        $details = $campaign->campaign_details()->orderBy( 'id','asc')->paginate(2);  
+        $details_ = CampaignDetail::whereCampaignId($campaign->id)->orderBy( 'id','asc')->get()->toArray();  
+        return view('public.campaign.campaign', ['campaign'=>$campaign, 'details'=>$details, 'details_'=>$details_]);
     }
 
     public function getCampaignProductDetail($slug1, $slug2)
@@ -77,11 +79,11 @@ class CampaignController extends Controller
         $campaign = Campaign::whereSlug($slug1)->firstOrFail();
         $product = Product::whereSlug($slug2)->firstOrFail();
         $this->checkCampaign($campaign);
-
         $details = CampaignDetail::whereCampaignId($campaign->id)->orderBy( 'id','asc')->get()->toArray();
         $detail = CampaignDetail::whereCampaignId($campaign->id)->whereProductId($product->id)->firstOrFail();
+        $related = CampaignDetail::whereCampaignId($campaign->id)->where('id', '<>', $detail->id)->orderBy( 'id','asc')->paginate(4);
         $order = array_search($detail->id, array_column($details, 'id'));
-        return view('public.campaign.campaign_detail', ['campaign'=>$campaign, 'details'=>$details,'order'=>$order, 'product'=>$product, 'detail'=>$detail]);
+        return view('public.campaign.campaign_detail', ['related'=>$related,'campaign'=>$campaign, 'details'=>$details,'order'=>$order, 'product'=>$product, 'detail'=>$detail]);
 
     }
 
@@ -224,7 +226,7 @@ class CampaignController extends Controller
                     CampaignDetail::whereId($detail_id)->update(['user_id_auto_auction'=>$user->id,'max_price_auto_auction'=>$amount]);
                     if(($campaign_detail->status ==1) &&($user->id != $campaign_detail->user_id)){
                         CampaignAuction::insert(['user_id' => $user->id, 'campaign_detail_id' => $detail_id, 'price'=>$campaign_detail->price_end+$campaign_detail->detail_price_step]);
-                        CampaignDetail::whereId($detail_id)->update(['price_end'=>$campaign_detail->price_end+$campaign_detail->detail_price_step, 'user_id'=>$user->id]);
+                        CampaignDetail::whereId($detail_id)->update(['price_end'=>$campaign_detail->price_end+$campaign_detail->detail_price_step, 'user_id'=>$user->id, 'user_name'=>$user->name]);
                         $campaign_detail = CampaignDetail::find($detail_id);
                         event(new CampaignEvent( $campaign_detail));
                     }
@@ -241,7 +243,7 @@ class CampaignController extends Controller
 
     public function addWishList(Request $request){
         if(!Auth::check()){
-            return redirect('/dang-nhap');
+            return false;
         }else{
             $user = Auth::user();
             $checkWishList = CampaignWishlist::whereUserId($user->id)->whereCampaignDetailId($request->id)->first();
@@ -277,6 +279,11 @@ class CampaignController extends Controller
     public function getVideoDetail(Request $request){
         $detail = CampaignDetail::find($request->id);
         return view('public.campaign.include.video',['detail'=>$detail]);
+    }
+
+    public function getDescription(Request $request){
+        $detail = CampaignDetail::find($request->id);
+        return view('public.campaign.include.description',['product'=>$detail->product()->first()]);
     }
 
 }

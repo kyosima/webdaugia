@@ -45,10 +45,10 @@
                                                             <div class="item second">00</div>
                                                             </div>
                                                             <div class="unit-list">
-                                                            <div class="item">Day</div>
-                                                            <div class="item">Hour</div>
-                                                            <div class="item">Minutes</div>
-                                                            <div class="item">Seconds</div>
+                                                                <div class="item">Ngày</div>
+                                                                <div class="item">Giờ</div>
+                                                                <div class="item">Phút</div>
+                                                                <div class="item">Giây</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -72,10 +72,10 @@
                                                             <div class="item second">00</div>
                                                             </div>
                                                             <div class="unit-list">
-                                                            <div class="item">Day</div>
-                                                            <div class="item">Hour</div>
-                                                            <div class="item">Minutes</div>
-                                                            <div class="item">Seconds</div>
+                                                                <div class="item">Ngày</div>
+                                                                <div class="item">Giờ</div>
+                                                                <div class="item">Phút</div>
+                                                                <div class="item">Giây</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -123,9 +123,12 @@
                                 <input id="filter" class="form-control" placeholder="Nhập tên sản phẩm..." type="text">
                             </div>
                             <div id="campaign-detail">
-                                @for($i=0; $i< count($details = $campaign->campaign_details()->get()); $i++)
-                                    @include('public.campaign.include.campaign_detail_grid', ['duration'=>$campaign->time_range,'order'=>$i, 'total'=>count($details) ,'item'=>$details[$i], 'product'=>$details[$i]->product()->first()])
-                                @endfor
+                                @foreach($details as $item)
+                                    @include('public.campaign.include.campaign_detail_grid', ['details'=>$details_,'item'=>$item, 'product'=>$item->product()->first()])
+                                @endforeach
+                            </div>
+                            <div class="pagination-link">
+                                {{ $details->links('public.campaign.include.panigate') }}
                             </div>
                     </div>
                 </div>
@@ -134,8 +137,8 @@
     </section>
   
   <!-- Modal -->
-  <div id="detail-media" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+  <div id="detail-media" class="modal fade  bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
       <div class="modal-content">
         {{-- <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>

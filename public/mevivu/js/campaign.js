@@ -223,15 +223,20 @@ function addCampaintoWishlist(e){
         data: {}, // serializes the form's elements.
         success: function(response)
         {
-            text =$('#add-detail-wishlist-'+id +' i').text();
-            if(text == 'favorite_border'){
-                $('#add-detail-wishlist-'+id +' i').text('favorite');
-                $('#add-detail-wishlist-'+id).attr('data-status',1);
+            if (response == false) {
+                // data.redirect contains the string URL to redirect to
+                window.location.href = "{{url('/dang-nhap')}}";
             }else{
-                $('#add-detail-wishlist-'+id +' i').text('favorite_border');
-                $('#add-detail-wishlist-'+id).attr('data-status',0);
+                text =$('#add-detail-wishlist-'+id +' i').text();
+                if(text == 'favorite_border'){
+                    $('#add-detail-wishlist-'+id +' i').text('favorite');
+                    $('#add-detail-wishlist-'+id).attr('data-status',1);
+                }else{
+                    $('#add-detail-wishlist-'+id +' i').text('favorite_border');
+                    $('#add-detail-wishlist-'+id).attr('data-status',0);
+                }
             }
-            console.log(response); // show response from the php script.
+                console.log(response); // show response from the php script.
         },
         error: function(data) {
             console.log(data);
@@ -258,6 +263,25 @@ function getImage(e){
     });
 }
 function getVideo(e){
+    id = $(e).data('id');
+    url = $(e).data('url');
+    $.ajax({
+        type: "GET",
+        url: url+'/'+id,
+        data: {}, // serializes the form's elements.
+        success: function(response)
+        {
+            $('#detail-media .modal-body').empty().html(response);
+            $('#detail-media').modal('show');
+            console.log(response); // show response from the php script.
+        },
+        error: function(data) {
+            console.log(data);
+        }
+    });
+}
+
+function getDescription(e){
     id = $(e).data('id');
     url = $(e).data('url');
     $.ajax({

@@ -70,6 +70,11 @@
                 <p>{!! $product->desc_long!!}</p>
             </div>
         </div> --}}
+        <div class="row my-2">
+            <div class="col-12">
+                <h4 class="product__detail__title">CK{{$order+1}}-{{$product->title}}</h4>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
                 @if($detail->status ==0)
@@ -83,10 +88,10 @@
                                 <div class="item second">00</div>
                                 </div>
                                 <div class="unit-list">
-                                <div class="item">Day</div>
-                                <div class="item">Hour</div>
-                                <div class="item">Minutes</div>
-                                <div class="item">Seconds</div>
+                                <div class="item">Ngày</div>
+                                <div class="item">Giờ</div>
+                                <div class="item">Phút</div>
+                                <div class="item">Giây</div>
                                 </div>
                             </div>
                         </div>
@@ -105,10 +110,10 @@
                                 <div class="item second">00</div>
                                 </div>
                                 <div class="unit-list">
-                                <div class="item">Day</div>
-                                <div class="item">Hour</div>
-                                <div class="item">Minutes</div>
-                                <div class="item">Seconds</div>
+                                    <div class="item">Ngày</div>
+                                    <div class="item">Giờ</div>
+                                    <div class="item">Phút</div>
+                                    <div class="item">Giây</div>
                                 </div>
                             </div>
                         </div>
@@ -120,8 +125,10 @@
             <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
                 <h5>Thông tin sản phẩm</h5>
                 <div class="buttons-view">
-                    <a class="btn-detail-view" data-url="{{url('dau-gia/lay-hinh-anh/')}}" data-id="{{$detail->id}}" onclick="getImage(this)">Hình ảnh</a>
+                    <a class="btn-detail-view" data-url="{{url('dau-gia/lay-hinh-anh/')}}" data-id="{{$detail->id}}" onclick="getImage(this)">Ảnh</a>
                     <a class="btn-detail-view" data-url="{{url('dau-gia/lay-video/')}}" data-id="{{$detail->id}}" onclick="getVideo(this)">Video</a>
+                    <a class="btn-detail-view" data-url="{{url('dau-gia/lay-mo-ta/')}}" data-id="{{$detail->id}}" onclick="getDescription(this)">Mô tả</a>
+
                     @if($campaign->status != 2)
                     <a class="btn-detail-view" id="add-detail-wishlist-{{$detail->id}}" data-detailid="{{$detail->id}}" data-url="{{url('dau-gia/yeu-thich')}}" data-status="0" onclick="addCampaintoWishlist(this)">
                         @if($detail->wishlist()->first()==null)
@@ -129,7 +136,7 @@
                                 @else
                             <i class="material-icons">favorite</i>
                         @endif
-                        <span>Yêu thích</span>
+                        <span>Thích</span>
                     </a>
                     @endif
             
@@ -166,7 +173,7 @@
                             </div>
                             @if($detail->status!=2)
                                 <div class="col-6">
-                                    <div class="alert alert-info text-center">
+                                    <div class="alert alert-primary text-center">
                                         <small class="text-dark">Giá tiếp theo</small><br/>
                                         <b class="text-danger" id="next-price">{{getCurrency($detail->detail_price_step + $detail->price_end)}}</b>
                                     </div>
@@ -174,17 +181,18 @@
                             @endif
                         </div>
                         <div class="auction-area" @if($detail->status !=1) style="display:none"@endif>
-                            <h4 class="text-center">Đấu giá sản phẩm này</h4>
+                            <h5 class="text-center">Đấu giá sản phẩm này</h5>
                             <form id="auction-form" class="form text-center" action="{{url('/dau-gia/gui-dau-gia')}}" method="POST">
-                                <div class="input-group mb-3">
                                     <input type="hidden" id="detail_id" value="{{$detail->id}}" name="detail_id">
                                     <input type="hidden" id="auction-cf-{{$detail->id}}" value="{{$detail->price_end + $detail->detail_price_step}}" name="amount">
+                                <div class="input-group mb-3">
                                 </div>
-                                <div class="form-group">
+                                    <div class="form-group">
                                     <button class="btn btn-info" type="submit">Đấu giá</button>
                                 </div>
                                 <div class="notice-auction" style="display: none">
-                                    <div class="alert alert-danger text-center">
+                                    <div class="alert alert-danger text-center p-0">
+                                        <small></small>
                                         
                                     </div>
                                 </div>
@@ -229,36 +237,37 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
-                <div class="alert alert-info" id="user-detail-{{$detail->id}}">
+                <div  class="current-price-area">
+                <div class="alert alert-light text-center" id="user-detail-{{$detail->id}}">
                     @if($detail->status != 2)
                     <h5 class="text-center text-dark">Người ra giá cao nhất hiện tại</h5>
                     @else
                         <h5 class="text-center text-dark">Người chiến thắng</h5>
                     @endif
-                    <h3 class="text-center text-danger">
+                    <b class=" text-danger">
                     @if($detail->status==0)
                         <span id="user-top">Chưa có</span>
                     @elseif($detail->status==1)
                             @if($detail->user_id == null)
                             <span id="user-top">Chưa có</span>
                         @else
-                        <span id="user-top">{{ App\Models\UserInfo::whereId($detail->user_id)->value('fullname')}}</span>
+                        <span id="user-top">{{ $detail->user_name}}</span>
                         @endif
                     @elseif($detail->status==2)
                             
                                     @if($detail->user_id == null)
                                     <span id="user-top">Chưa có</span>
                                     @else
-                                    <span id="user-top">{{ App\Models\UserInfo::whereId($detail->user_id)->value('fullname')}}</span>
+                                    <span id="user-top">{{ $detail->user_name}}</span>
                                     @endif
                             
                     @endif
-                    </h3>
+                    </b>
                 </div>
                 <div class="auction-area"  @if($detail->status !=1) style="display:none"@endif>
                    
-                    <h4 class="text-center">Tự động đấu giá sản phẩm này</h4>
-                    <p class="text-center">Đưa ra mức giá cao nhất bạn có thể đấu giá cho sản phẩm này</p>
+                    <h5 class="text-center">Tự động đấu giá sản phẩm này</h5>
+                    <p class="text-center"><small>Đưa ra mức giá cao nhất bạn có thể đấu giá cho sản phẩm này</small></p>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" id="auction_ip" pattern="[0-9]">
                         <div class="input-group-append">
@@ -266,23 +275,32 @@
                         </div>
                     </div>
                     <form id="auto-form" class="form text-center" action="{{url('/dau-gia/tu-dong-dau-gia')}}" method="POST">
-                        <div class="input-group mb-3">
                             <input type="hidden" id="detail_id" value="{{$detail->id}}" name="detail_id">
                             <input type="hidden" id="auto-price" value="" name="amount">
-                        </div>
                         <div class="form-group">
                             <button class="btn btn-info" type="submit">Cài đặt</button>
                         </div>
                         <div class="notice-auto" style="display: none">
-                            <div class="alert alert-danger text-center">
-                                
+                            <div class="alert alert-danger text-center p-0">
+                                <small></small>
                             </div>
                         </div>
                     </form>
                 </div>
+                </div>
             </div>
             
             
+        </div>
+        <div class="row justify-content-md-center my-4">
+            <div class="col-md-8 col-lg-8 col-sm-12">
+                <h5>Sản phẩm gợi ý</h5>
+                <div id="campaign-detail">
+                    @foreach($related as $item)
+                        @include('public.campaign.include.campaign_detail_grid', ['item'=>$item, 'product'=>$item->product()->first()])
+                    @endforeach
+                </div>
+            </div>
         </div>
         {{-- <div class="row">
             <div class="col-12">
@@ -331,9 +349,9 @@
 </section> --}}
 <!-- Related Product Section End -->
 
-<div id="detail-media" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
+<div id="detail-media" class="modal fade  bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+      <div class="modal-content ">
         {{-- <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -393,7 +411,7 @@
                         window.location.href = "{{url('/dang-nhap')}}";
                     } else {
                         $('.notice-auction').css('display', 'block');
-                        $('.notice-auction .alert').text(response); 
+                        $('.notice-auction .alert small').text(response); 
                         var notice = setInterval(function() {
                             $('.notice-auction').css('display', 'none');
                             clearInterval(notice);
@@ -431,7 +449,7 @@
                         window.location.href = "{{url('/dang-nhap')}}";
                     } else {
                         $('.notice-auto').css('display', 'block');
-                        $('.notice-auto .alert').text(response); 
+                        $('.notice-auto .alert small').text(response); 
                         var notice = setInterval(function() {
                             $('.notice-auto').css('display', 'none');
                             clearInterval(notice);

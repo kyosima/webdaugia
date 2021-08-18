@@ -1,3 +1,4 @@
+<?php $order = array_search($item->id, array_column($details, 'id')); ?>
 <section class="camapaign__product" id="detail-order-{{$order}}">
     <div class="row">
         <div class="col-3 px-1">
@@ -67,8 +68,9 @@
          
             <div class="row my-2">
                 <div class="col-12 text-center">
-                    <a class="btn-quick-view" data-url="{{url('dau-gia/lay-hinh-anh/')}}" data-id="{{$item->id}}" onclick="getImage(this)">Hình ảnh</a>
+                    <a class="btn-quick-view" data-url="{{url('dau-gia/lay-hinh-anh/')}}" data-id="{{$item->id}}" onclick="getImage(this)">Ảnh</a>
                     <a class="btn-quick-view" data-url="{{url('dau-gia/lay-video/')}}" data-id="{{$item->id}}" onclick="getVideo(this)">Video</a>
+                    <a class="btn-quick-view" data-url="{{url('dau-gia/lay-mo-ta/')}}" data-id="{{$item->id}}" onclick="getDescription(this)">Mô tả</a>
                     @if($campaign->status != 2)
                     <a class="btn-quick-view" id="add-detail-wishlist-{{$item->id}}" data-detailid="{{$item->id}}" data-url="{{url('dau-gia/yeu-thich')}}" data-status="0" onclick="addCampaintoWishlist(this)">
                         @if($item->wishlist()->first()==null)
@@ -76,7 +78,7 @@
                                 @else
                             <i class="material-icons">favorite</i>
                         @endif
-                        <span>Yêu thích</span>
+                        <span>Thích</span>
                     </a>
                     @endif
                     <a class="btn-quick-view bg-warning" href="{{url('dau-gia/'.$campaign->slug.'/'.$product->slug)}}"  target="_blank">Đấu giá</a>

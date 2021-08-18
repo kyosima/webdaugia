@@ -292,12 +292,15 @@ $category = CategoryPost::select('title', 'slug')->get();
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
+                    <a href="{{url('dau-gia')}}">
+
                     <div class="hero__categories">
                         <div class="hero__categories__all">
-                            <i class="fa fa-bars"></i>
-                            <span>ĐẤU GIÁ</span>
+                                <i class="fa fa-bars"></i>
+                                <span>ĐẤU GIÁ</span>
+                            
                         </div>
-                        <ul style="display: none;">
+                        {{-- <ul style="display: none;">
                             <?php 
                                 $categories = App\Models\ProductCategory::whereParentId(0)->latest()->get();
                             ?>
@@ -305,9 +308,10 @@ $category = CategoryPost::select('title', 'slug')->get();
                              <li><a href="{{url('cua-hang/'.$category->slug)}}">{{$category->title}}</a></li>
                             @endforeach
                            
-                        </ul>                           
+                        </ul>                            --}}
 
                     </div>
+                </a>
                 </div>
                 <div class="col-lg-9">
                     <nav class="header__menu">

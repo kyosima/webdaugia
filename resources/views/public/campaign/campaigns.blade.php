@@ -54,7 +54,7 @@
             @endforeach
             </div>
             <div class="col-lg-12 text-center">
-                <a href="{{URL::to('/loai-dau-gia')}}" class="btn btn-info">Xem thêm</a>
+                <a href="{{URL::to('/loai-dau-gia')}}" class="btn btn-info mt-5">Xem thêm</a>
             </div>
         </div>
     </div>
@@ -74,7 +74,7 @@
                 @endforeach
                 </div>
                 <div class="col-lg-12 text-center">
-                    <a href="{{URL::to('/loai-dau-gia')}}" class="btn btn-info">Xem thêm</a>
+                    <a href="{{URL::to('/loai-dau-gia')}}" class="btn btn-info mt-5">Xem thêm</a>
                 </div>
             </div>
         </div>
@@ -97,7 +97,7 @@
                 @endforeach
             </div>
             <div class="col-lg-12 text-center">
-                <a href="{{URL::to('/loai-dau-gia')}}" target="_blank" class="btn btn-info">Xem thêm</a>
+                <a href="{{URL::to('/loai-dau-gia')}}" target="_blank" class="btn btn-info mt-5">Xem thêm</a>
             </div>
         </div>
     </div>

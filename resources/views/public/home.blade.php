@@ -40,7 +40,7 @@
 </section>
 <!-- banner Section end -->
 <!-- Categories Section Begin -->
-<section class="categories">
+<section class="categories featured spad">
     <div class="container">
         <div class="row">
             <div class="col-12 section-title">
@@ -162,7 +162,7 @@
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="latest-product__text">
-                    <h4>Sản phẩm đánh giá cao</h4>
+                    <h4>Sản phẩm gợi ý</h4>
                     <?php $products = App\Models\Product::latest()->paginate(10);?>
                     <div class="latest-product__slider owl-carousel">
                         <div class="latest-prdouct__slider__item">

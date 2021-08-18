@@ -165,6 +165,7 @@ Route::group(['prefix' => 'dau-gia', 'middleware' => 'auth'], function(){
 });
 
 Route::group(['prefix' => 'dau-gia'], function(){
+    Route::get('/lay-mo-ta/{id}', [CampaignController::class,'getDescription']);
     Route::get('/lay-hinh-anh/{id}', [CampaignController::class,'getImageDetail']);
     Route::get('/lay-video/{id}', [CampaignController::class,'getVideoDetail']);
     Route::post('/gui-dau-gia', [CampaignController::class, 'postAuction'])->name('campaign.postAuction');
