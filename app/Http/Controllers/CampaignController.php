@@ -140,20 +140,31 @@ class CampaignController extends Controller
         return 'Stop details successfully';
     }
 
+    public function startOT(Request $request){
+        $id = $request->id;
+        $now = Carbon::now();
+        CampaignDetail::whereId($id)->update(['ot_status'=>1, 'ot_time'=>$now->toDateTimeString()]);
+        return $now->toDateTimeString();
+    }
+
     public function checkCampaign($campaign){
         $now = Carbon::now();
         $details = CampaignDetail::whereCampaignId($campaign->id)->orderBy( 'id','asc')->get();
         $time_run = $campaign->time_range + count($details)-1;
-        if($campaign->status != 2){
-            if(strtotime($campaign->time_start) <= strtotime($now) && (strtotime($now) <= strtotime($campaign->time_start.'+'.$time_run.'minute'))){
-                Campaign::whereId($campaign->id)->update(['status' =>1]);
-            }elseif((strtotime($now) > strtotime($campaign->time_start.'+'.$time_run.'minute'))){
-                Campaign::whereId($campaign->id)->update(['status' =>2]);
-            }
-        }
         for($i=0; $i<count($details); $i++){
             $this->checkCampaignDetail($details[$i], $campaign, $i);
         }
+        $check0 = CampaignDetail::whereCampaignId($campaign->id)->whereStatus(0)->count();
+        $check1 = CampaignDetail::whereCampaignId($campaign->id)->whereStatus(1)->count();
+        $check2 = CampaignDetail::whereCampaignId($campaign->id)->whereStatus(2)->count();
+
+        if($check2 == count($details) ){
+            Campaign::whereId($campaign->id)->update(['status' =>2]);
+        }elseif($check1 !=0){
+            Campaign::whereId($campaign->id)->update(['status' =>1]);
+
+                }
+
     }
     
     public function checkCampaignDetail($detail, $campaign, $i){
@@ -161,10 +172,17 @@ class CampaignController extends Controller
         if($detail->status != 2){
             if((strtotime($campaign->time_start.'+'.($campaign->time_range +$i).'minute') >= strtotime($now))&&(strtotime($now) >= strtotime($campaign->time_start.'+'.$i.'minute'))){
                 CampaignDetail::whereId($detail->id)->update(['status'=>1]);
-            }elseif(strtotime($campaign->time_start.'+'.($campaign->time_range +$i).'minute') < strtotime($now)){
+            }elseif((strtotime($campaign->time_start.'+'.($campaign->time_range +$i+5).'minute') >= strtotime($now))&&($detail->ot_status == 0) &&(strtotime($campaign->time_start.'+'.($campaign->time_range +$i).'minute') <= strtotime($now))){
+                CampaignDetail::whereId($detail->id)->update(['status'=>1, 'ot_status'=>1, 'ot_time'=>date('Y-m-d H:i:s',strtotime($campaign->time_start.'+'.($campaign->time_range +$i).'minute'))]);
+            }
+            elseif((strtotime($campaign->time_start.'+'.($campaign->time_range +$i+5).'minute') < strtotime($now))&&($detail->ot_status == 0)){
+
                 CampaignDetail::whereId($detail->id)->update(['status'=>2]);
                 CampaignWishlist::whereCampaignDetailId($detail->id)->get();
 
+            }elseif(($detail->ot_status == 1) && (strtotime($detail->ot_time.'+5minute') < strtotime($now))){
+                CampaignDetail::whereId($detail->id)->update(['status'=>2]);
+                CampaignWishlist::whereCampaignDetailId($detail->id)->get();
             }
         }
     }
@@ -192,14 +210,30 @@ class CampaignController extends Controller
             }else{
                 if(($campaign_detail->user_id_auto_auction != null) &&($campaign_detail->user_id_auto_auction != $user->id) && ($amount <= $campaign_detail->max_price_auto_auction)){
                     $user_id = $campaign_detail->user_id_auto_auction;
-                    $amount = $amount+$campaign_detail->detail_price_step;
+                    if($amount == $campaign_detail->max_price_auto_auction){
+                        $amount = $amount;
+                    }else{
+                         $amount = $amount+$campaign_detail->detail_price_step;
+                    }
                     $user_name = User::whereId($campaign_detail->user_id_auto_auction)->value('name');
                 }
+                
                 CampaignAuction::insert(['user_id' => $user_id, 'campaign_detail_id' => $detail_id, 'price'=>$amount]);
                 CampaignDetail::whereId($detail_id)->update(['price_end'=>$amount, 'user_id'=>$user_id, 'user_name'=>$user_name]);
                 $auction = CampaignAuction::whereCampaignDetailId($detail_id)->orderBy('id','desc')->first();
+                if($campaign_detail->ot_status ==1){
+                    $now = Carbon::now();
+                    CampaignDetail::whereId($detail_id)->update([ 'ot_time'=>$now->toDateTimeString()]);
+                }
+                $campaign = $campaign_detail->campaign()->first();
+                $details = CampaignDetail::whereCampaignId($campaign->id)->orderBy( 'id','asc')->get()->toArray();
+                $order = array_search($campaign_detail->id, array_column($details, 'id'));
+
                 $campaign_detail = CampaignDetail::find($detail_id);
-                event(new CampaignEvent( $campaign_detail));
+                $campaign_detail['order'] = $order;
+                $campaign_detail['total'] = count($details);
+                event(new CampaignEvent( $campaign_detail->toArray()));
+
                 return 'Đấu giá của bạn đã được gửi đi';
             }
         }
@@ -222,15 +256,51 @@ class CampaignController extends Controller
             }elseif(($amount % $campaign_detail->detail_price_step) != 0){
                 return 'Giá bạn đưa ra phải theo giá bước nhảy';
             }else{
-                if($amount > $campaign_detail->max_price_auto_auction){
-                    CampaignDetail::whereId($detail_id)->update(['user_id_auto_auction'=>$user->id,'max_price_auto_auction'=>$amount]);
-                    if(($campaign_detail->status ==1) &&($user->id != $campaign_detail->user_id)){
-                        CampaignAuction::insert(['user_id' => $user->id, 'campaign_detail_id' => $detail_id, 'price'=>$campaign_detail->price_end+$campaign_detail->detail_price_step]);
-                        CampaignDetail::whereId($detail_id)->update(['price_end'=>$campaign_detail->price_end+$campaign_detail->detail_price_step, 'user_id'=>$user->id, 'user_name'=>$user->name]);
-                        $campaign_detail = CampaignDetail::find($detail_id);
-                        event(new CampaignEvent( $campaign_detail));
+                if($amount >= $campaign_detail->max_price_auto_auction){
+                    if($campaign_detail->user_id_auto_auction == null){
+                        $user_id = $user->id;
+                        $amount = $amount;
+                        $user_name = $user->name;
+                        $price_end = $campaign_detail->price_end+$campaign_detail->detail_price_step;
+                    }else{
+                        if($campaign_detail->user_id_auto_auction == $user->id){
+                            $user_id = $user->id;
+                            $amount = $amount;
+                            $user_name = $user->name;
+                            $price_end = $campaign_detail->price_end+$campaign_detail->detail_price_step;
+                        }else{
+                            if($campaign_detail->max_price_auto_auction == $amount){
+                                $user_id = $campaign_detail->user_id_auto_auction;
+                                $user_name = $campaign_detail->user_name;
+                                $amount = $amount;
+                                $price_end = $campaign_detail->max_price_auto_auction;
+                            }else{
+                                $user_id = $user->id;
+                                $user_name = $user->name;
+                                $amount = $amount;
+                                $price_end = $campaign_detail->max_price_auto_auction + $campaign_detail->detail_price_step;
+                            }
+                        }
                     }
+                    if(($user_id != $campaign_detail->user_id) || ($campaign_detail->max_price_auto_auction >= $amount)){
+                        CampaignAuction::insert(['user_id' => $user_id, 'campaign_detail_id' => $detail_id, 'price'=>$price_end]);
+                        CampaignDetail::whereId($detail_id)->update(['price_end'=>$price_end, 'user_id'=>$user_id, 'user_name'=>$user_name]);
+                        if($campaign_detail->ot_status ==1){
+                            $now = Carbon::now();
+                            CampaignDetail::whereId($detail_id)->update([ 'ot_time'=>$now->toDateTimeString()]);
+                        }
+                        $campaign = $campaign_detail->campaign()->first();
+                        $details = CampaignDetail::whereCampaignId($campaign->id)->orderBy( 'id','asc')->get()->toArray();
+                        $order = array_search($campaign_detail->id, array_column($details, 'id'));
+        
+                        $campaign_detail = CampaignDetail::find($detail_id);
+                        $campaign_detail['order'] = $order;
+                        $campaign_detail['total'] = count($details);
+                        event(new CampaignEvent( $campaign_detail->toArray()));
+                    }
+                    CampaignDetail::whereId($detail_id)->update(['user_id_auto_auction'=>$user_id,'max_price_auto_auction'=>$amount]);
                 }
+               
                 return 'Đã cài đặt tự động đấu giá';
             }
         }

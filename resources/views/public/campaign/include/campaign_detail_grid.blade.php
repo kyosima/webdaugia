@@ -1,7 +1,7 @@
 <?php $order = array_search($item->id, array_column($details, 'id')); ?>
 <section class="camapaign__product" id="detail-order-{{$order}}">
     <div class="row">
-        <div class="col-3 px-1">
+        <div class="col-2 px-1">
             <div class="featured__item__pic__campaign__detail">
                 <div class="featured__item__pic set-bg" data-setbg="{{getImage($product->avatar)}}">
                     <ul class="featured__item__pic__hover">
@@ -10,7 +10,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-9 px-1 campaign-detail-about">
+        <div class="col-10 px-1 campaign-detail-about">
             <b class="product__detail__title text-bold text-light">CK{{$order+1}} - {{$product->title}}</b>
             <ul class="text-light">
                 <li><b>Giá khởi điểm: </b><span id="" class="text-danger">{{getCurrency($item->detail_price_start)}}</span></li>

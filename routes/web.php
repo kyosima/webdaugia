@@ -175,6 +175,8 @@ Route::group(['prefix' => 'dau-gia'], function(){
     Route::get('/bat-dau/{id}', [CampaignController::class,'startCampaign'])->name('campaign.start');
     Route::get('/bat-dau/detail/{id}', [CampaignController::class,'startDetail'])->name('campaign.startdetail');
     Route::get('/ket-thuc/detail/{id}', [CampaignController::class,'stopDetail'])->name('campaign.stopdetail');
+    Route::get('/mo-rong/detail/{id}', [CampaignController::class,'startOT'])->name('campaign.startOT');
+
     Route::get('/{slug1}/{slug2}', [CampaignController::class, 'getCampaignProductDetail'])->name('campaign.campaignproduct');
 
 });

@@ -126,6 +126,27 @@ function stopDetail(order){
     });
 }
 
+function startOT(order, total, status){
+    url =$('#detail-counter-'+(parseInt(order))).data('urlot');
+    console.log(url);
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: {}, // serializes the form's elements.
+        success: function(response)
+        {
+            console.log(response);
+
+            runOT(response, order, total, 5,status,false);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            console.log(errorThrown);
+
+        }
+    });
+}
+
+
 function countRunDetail(time, order, total,duration, status){ 
 
     if(parseInt(status) == 0){
@@ -142,9 +163,8 @@ function countRunDetail(time, order, total,duration, status){
     startDateTime = new Date(startDateTime.getTime() + duration*60000);
     var  newStamp= startDateTime.getTime();
     var timer; // for storing the interval (to stop or pause later if needed)
-    
+
     timer = setInterval(function(){
-     
         newDate = new Date();
         startStamp= newDate.getTime();
         var diff = Math.round((newStamp-startStamp)/1000);
@@ -155,6 +175,54 @@ function countRunDetail(time, order, total,duration, status){
         var m = Math.floor(diff/(60));
         diff = diff-(m*60);
         var s = diff;
+ 
+        
+            
+        
+        if((d == -1) ){
+            clearInterval(timer);
+            startOT(order, total, status);
+        }
+        $('#detail-counter-'+order+ ' .day').text(d);
+        $('#detail-counter-'+order+ ' .hour').text(h);
+        $('#detail-counter-'+order+ ' .minute').text(m);
+        $('#detail-counter-'+order+ ' .second').text(s);
+    }, 1000);
+}
+function runOT(time, order, total,duration, status){ 
+    if(parseInt(status) == 0){
+        startDetail(parseInt(order));
+    }
+  
+    $('.auction-area').css('display', 'block');
+    // var t = '2014/01/01 23:59:59:0'.split(/[- :]/);
+    var t = time.split(' ');
+    var a = t[0].split('-');
+    var b = t[1].split(':');
+    // Apply each element to the Date function
+    // var startDateTime = new Date('2014,0,1,23,59,59,0');
+    var startDateTime = new Date(a[0], a[1]-1, a[2], b[0], parseInt(b[1]) , b[2],0);
+    startDateTime = new Date(startDateTime.getTime() + duration*60000);
+    var  newStamp= startDateTime.getTime();
+    var timer; // for storing the interval (to stop or pause later if needed)
+
+    timer = setInterval(function(){
+        newDate = new Date();
+        startStamp= newDate.getTime();
+        var diff = Math.round((newStamp-startStamp)/1000);
+        var d = Math.floor(diff/(24*60*60)); /* though I hope she won't be working for consecutive days :) */
+        diff = diff-(d*24*60*60);
+        var h = Math.floor(diff/(60*60));
+        diff = diff-(h*60*60);
+        var m = Math.floor(diff/(60));
+        diff = diff-(m*60);
+        var s = diff;
+ 
+        $('#current-price').bind('DOMSubtreeModified', function(){
+            clearInterval(timer);
+          });
+            
+        
         if((d == -1) ){
             console.log('end ' + order);
             $('#detail-order-'+order+' #status').text('Kết thúc');

@@ -60,7 +60,7 @@ class ProductCategoryController extends Controller
         $category = ProductCategory::whereSlug($slug)->firstOrFail();
         $products_onsale = Product::latest()->whereIn('category_id',$this->getIds($category))->with('category')->where('discount','<>',0)->orderBy('discount','desc')->get();
         $products = Product::whereIn('category_id', $this->getIds($category))->with('category')->latest()->paginate(16);
-        return view('public.product.shop', ['products'=>$products,'products_onsale'=>$products_onsale]);
+        return view('public.product.shop', ['products'=>$products,'products_onsale'=>$products_onsale, 'category'=>$category]);
     }
 
     /**

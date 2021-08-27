@@ -292,26 +292,28 @@ $category = CategoryPost::select('title', 'slug')->get();
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
-                    <a href="{{url('dau-gia')}}">
 
                     <div class="hero__categories">
                         <div class="hero__categories__all">
                                 <i class="fa fa-bars"></i>
+                                {{-- <a href="{{url('dau-gia')}}"> --}}
+
                                 <span>ĐẤU GIÁ</span>
+                            {{-- </a> --}}
+                            <a href="{{URL::to('/')}}/" style="position: absolute;right: 5px;display: block;" class="d-lg-none d-md-none"><i class="fa fa-home" aria-hidden="true" style="font-size: 25px"></i></a>
+
                             
                         </div>
-                        {{-- <ul style="display: none;">
-                            <?php 
-                                $categories = App\Models\ProductCategory::whereParentId(0)->latest()->get();
-                            ?>
-                            @foreach($categories as $category)
-                             <li><a href="{{url('cua-hang/'.$category->slug)}}">{{$category->title}}</a></li>
-                            @endforeach
+                      <ul style="display: none;">
                            
-                        </ul>                            --}}
+                             <li><a href="{{url('dau-gia/')}}">Chưa diễn ra</a></li>
+                             <li><a href="{{url('dau-gia/')}}">Đang diễn ra</a></li>
+
+                        </ul>
+                         
 
                     </div>
-                </a>
+
                 </div>
                 <div class="col-lg-9">
                     <nav class="header__menu">
@@ -345,6 +347,7 @@ $category = CategoryPost::select('title', 'slug')->get();
             </div>
         </div>
     </section>
+
     <!-- Hero Section End -->
 
     @yield('content')

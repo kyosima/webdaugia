@@ -45,6 +45,8 @@ class CampaignController extends AdminController
             CampaignDetail::whereId($_POST['campaign_detail_id'])->update([
                 'detail_price_start'=>$_POST['detail_price_start'],
                 'detail_price_step'=>$_POST['detail_price_step'],
+                'price_end'=>$_POST['detail_price_start'],
+
                 'video'=>$_POST['video']
             ]);
        
@@ -123,6 +125,9 @@ class CampaignController extends AdminController
         $form = new Form(new Campaign());   
 
         $form->text('title', __('Tiêu đề'));
+        $form->datetime('time_start', __('Thời gian bắt đầu'))->default(date('Y-m-d H:i:s'));
+        $form->number('time_range', 'Thời gian đấu giá 1 sản phẩm')->default(60);
+        $form->ckeditor('description', __('Mô tả'));
         return $form;
     }
 
@@ -134,7 +139,7 @@ class CampaignController extends AdminController
         $form->inputImage('avatar', __('Ảnh đại diện'))->value('/public/upload/product_default.png')->attribute('data-type', '');
         $form->inputProduct('id', __('Chọn sản phẩm'))->value($id);
         $form->datetime('time_start', __('Thời gian bắt đầu'))->default(date('Y-m-d H:i:s'));
-        $form->number('time_range', 'Thời gian đấu giá 1 sản phẩm');
+        $form->number('time_range', 'Thời gian đấu giá 1 sản phẩm')->default(60);
         $form->ckeditor('description', __('Mô tả'));
         $form->saving(function (Form $form) {
             $form->avatar = Str::after($form->avatar, URL('/'));

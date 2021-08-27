@@ -16,7 +16,10 @@ channel.bind('my-event', function(data) {
     $('#user-detail-'+detail['id'] +' #user-top').text(detail['user_name']);
 
     $('#toast-detail-'+detail['id']).toast('show');
-   
+    if(detail['ot_status'] ==1){
+        runOT(detail['ot_time'],detail['order'], detail['total'],5, detail['status'])
+    }
+
 });
 
 function formatCash(str) {

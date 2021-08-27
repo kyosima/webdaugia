@@ -4650,7 +4650,6 @@ a.active{
 	padding: 10px;
 	border: 1px solid #ddd;
 	border-radius: 5px;
-	height: 350px;
 }
 
 .list-detail{
@@ -4864,7 +4863,7 @@ padding: 0px 20px
     padding: 5px 21px;
 }
 .camapaign__product .featured__item__pic{
-	max-height: 200px;
+	max-height: 130px;
 }
 .number-list-detail .item{
 	display: inline-block;
@@ -4968,3 +4967,8 @@ padding: 0px 20px
 	  display: block;
 	  margin: auto;
   }
+.current-price-area span.text-dark{
+color: #fff !important;
+display: inline-block;
+width: 150px;
+}

@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <button data-href="{{route('cart.addCart')}}" data-id="{{$product->id}}" class="primary-btn">THÊM VÀO GIỎ HÀNG</button>
-                    <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                    {{-- <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a> --}}
                     <ul>
                         {{-- <li><b>Danh mục</b> <span>{{$product->category->title}}</span></li> --}}
                         <li><b>Chia sẻ</b>
