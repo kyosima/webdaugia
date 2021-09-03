@@ -27,7 +27,7 @@ class UserController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new User());
-        $grid->model()->where('type', '=', 2);
+        // $grid->model()->where('type', '=', 2);
         $grid->column('id', __('Id'));
         $grid->column('Tên đại lý')->display(function () {
             return User::find($this->id)->user_info()->first()->fullname;
@@ -90,13 +90,13 @@ class UserController extends AdminController
             
         });
 
-        $grid->column('Tạo đơn hàng')->display(function(){
-            if(DB::table('campaign_details')->where('user_id', $this->id) ->where('status', 2)->where('is_ordered', 0)->exists()) {
-                return '<a href="./orders/createAuctionOrder/'.$this->id.'" class="btn btn-success"><i class="fa fa-shopping-cart"></i></a>';
-            } else {
-                return '<span>Thành viên chưa có sản phẩm</span>';
-            }
-        });
+        // $grid->column('Tạo đơn hàng')->display(function(){
+        //     if(DB::table('campaign_details')->where('user_id', $this->id) ->where('status', 2)->where('is_ordered', 0)->exists()) {
+        //         return '<a href="./orders/createAuctionOrder/'.$this->id.'" class="btn btn-success"><i class="fa fa-shopping-cart"></i></a>';
+        //     } else {
+        //         return '<span>Thành viên chưa có sản phẩm</span>';
+        //     }
+        // });
 
         return $grid;
     }

@@ -93,11 +93,11 @@
                                                                                                 </td>
                                                                                                 <td
                                                                                                     style="color:#636363;border:1px solid #e5e5e5;padding:12px;text-align:left;vertical-align:middle;font-family:'Helvetica Neue',Helvetica,Roboto,Arial,sans-serif">
-                                                                                                    {{ $item->quantity }}
+                                                                                                    {{ $item->getOriginal('pivot_SL') }}
                                                                                                 </td>
                                                                                                 <td
                                                                                                     style="color:#636363;border:1px solid #e5e5e5;padding:12px;text-align:left;vertical-align:middle;font-family:'Helvetica Neue',Helvetica,Roboto,Arial,sans-serif">
-                                                                                                    <span>{{ number_format($item->price * $item->quantity , '0', ',', '.') }}<span>₫</span></span>
+                                                                                                    <span>{{ number_format($item->getOriginal('pivot_end_price') * $item->getOriginal('pivot_SL') , '0', ',', '.') }}<span>₫</span></span>
                                                                                                 </td>
                                                                                             </tr>
                                                                                         @endforeach

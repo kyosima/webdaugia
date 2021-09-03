@@ -7,60 +7,31 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
-                    <h2>Checkout</h2>
+                    <h2>Checkout Auction</h2>
                     <div class="breadcrumb__option">
-                        <a href="./index.html">Trang chủ</a><span>Checkout</span>
+                        <a href="./index.html">Trang chủ</a><span>Checkout Auction</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-{{-- @if ($errors->all())
-{{dd($errors->all())}}
-    
-@endif --}}
-
 <!-- Breadcrumb Section End -->
 
 <!-- Checkout Section Begin -->
 <section class="checkout spad">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h6><span class="icon_tag_alt"></span> Bạn có mã giảm giá? <span style="cursor: pointer" class="open-coupon">Nhấn vào đây</span>để sử dụng mã
-                    @if (!session('coupon'))
-                        <div class="checkout__order__use__coupon" style="display: none">
-                            <form action="{{route('coupon.useCoupon')}}" method="POST">
-                                @csrf
-                                <input type="text" name="couponCode" placeholder="Nhập mã giảm giá" value="">
-                                <button type="submit" class="site-btn">ÁP DỤNG</button>
-                            </form>
-                        </div>
-                    @else
-                        <div class="checkout__order__use__coupon" style="display:block; margin-top: 5px">
-                            <form action="{{route('coupon.unUseCoupon')}}" method="POST" class="form-coupon-remove">
-                                @csrf
-                                @method('delete')
-                                <input type="text" name="couponCode" placeholder="Nhập mã giảm giá" value="{{session('coupon')['name']}}" readonly>
-                                <button type="submit" class="site-btn">XÓA COUPON</button>
-                            </form>
-                        </div>
-                    @endif
-                </h6>
-            </div>
-        </div>
+
         <div class="checkout__form">
             <h4>Chi tiết hóa đơn</h4>
-            <form action="{{route('checkout.checkout')}}" method="POST" id="form-checkout">
+            <form action="{{route('auctioncheckout.checkout')}}" method="POST" id="form-checkout">
                 @csrf
                 <div class="row">
                     @if (Auth::check())
                     @php
                         $user = App\Models\User::find(Auth::user()->id);
-                        
                     @endphp
+
                     <div class="col-lg-8 col-md-6">
                         <div class="checkout__input">
                             <p>Họ và Tên<span>*</span></p>
@@ -130,85 +101,15 @@
                                 placeholder="Ghi chú cho đơn hàng của bạn tại đây" value="{{old('customer_Note')}}" name="customer_Note">
                         </div>
                     </div>
-                    @else
-                        <div class="col-lg-8 col-md-6">
-                            <div class="checkout__input">
-                                <p>Họ và Tên<span>*</span></p>
-                                <input type="text" name="customer_Name" value="{{old('customer_Name')}}" required>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Số điện thoại<span>*</span></p>
-                                        <input type="tel" name="customer_Phone" value="{{old('customer_Phone')}}"  required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Email<span>*</span></p>
-                                        <input type="email" name="customer_Email" value="{{old('customer_Email')}}" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Tỉnh/ Thành<span>*</span></p>
-                                        <select class="js-location select-location" id="selectCity" data-type="city" name="customer_City">
-                                            <option value="" selected>Mời bạn chọn Tỉnh/ Thành</option>
-                                            @foreach ($cities as $item)
-                                                <option value="{{$item->id}}">{{$item->_name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Quận/ Huyện<span>*</span></p>
-                                        <select id="selectDistrict" class="js-location select-location" data-type="district" name="customer_District">
-                                            <option value="" selected>Mời bạn chọn Quận/ Huyện</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Phường/ Xã<span>*</span></p>
-                                        <select id="selectWard" class="select-location" data-type="ward" name="customer_Ward">
-                                            <option value="" selected>Mời bạn chọn Phường/ Xã</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Địa chỉ nhận hàng<span>*</span></p>
-                                        <input type="text" name="customer_Address" placeholder="Số nhà, tên đường,..." value="" class="checkout__input__add" required>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- <div class="checkout__input__checkbox">
-                                <label for="diff-acc">
-                                    Ship to a different address?
-                                    <input type="checkbox" id="diff-acc">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div> --}}
-                            <div class="checkout__input">
-                                <p>Ghi chú đơn hàng<span></span></p>
-                                <input type="text"
-                                    placeholder="Ghi chú cho đơn hàng của bạn tại đây" value="{{old('customer_Note')}}" name="customer_Note">
-                            </div>
-                        </div>
+
                     @endif
                     
-
                     <div class="col-lg-4 col-md-6">
                         <div class="checkout__order">
                             <h4>Đơn hàng của bạn</h4>
                             <div class="checkout__order__products">Sản phẩm <span>Tổng</span></div>
                             <ul>
-                                @foreach (Cart::instance('shopping')->content() as $item)
+                                @foreach (Cart::instance('auction')->content() as $item)
                                     <li>{{$item->name}} x {{$item->qty}} 
                                         <span>{{getCurrency($item->qty * $item->price)}}</span>
                                     </li>
@@ -216,7 +117,7 @@
                             </ul>
                             <div class="checkout__order__subtotal">
                                 Tổng tạm tính 
-                                <b>{{Cart::instance('shopping')->subtotal()}}₫</b>
+                                <b>{{Cart::instance('auction')->subtotal()}}₫</b>
                             </div>
 
                             @if(session('coupon'))
@@ -231,7 +132,7 @@
 
                             <div class="checkout__order__total">
                                 Tổng cộng 
-                                <b>{{Cart::instance('shopping')->total()}}₫</b>
+                                <b>{{Cart::instance('auction')->total()}}₫</b>
                             </div>
                             <div class="checkout__input__radio">
                                 {{-- <label for="payment">
@@ -266,11 +167,11 @@
                 </div>
 
                 <!-- INPUT HIDDEN LOCATION -->
-                <input type="hidden" name="bill_subtotal" value="{{intval(str_replace(".","",Cart::instance('shopping')->subtotal()))}}">
-                <input type="hidden" name="bill_promo" value="{{session('coupon') ? session('coupon')['discount'] : ''}}">
-                <input type="hidden" name="bill_coupon" value="{{session('coupon') ? session('coupon')['name'] : ''}}">
-                <input type="hidden" name="bill_soluong" value="{{Cart::instance('shopping')->count()}}">
-                <input type="hidden" name="bill_total" value="{{session('coupon') ? session('coupon')['newSubtotal'] : Cart::instance('shopping')->total()}}">
+                <input type="hidden" name="bill_subtotal" value="{{intval(str_replace(".","",Cart::instance('auction')->subtotal()))}}">
+                <input type="hidden" name="bill_promo" value="">
+                <input type="hidden" name="bill_coupon" value="">
+                <input type="hidden" name="bill_soluong" value="{{Cart::instance('auction')->count()}}">
+                <input type="hidden" name="bill_total" value="{{intval(str_replace(".","",Cart::instance('auction')->total()))}}">
 
 
                 <input type="hidden" id="thanhphohidden" name="thanhpho" value="">

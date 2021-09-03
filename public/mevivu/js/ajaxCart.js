@@ -90,7 +90,7 @@ $(document).ready(function(){
                 $.each(response[0], function(key, value){
                     $('ul.mini-cart').prepend(
                         `<li class="mini-cart-item">
-                        <span class="remove" data-rowid="${value.rowId}" data-href="${response[4]}">x</span>
+                        <span class="remove remove_normal_cart" data-rowid="${value.rowId}" data-href="${response[4]}">x</span>
                         <a href="${response[3]}/${value.options.slug}" style="color: #000;">
                             <img src="${value.options.feature_img}" width="60" height="60">${value.name}
                         </a>
@@ -124,6 +124,26 @@ $(document).ready(function(){
                     </button>
                 `)
 
+                $('body').append(`<div id="successAuctionModal" class="modal fade" style="display: block;" aria-modal="true">
+                    <div class="modal-dialog modal-confirm">
+                        <div class="modal-content">
+                            <div class="modal-header justify-content-center">
+                                <div class="icon-box">
+                                    <i class="material-icons"></i>
+                                </div>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <h4>Thành công</h4>	
+                                <p>Đã thêm sản phẩm <span style="color:red">${response[5]}</span> thành công</p>
+                                <a class="btn btn-success" data-dismiss="modal" href="${normalCart}"><span>Đi tới giỏ hàng</span> <i class="material-icons"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>`);
+
+                $('#successAuctionModal').modal('show');
+
             },
             complete: function() {
                 $('#preloder').css('display', 'none');
@@ -135,10 +155,10 @@ $(document).ready(function(){
 
     // delete from cart
     if(coupon == null){
-        $(document).on("click","span.remove",function() {
+        $(document).on("click","span.remove.remove_normal_cart",function() {
             var rowID = $(this).data('rowid');
             var url = $(this).data('href');
-    
+
             $('#preloder').css('display', 'block');
             $('#preloder .loader').css('display', 'block');
     
@@ -167,7 +187,7 @@ $(document).ready(function(){
                         $.each(response[0], function(key, value){
                             $('ul.mini-cart').prepend(
                                 `<li class="mini-cart-item">
-                                <span class="remove" data-rowid="${value.rowId}" data-href="${url}">x</span>
+                                <span class="remove remove_normal_cart" data-rowid="${value.rowId}" data-href="${url}">x</span>
                                 <a href="${response[3]}/${value.options.slug}" style="color: #000;">
                                     <img src="${value.options.feature_img}" width="60" height="60">${value.name}
                                 </a>
@@ -242,9 +262,6 @@ $(document).ready(function(){
                 }
             });
         });
-
-
-
         /*-------------------
 		Quantity change & Update cart
 	    --------------------- */
@@ -279,7 +296,7 @@ $(document).ready(function(){
 
                 $.ajax({
                     type: "PUT",
-                    url: "/webdaugia/update-cart",
+                    url: updateCart,
                     data: {
                         rowID: rowId,
                         qty: newVal,
@@ -296,6 +313,7 @@ $(document).ready(function(){
 
                         $('.shopping__subtotal b').text(response[1]+'₫');
                         $('.shopping__total b').text(response[1]+'₫');
+                        $('.cartHeader .cart-count').text(response[2]);
 
                     },
                     complete: function() {

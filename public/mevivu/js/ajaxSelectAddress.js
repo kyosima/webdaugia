@@ -14,7 +14,7 @@ $(document).ready(function() {
         });
         $.ajax({
             type: "GET",
-            url: "http://localhost:85/webdaugia/getLocation",
+            url: ajaxSelectAddress,
             data: {
                 type: type,
                 parent: parentId

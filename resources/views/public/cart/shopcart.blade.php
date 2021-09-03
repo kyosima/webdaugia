@@ -44,7 +44,7 @@
                                     <h5>{{$item->name}}</h5>
                                 </td>
                                 <td class="shoping__cart__price">
-                                    @money($item->price)
+                                    {{getCurrency($item->price)}}
                                 </td>
                                 <td class="shoping__cart__quantity">
                                     <div class="quantity">
@@ -56,10 +56,10 @@
                                     </div>
                                 </td>
                                 <td class="shoping__cart__total" data-rowId="{{$item->rowId}}">
-                                    @money($item->price*$item->qty)
+                                    {{getCurrency($item->price*$item->qty)}}
                                 </td>
                                 <td class="shoping__cart__item__close">
-                                    <span class="icon_close remove" data-rowId="{{$item->rowId}}" data-href="{{route('cart.removeFromCart')}}"></span>
+                                    <span class="icon_close remove remove_normal_cart" data-rowId="{{$item->rowId}}" data-href="{{route('cart.removeFromCart')}}"></span>
                                 </td>
                             </tr>
                             @endforeach
@@ -112,12 +112,12 @@
                                     @method('delete')
                                     <button type="submit">x</button>
                                 </form>
-                                <b class="float-right">-@money(session('coupon')['discount'])</b>
+                                <b class="float-right">-{{getCurrency(session('coupon')['discount'])}}</b>
                             </li>
 
                             <li class="shopping__total">
                                 <span>Tổng cộng</span>
-                                <b class="float-right">@money(session('coupon')['newSubtotal'])</b>
+                                <b class="float-right">{{getCurrency(session('coupon')['newSubtotal'])}}</b>
                             </li>
                         @else
                             <li class="shopping__total">

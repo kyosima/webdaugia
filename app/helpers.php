@@ -26,7 +26,6 @@ if (!function_exists('getCurrency')) {
 if (!function_exists('countProductCampaign')) {
     function countProductCampaign($id)
     {
-           
         return CampaignDetail::whereCampaignId($id)->count(); 
     }
 }

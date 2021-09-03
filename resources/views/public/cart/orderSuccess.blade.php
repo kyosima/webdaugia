@@ -38,11 +38,11 @@
                                     <tr class="order-item">
                                         <td class="table__product-name product-name">
                                             <a href="{{ route('san-pham.index').'/'.$item->slug }}">{{ $item->title }}</a>
-                                            <strong class="product-quantity">x &nbsp;{{ $item->quantity }}</strong>
+                                            <strong class="product-quantity">x &nbsp;{{ $item->getOriginal('pivot_SL') }}</strong>
                                         </td>
                                         <td class="table__product-total product-total">
                                             <span
-                                                class="price-amount">@money($item->quantity * $item->price)</span>
+                                                class="price-amount">{{getCurrency($item->getOriginal('pivot_SL') * $item->getOriginal('pivot_end_price'))}}</span>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -53,7 +53,7 @@
                                     <th scope="row">Tổng số phụ:</th>
                                     <td>
                                         <span
-                                            class="price-amount">@money($bill->bill_total)</span>
+                                            class="price-amount">{{getCurrency($bill->bill_total)}}</span>
                                     </td>
                                 </tr>
                                 @if ($bill->bill_promo > 0)
@@ -61,7 +61,7 @@
                                         <th scope="row">Giảm giá:</th>
                                         <td>
                                             <span
-                                                class="price-amount">@money($bill->bill_promo)</span>
+                                                class="price-amount">{{getCurrency($bill->bill_promo)}}</span>
                                         </td>
                                     </tr>
                                 @endif
@@ -72,7 +72,7 @@
                                 <tr>
                                     <th scope="row">Tổng cộng:</th>
                                     <td>
-                                        <span class="price-amount" style="color: red">@money($bill->bill_total)</span>
+                                        <span class="price-amount" style="color: red">{{getCurrency($bill->bill_total)}}</span>
                                     </td>
                                 </tr>
                             </tfoot>
@@ -108,7 +108,7 @@
                             </li>
                             <li class="order-overview__total total">
                                 Tổng cộng: <strong>
-                                    <span class="price-amount">@money($bill->bill_total)</span>
+                                    <span class="price-amount">{{getCurrency($bill->bill_total)}}</span>
                                 </strong>
                             </li>
                             <li class="order-overview__payment-method method">

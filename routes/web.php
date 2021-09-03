@@ -21,6 +21,8 @@ use App\Http\Controllers\UserGetPassword;
 use App\Http\Controllers\WishListController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\AuctionCartController;
+use App\Http\Controllers\AuctionCheckoutController;
 use App\Http\Controllers\SinglePageController;
 
 
@@ -127,6 +129,16 @@ Route::put('/update-cart', [CartController::class, 'updateCart'])->name('cart.up
 
 Route::delete('/delete-cart', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
 
+// AUCTION CART
+
+Route::get('/auction-cart', [AuctionCartController::class, 'index'])->name('auctioncart.index');
+
+Route::post('/auction-add-cart', [AuctionCartController::class, 'addToCart'])->name('auctioncart.addCart');
+
+Route::post('/auction-fast-add-cart', [AuctionCartController::class, 'fastAddToCart'])->name('auctioncart.fastAddToCart');
+
+Route::delete('/auction-delete-cart', [AuctionCartController::class, 'removeFromCart'])->name('auctioncart.removeFromCart');
+
 // coupon
 Route::post('/use-coupon', [CouponController::class, 'useCoupon'])->name('coupon.useCoupon');
 
@@ -139,6 +151,13 @@ Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.in
 Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout.checkout');
 
 Route::get('/getLocation', [CheckoutController::class, 'getLocation'])->name('checkout.getLocation');
+
+// CHECKOUT AUCTION
+
+Route::get('/auction-checkout', [AuctionCheckoutController::class, 'index'])->name('auctioncheckout.index');
+Route::post('/auction-checkout', [AuctionCheckoutController::class, 'checkout'])->name('auctioncheckout.checkout');
+Route::get('/auction-order-success', [AuctionCheckoutController::class, 'orderSuccess'])->name('auctioncheckout.orderSuccess');
+
 
 // ORDER SUCCESS
 

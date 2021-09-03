@@ -308,7 +308,7 @@ class CampaignController extends Controller
 
     public function getAuction(Request $request){
         $auction = CampaignAuction::whereCampaignDetailId($request->id)->orderBy('desc', 'id')->first();
-        return $aution;
+        return $auction;
     }
 
     public function addWishList(Request $request){

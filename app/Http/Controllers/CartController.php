@@ -53,6 +53,7 @@ class CartController extends Controller
             Cart::instance('shopping')->count(),
             route('san-pham.index'),
             route('cart.removeFromCart'),
+            $product->title
         ],200);
     }
 

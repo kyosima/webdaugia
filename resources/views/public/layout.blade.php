@@ -12,9 +12,9 @@ $category = CategoryPost::select('title', 'slug')->get();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="home-url" content="{{URL('/')}}">
-    <link rel="canonical" href="{{URL('/')}}">
-    <link rel="icon" href="{{asset('public/mevivu/img/logo.png')}}" type="image/gif" sizes="32x32">
+    <meta name="home-url" content="{{ URL('/') }}">
+    <link rel="canonical" href="{{ URL('/') }}">
+    <link rel="icon" href="{{ asset('public/mevivu/img/logo.png') }}" type="image/gif" sizes="32x32">
     <title>Đấu giá | Template</title>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
@@ -28,8 +28,8 @@ $category = CategoryPost::select('title', 'slug')->get();
     <link rel="stylesheet" href="{{ asset('public/mevivu/css/elegant-icons.css') }}" type="text/css">
     {{-- <link rel="stylesheet" href="{{asset('public/mevivu/css/nice-select.css')}}" type="text/css"> --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="{{asset('public/mevivu/js/jquery-3.3.1.min.js')}}"></script>
-    <link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
+    <script src="{{ asset('public/mevivu/js/jquery-3.3.1.min.js') }}"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
 
     <style>
         .select2-container {
@@ -50,13 +50,13 @@ $category = CategoryPost::select('title', 'slug')->get();
         }
 
     </style>
-    <link rel="stylesheet" href="{{asset('public/mevivu/css/jquery-ui.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('public/mevivu/css/owl.carousel.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('public/mevivu/css/slicknav.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('public/mevivu/css/style.css')}}" type="text/css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('public/mevivu/css/jquery-ui.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('public/mevivu/css/owl.carousel.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('public/mevivu/css/slicknav.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('public/mevivu/css/style.css') }}" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-    <script src="{{asset('public/mevivu/js/campaign.js')}}"></script>
+    <script src="{{ asset('public/mevivu/js/campaign.js') }}"></script>
 
 
 </head>
@@ -71,7 +71,7 @@ $category = CategoryPost::select('title', 'slug')->get();
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <!-- <div class="humberger__menu__logo">
-            <a href="{{URL::to('/')}}"><img src="{{asset('public/mevivu/img/logo.png')}}" alt=""></a>
+            <a href="{{ URL::to('/') }}"><img src="{{ asset('public/mevivu/img/logo.png') }}" alt=""></a>
         </div> -->
         <div class="seach_form mb-3">
             <div class="input-group">
@@ -88,53 +88,57 @@ $category = CategoryPost::select('title', 'slug')->get();
             </ul>
             <div class="header__cart__price"><span>150.000 đ</span></div>
         </div>
-        
+
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li><a href="{{URL::to('/')}}/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
-                <li><a href="{{URL::to('/gioi-thieu')}}">Giới thiệu</a></li>
-                <li><a href="{{URL::to('/cua-hang')}}">Cửa hàng</a></li>
-                <li><a href="{{URL::to('/danh-sach-dai-ly')}}">Danh sách đại lý</a></li>
-                <li><a href="{{URL::to('/nha-lai-tao')}}">Nhà lai tạo</a></li>
-                <li><a href="{{URL::to('/chinh-sach-dai-ly')}}">Chính sách đại lý</a></li>
-                <li><a href="{{URL::to('/huong-dan-dau-gia')}}">Hướng dẫn đấu giá</a></li> 
-                <li><a href="{{URL::to('/blog')}}">Blog</a>
+                <li><a href="{{ URL::to('/') }}/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                <li><a href="{{ URL::to('/gioi-thieu') }}">Giới thiệu</a></li>
+                <li><a href="{{ URL::to('/cua-hang') }}">Cửa hàng</a></li>
+                <li><a href="{{ URL::to('/danh-sach-dai-ly') }}">Danh sách đại lý</a></li>
+                <li><a href="{{ URL::to('/nha-lai-tao') }}">Nhà lai tạo</a></li>
+                <li><a href="{{ URL::to('/chinh-sach-dai-ly') }}">Chính sách đại lý</a></li>
+                <li><a href="{{ URL::to('/huong-dan-dau-gia') }}">Hướng dẫn đấu giá</a></li>
+                <li><a href="{{ URL::to('/blog') }}">Blog</a>
                     <ul class="header__menu__dropdown">
-                        {{-- @foreach($category as $value)
+                        {{-- @foreach ($category as $value)
                         <li><a href="{{URL::to('/danh-muc-bai-viet/'.$value->slug)}}">{{$value->title}}</a></li>
-                        @endforeach   --}}
+                        @endforeach --}}
                     </ul>
                 </li>
-                
-                <li><a href="{{URL::to('/lien-he')}}">Liên hệ</a></li>
+
+                <li><a href="{{ URL::to('/lien-he') }}">Liên hệ</a></li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
         <div class="humberger__menu__widget">
             @guest
-            <div class="header__top__right__auth header__top__register">
-                <a href="{{URL::to('/dang-nhap')}}"><i class="fa fa-user"></i>Đăng nhập</a>
-            </div>
-            <div class="header__top__right__auth">
-                <a href="{{URL::to('/dang-ky')}}"><i class="fa fa-user-plus"></i>Đăng ký</a>
-            </div>
+                <div class="header__top__right__auth header__top__register">
+                    <a href="{{ URL::to('/dang-nhap') }}"><i class="fa fa-user"></i>Đăng nhập</a>
+                </div>
+                <div class="header__top__right__auth">
+                    <a href="{{ URL::to('/dang-ky') }}"><i class="fa fa-user-plus"></i>Đăng ký</a>
+                </div>
             @endguest
             @auth
                 <div class="header__top__right__auth">
                     <span class="dropdow_custom" data-toggle=".dropdown_custom">
-                        Xin chào, {{Auth::user()->name}}
+                        Xin chào, {{ Auth::user()->name }}
                     </span>
                     <div class="dropdown_custom" style="display:none;">
-                        <a class="dropdown-item" href="{{URL::to('trang-ca-nhan')}}"><i class="fa fa-address-card-o"></i> Thông tin</a>
+                        <a class="dropdown-item" href="{{ URL::to('trang-ca-nhan') }}"><i
+                                class="fa fa-address-card-o"></i> Thông tin</a>
                         <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Đơn hàng</a>
                         <a class="dropdown-item" href=""><i class="fa fa-hourglass-half"></i> Lịch sử đấu giá</a>
-                        <a class="dropdown-item" href="{{url('dau-gia/san-pham-dau-gia-yeu-thich')}}"><i class="fa fa-heart-o"></i> Yêu thích</a>
-                        <a class="dropdown-item" href="{{URL::to('doi-mat-khau')}}"><i class="fa fa-key"></i> Đổi mật khẩu</a>
+                        <a class="dropdown-item" href="{{ url('dau-gia/san-pham-dau-gia-yeu-thich') }}"><i
+                                class="fa fa-heart-o"></i> Yêu thích</a>
+                        <a class="dropdown-item" href="{{ URL::to('doi-mat-khau') }}"><i class="fa fa-key"></i> Đổi
+                            mật khẩu</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{URL::to('/thoat-tai-khoan')}}"><i class="fa fa-sign-out"></i> Thoát tài khoản</a>
+                        <a class="dropdown-item" href="{{ URL::to('/thoat-tai-khoan') }}"><i class="fa fa-sign-out"></i>
+                            Thoát tài khoản</a>
                     </div>
-                </div> 
-                
+                </div>
+
             @endauth
         </div>
         <div class="humberger__menu__contact">
@@ -162,28 +166,34 @@ $category = CategoryPost::select('title', 'slug')->get();
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__right">
                             @guest
-                            <div class="header__top__right__auth header__top__register">
-                                <a href="{{URL::to('/dang-nhap')}}"><i class="fa fa-user"></i>Đăng nhập</a>
-                            </div>
-                            <div class="header__top__right__auth">
-                                <a href="{{URL::to('/dang-ky')}}"><i class="fa fa-user-plus"></i>Đăng ký</a>
-                            </div>
+                                <div class="header__top__right__auth header__top__register">
+                                    <a href="{{ URL::to('/dang-nhap') }}"><i class="fa fa-user"></i>Đăng nhập</a>
+                                </div>
+                                <div class="header__top__right__auth">
+                                    <a href="{{ URL::to('/dang-ky') }}"><i class="fa fa-user-plus"></i>Đăng ký</a>
+                                </div>
                             @endguest
                             @auth
-                            <div class="header__top__right__auth_login">
-                                <span class="dropdow_custom" data-toggle=".dropdown_custom">
-                                    Xin chào, {{Auth::user()->name}}
-                                </span>
-                                <div class="dropdown_custom" style="display:none;">
-                                    <a class="dropdown-item" href="{{URL::to('trang-ca-nhan')}}"><i class="fa fa-address-card-o"></i> Thông tin</a>
-                                    <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Đơn hàng</a>
-                                    <a class="dropdown-item" href="{{url('dau-gia/lich-su-dau-gia')}}"><i class="fa fa-hourglass-half"></i>Lịch sử đấu giá</a>
-                                    <a class="dropdown-item" href="{{url('dau-gia/san-pham-dau-gia-yeu-thich')}}"><i class="fa fa-heart-o"></i> Yêu thích</a>
-                                    <a class="dropdown-item" href="{{URL::to('doi-mat-khau')}}"><i class="fa fa-key"></i> Đổi mật khẩu</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{{URL::to('/thoat-tai-khoan')}}"><i class="fa fa-sign-out"></i> Thoát tài khoản</a>
-                                </div>     
-                            </div> 
+                                <div class="header__top__right__auth_login">
+                                    <span class="dropdow_custom" data-toggle=".dropdown_custom">
+                                        Xin chào, {{ Auth::user()->name }}
+                                    </span>
+                                    <div class="dropdown_custom" style="display:none;">
+                                        <a class="dropdown-item" href="{{ URL::to('trang-ca-nhan') }}"><i
+                                                class="fa fa-address-card-o"></i> Thông tin</a>
+                                        <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Đơn hàng</a>
+                                        <a class="dropdown-item" href="{{ url('dau-gia/lich-su-dau-gia') }}"><i
+                                                class="fa fa-hourglass-half"></i>Lịch sử đấu giá</a>
+                                        <a class="dropdown-item"
+                                            href="{{ url('dau-gia/san-pham-dau-gia-yeu-thich') }}"><i
+                                                class="fa fa-heart-o"></i> Yêu thích</a>
+                                        <a class="dropdown-item" href="{{ URL::to('doi-mat-khau') }}"><i
+                                                class="fa fa-key"></i> Đổi mật khẩu</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{{ URL::to('/thoat-tai-khoan') }}"><i
+                                                class="fa fa-sign-out"></i> Thoát tài khoản</a>
+                                    </div>
+                                </div>
                             @endauth
                         </div>
                     </div>
@@ -194,7 +204,8 @@ $category = CategoryPost::select('title', 'slug')->get();
             <div class="row align-item-center">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="{{ URL::to('/') }}"><img src="{{ asset('public/mevivu/img/logo.png') }}" alt=""></a>
+                        <a href="{{ URL::to('/') }}"><img src="{{ asset('public/mevivu/img/logo.png') }}"
+                                alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-9 d-none d-md-block">
@@ -202,9 +213,10 @@ $category = CategoryPost::select('title', 'slug')->get();
                         <ul>
                             <li class="search_all">
                                 <div class="seach_form" style="display:none;">
-                                    <form action="{{route('search.searchProduct')}}" method="get">
+                                    <form action="{{ route('search.searchProduct') }}" method="get">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm..." name="keyword" minlength="3">
+                                            <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm..."
+                                                name="keyword" minlength="3">
                                             <div class="input-group-append">
                                                 <button class="btn btn-ocean" type="submit">Tìm kiếm</button>
                                             </div>
@@ -214,11 +226,11 @@ $category = CategoryPost::select('title', 'slug')->get();
                                 <a href="#" class="search_icon"><i class="fa fa-search"></i></a>
                             </li>
                             <li class="wishlistHeader">
-                                <a href="{{route('wishlist.index')}}">
-                                    <i class="fa fa-heart"></i> 
+                                <a href="{{ route('wishlist.index') }}">
+                                    <i class="fa fa-heart"></i>
                                     <span
-                                    style="{{ Cart::instance('wishlist')->count() > 0 ? 'display:inline-block' : 'display:none' }}">
-                                    {{Cart::instance('wishlist')->count()}}</span>
+                                        style="{{ Cart::instance('wishlist')->count() > 0 ? 'display:inline-block' : 'display:none' }}">
+                                        {{ Cart::instance('wishlist')->count() }}</span>
                                 </a>
                             </li>
                             <li class="cartHeader">
@@ -242,9 +254,10 @@ $category = CategoryPost::select('title', 'slug')->get();
                                                                 $productImg = App\Models\Product::where('id', $item->id)->value('avatar');
                                                             @endphp
                                                             <li class="mini-cart-item">
-                                                                <span class="remove" data-rowid="{{ $item->rowId }}"
+                                                                <span class="remove remove_normal_cart"
+                                                                    data-rowid="{{ $item->rowId }}"
                                                                     data-href="{{ route('cart.removeFromCart') }}">x</span>
-                                                                <a href="{{route('san-pham.index')}}/{{ $item->options->slug }}"
+                                                                <a href="{{ route('san-pham.index') }}/{{ $item->options->slug }}"
                                                                     style="color: #000;">
                                                                     <img src="{{ $productImg }}" width="60"
                                                                         height="60">
@@ -273,10 +286,23 @@ $category = CategoryPost::select('title', 'slug')->get();
                                     </ul>
                                 </div>
                             </li>
+                            <li class="header__cart__price">
+                                <span>{{ Cart::instance('shopping')->subtotal() > 0 ? Cart::instance('shopping')->subtotal() . '₫' : '0 đ' }}</span>
+                            </li>
+                            {{-- cart Auction --}}
+                            @if (Auth::check())
+                                <li class="cartHeader">
+                                    <a href="{{ route('auctioncart.index') }}">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <span class="cart-counts"
+                                            style="{{ Cart::instance('auction')->count() > 0 ? 'display:inline-block' : 'display:none' }}">
+                                            {{ Cart::instance('auction')->count() }}
+                                        </span>
+                                    </a>
+                                    <span class="text-light">Giỏ hàng đấu giá</span>
+                                </li>
+                            @endif
                         </ul>
-                        <div class="header__cart__price">
-                            <span>{{ Cart::instance('shopping')->subtotal() > 0 ? Cart::instance('shopping')->subtotal() . '₫' : '0 đ' }}</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -295,22 +321,24 @@ $category = CategoryPost::select('title', 'slug')->get();
 
                     <div class="hero__categories">
                         <div class="hero__categories__all">
-                                <i class="fa fa-bars"></i>
-                                {{-- <a href="{{url('dau-gia')}}"> --}}
+                            <i class="fa fa-bars"></i>
+                            {{-- <a href="{{url('dau-gia')}}"> --}}
 
-                                <span>ĐẤU GIÁ</span>
+                            <span>ĐẤU GIÁ</span>
                             {{-- </a> --}}
-                            <a href="{{URL::to('/')}}/" style="position: absolute;right: 5px;display: block;" class="d-lg-none d-md-none"><i class="fa fa-home" aria-hidden="true" style="font-size: 25px"></i></a>
+                            <a href="{{ URL::to('/') }}/" style="position: absolute;right: 5px;display: block;"
+                                class="d-lg-none d-md-none"><i class="fa fa-home" aria-hidden="true"
+                                    style="font-size: 25px"></i></a>
 
-                            
+
                         </div>
-                      <ul style="display: none;">
-                           
-                             <li><a href="{{url('dau-gia/')}}">Chưa diễn ra</a></li>
-                             <li><a href="{{url('dau-gia/')}}">Đang diễn ra</a></li>
+                        <ul style="display: none;">
+
+                            <li><a href="{{ url('dau-gia/') }}">Chưa diễn ra</a></li>
+                            <li><a href="{{ url('dau-gia/') }}">Đang diễn ra</a></li>
 
                         </ul>
-                         
+
 
                     </div>
 
@@ -318,22 +346,23 @@ $category = CategoryPost::select('title', 'slug')->get();
                 <div class="col-lg-9">
                     <nav class="header__menu">
                         <ul>
-                            <li><a href="{{URL::to('/')}}/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
-                            <li><a href="{{URL::to('/gioi-thieu')}}">Giới thiệu</a></li>
-                            <li><a href="{{URL::to('/cua-hang')}}">Cửa hàng</a></li>
-                            <li><a href="{{URL::to('/danh-sach-dai-ly')}}">Danh sách đại lý</a></li> 
-                            
+                            <li><a href="{{ URL::to('/') }}/"><i class="fa fa-home" aria-hidden="true"></i></a>
+                            </li>
+                            <li><a href="{{ URL::to('/gioi-thieu') }}">Giới thiệu</a></li>
+                            <li><a href="{{ URL::to('/cua-hang') }}">Cửa hàng</a></li>
+                            <li><a href="{{ URL::to('/danh-sach-dai-ly') }}">Danh sách đại lý</a></li>
+
                             <li><a href="#">Thông tin</a>
                                 <ul class="header__menu__dropdown">
-                                    <li><a href="{{URL::to('/nha-lai-tao')}}">Nhà lai tạo</a></li>
-                                    <li><a href="{{URL::to('/chinh-sach-dai-ly')}}">Chính sách đại lý</a></li>
-                                    <li><a href="{{URL::to('/huong-dan-dau-gia')}}">Hướng dẫn đấu giá</a></li> 
+                                    <li><a href="{{ URL::to('/nha-lai-tao') }}">Nhà lai tạo</a></li>
+                                    <li><a href="{{ URL::to('/chinh-sach-dai-ly') }}">Chính sách đại lý</a></li>
+                                    <li><a href="{{ URL::to('/huong-dan-dau-gia') }}">Hướng dẫn đấu giá</a></li>
                                 </ul>
                             </li>
-                            
-                            <li><a href="{{URL::to('/blog')}}">Blog</a>
+
+                            <li><a href="{{ URL::to('/blog') }}">Blog</a>
                                 {{-- <ul class="header__menu__dropdown">
-                                    @foreach($category as $value)
+                                    @foreach ($category as $value)
                                     <li><a href="{{URL::to('/danh-muc-bai-viet/'.$value->slug)}}">{{$value->title}}</a></li>
                                     @endforeach  
                                 </ul> --}}
@@ -429,18 +458,74 @@ $category = CategoryPost::select('title', 'slug')->get();
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
-    <script src="{{asset('public/mevivu/js/jquery-3.3.1.min.js')}}"></script>
-    <script src="{{asset('public/mevivu/js/bootstrap.min.js')}}"></script>
-    <!-- <script src="{{asset('public/mevivu/js/popper.min.js')}}"></script> -->
-    <script src="{{asset('public/mevivu/js/jquery.nice-select.min.js')}}"></script>
-    <script src="{{asset('public/mevivu/js/jquery-ui.min.js')}}"></script>
-    <script src="{{asset('public/mevivu/js/jquery.slicknav.js')}}"></script>
-    <script src="{{asset('public/mevivu/js/mixitup.min.js')}}"></script>
-    <script src="{{asset('public/mevivu/js/owl.carousel.min.js')}}"></script>
-    <script src="{{asset('public/mevivu/js/main.js')}}"></script>
-    <script src="{{asset('public/mevivu/js/jquery.countdown.min.js')}}"></script>
-    <script src="{{asset('public/mevivu/js/search-blog.js')}}"></script>
+    <script src="{{ asset('public/mevivu/js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('public/mevivu/js/bootstrap.min.js') }}"></script>
+    <!-- <script src="{{ asset('public/mevivu/js/popper.min.js') }}"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ asset('public/mevivu/js/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ asset('public/mevivu/js/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('public/mevivu/js/jquery.slicknav.js') }}"></script>
+    <script src="{{ asset('public/mevivu/js/mixitup.min.js') }}"></script>
+    <script src="{{ asset('public/mevivu/js/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('public/mevivu/js/main.js') }}"></script>
+    <script src="{{ asset('public/mevivu/js/jquery.countdown.min.js') }}"></script>
+    <script src="{{ asset('public/mevivu/js/search-blog.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+        integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"
+        integrity="sha512-XZEy8UQ9rngkxQVugAdOuBRDmJ5N4vCuNXCh8KlniZgDKTvf7zl75QBtaVG1lEhMFe2a2DuA22nZYY+qsI2/xA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var pathName = $(location).attr('pathname');
+            if (pathName.includes('/cart')) {
+                $('li.cartHeader').hover(function(e) {
+                    e.preventDefault();
+                    $('.cartHeader .div-dropdown-cart').css('display', 'none');
+                });
+            }
+            $('section.checkout span.open-coupon').click(function() {
+                $('div.checkout__order__use__coupon').css({
+                    "display": "block",
+                    "margin-top": "5px"
+                });
+            })
+
+        });
+        if ({!! json_encode(session('coupon')) !!} != null) {
+            var coupon = {!! json_encode(session('coupon')) !!};
+        } else {
+            var coupon = null;
+        }
+
+        var auctionCart = {!! json_encode(route('auctioncart.index')) !!}
+        var normalCart = {!! json_encode(route('cart.index')) !!}
+        var updateCart = {!! json_encode(route('cart.updateCart')) !!}
+        var ajaxSelectAddress = {!! json_encode(route('checkout.getLocation')) !!}
+    </script>
+
+    <script src="{{ asset('public/mevivu/js/ajaxCart.js') }}"></script>
+    <script src="{{ asset('public/mevivu/js/ajaxAuctionCart.js') }}"></script>
+    <script src="{{ asset('public/mevivu/js/ajaxSelectAddress.js') }}"></script>
+
+    <script>
+        $('body').click(function(){
+            $('#successAuctionModal').remove();
+            $('.modal-backdrop.fade.show').remove();
+            $('body').removeClass('modal-open');
+            $('body').css('padding-right', 'unset');
+        })
+
+        $(document).on('click', '#successAuctionModal button.close', function(){
+            $('#successAuctionModal').remove();
+            $('.modal-backdrop.fade.show').remove();
+            $('body').removeClass('modal-open');
+            $('body').css('padding-right', 'unset');
+        })
+    </script>
 
 </body>
 

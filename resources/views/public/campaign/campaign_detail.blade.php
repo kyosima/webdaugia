@@ -241,6 +241,20 @@
                                 </div>
                             </form>
                         </div>
+
+                        {{-- nut mua ngay khi dau gia thanh cong --}}
+                        <div class="text-center" @if ($detail->status == 2 && $detail->user_id == auth()->user()->id) style="display:block"@endif>
+                            @if (count(Cart::instance('auction')->search(function ($cartItem) use ($detail) {
+                                if($cartItem->id == $detail->product_id)
+                                    return in_array($detail->campaign_id, $cartItem->options['campaign_ids']);
+                            })) < 1 && $detail->user_id == auth()->user()->id && $detail->is_ordered != 1)
+            
+                                <button data-href="{{ route('auctioncart.addCart') }}" class="btn btn-warning btn-add-auction"
+                                data-id="{{ $detail->product_id }}" data-userid="{{ auth()->user()->id }}"
+                                data-camid="{{ $detail->campaign_id }}">Đặt hàng ngay</button>
+                            @endif
+                        </div>
+
                     </div>
                 </div>
             </div>

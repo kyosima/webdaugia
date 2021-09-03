@@ -43,10 +43,10 @@
                                     </td>
                                     <td class="shoping__cart__price">
                                         @if ($item->options->price_regular)
-                                            <span class="price-before-promo">@money($item->options->price_regular)</span>
-                                            <span class="price-promo">@money($item->price)</span>
+                                            <span class="price-before-promo">{{getCurrency($item->options->price_regular)}}</span>
+                                            <span class="price-promo">{{getCurrency($item->price)}}</span>
                                         @else
-                                            @money($item->price)
+                                            {{getCurrency($item->price)}}
                                         @endif
                                     </td>
                                     <td class="shoping__cart__item__close">
