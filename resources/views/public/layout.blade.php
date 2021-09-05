@@ -84,10 +84,34 @@ $category = CategoryPost::select('title', 'slug')->get();
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                <li><a href="{{ route('cart.index') }}">
+                    <i class="fa fa-shopping-bag"></i> <span>{{ Cart::instance('shopping')->count() > 0 ? Cart::instance('shopping')->count() : '0' }}</span>
+                    </a>
+                </li>
             </ul>
-            <div class="header__cart__price"><span>150.000 đ</span></div>
+            <div class="header__cart__price">
+                <span>{{ Cart::instance('shopping')->subtotal() > 0 ? Cart::instance('shopping')->subtotal() . '₫' : '0 đ' }}</span>
+            </div>
         </div>
+
+        @if (Auth::check())
+        <div class="humberger__menu__cart">
+            <div class="header_auction_cart">
+                <ul>
+                    <li class="cartHeader">
+                        <a href="{{ route('auctioncart.index') }}">
+                            <i class="fa fa-shopping-cart"></i>
+                            <span class="cart-counts">
+                                {{ Cart::instance('auction')->count() > 0 ? Cart::instance('auction')->count() : '0' }}
+                            </span>
+                        </a>    
+                    </li>
+                </ul>
+                <a href="{{ route('auctioncart.index') }}" style="color: #212529;">Giỏ hàng đấu giá</a>
+            </div>
+        </div>
+        @endif
+
 
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
@@ -143,8 +167,8 @@ $category = CategoryPost::select('title', 'slug')->get();
         </div>
         <div class="humberger__menu__contact">
             <ul>
-                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                <li><i class="fa fa-phone"></i> 0342909557</li>
+                <li><i class="fa fa-envelope"></i> Mr.tam.nicekoi@gmail.com</li>
+                <li><i class="fa fa-phone"></i> 0795649868</li>
             </ul>
         </div>
     </div>
@@ -158,8 +182,8 @@ $category = CategoryPost::select('title', 'slug')->get();
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__left">
                             <ul>
-                                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                                <li><i class="fa fa-phone"></i> 0342909557</li>
+                                <li><i class="fa fa-envelope"></i> Mr.tam.nicekoi@gmail.com</li>
+                                <li><i class="fa fa-phone"></i> 0795649868</li>
                             </ul>
                         </div>
                     </div>
@@ -299,7 +323,7 @@ $category = CategoryPost::select('title', 'slug')->get();
                                             {{ Cart::instance('auction')->count() }}
                                         </span>
                                     </a>
-                                    <span class="text-light">Giỏ hàng đấu giá</span>
+                                    <a href="{{ route('auctioncart.index') }}" class="text-light">Giỏ hàng đấu giá</a>
                                 </li>
                             @endif
                         </ul>
@@ -392,9 +416,9 @@ $category = CategoryPost::select('title', 'slug')->get();
                                     alt=""></a>
                         </div>
                         <ul>
-                            <li>Address: 60-49 Road 11378 New York</li>
-                            <li>Phone: +65 11.188.888</li>
-                            <li>Email: hello@colorlib.com</li>
+                            <li>Address: 267F/35 Tô Ngọc Vân, P. Linh Đông, Thủ Đức</li>
+                            <li>Phone: 0795.649.868</li>
+                            <li>Email: Mr.tam.nicekoi@gmail.com</li>
                         </ul>
                     </div>
                 </div>
@@ -428,10 +452,10 @@ $category = CategoryPost::select('title', 'slug')->get();
                             <button type="submit" class="site-btn">Subscribe</button>
                         </form>
                         <div class="footer__widget__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                            <a href="https://www.facebook.com/nicekoi.com.vn/" rel="nofollow"><i class="fa fa-facebook"></i></a>
+                            <a href="#" rel="nofollow"><i class="fa fa-instagram"></i></a>
+                            <a href="#" rel="nofollow"><i class="fa fa-twitter"></i></a>
+                            <a href="#" rel="nofollow"><i class="fa fa-pinterest"></i></a>
                         </div>
                     </div>
                 </div>

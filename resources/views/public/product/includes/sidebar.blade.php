@@ -1,4 +1,4 @@
-<div class="col-lg-3 col-md-5 d-none d-md-block">
+{{-- <div class="col-lg-3 col-md-5 d-none d-md-block">
     <div class="sidebar">
         <div class="sidebar__item">
             <h4>Danh mục</h4>
@@ -74,4 +74,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
