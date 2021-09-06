@@ -5,37 +5,32 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 pr-md-1">
-                    <div id="demo" class="carousel slide" data-ride="carousel">
-                        <!-- The slideshow -->
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="{{ asset('public/mevivu/img/banner/banner-3.jpg') }}" alt="Los Angeles"
-                                    width="100%">
-                            </div>
-                        </div>
-
-                        <!-- Left and right controls -->
-                        <a class="carousel-control-prev" href="#demo" data-slide="prev">
-                            <span class="carousel-control-prev-icon"></span>
-                        </a>
-                        <a class="carousel-control-next" href="#demo" data-slide="next">
-                            <span class="carousel-control-next-icon"></span>
-                        </a>
-
-                    </div>
+                    <div class="fotorama" data-autoplay="true">
+                        <img src="{{asset('public/mevivu/img/banner/banner-3.jpg')}}" alt="Los Angeles" width="100%">
+                        <img src="{{asset('public/mevivu/img/banner/banner-3.jpg')}}" alt="Los Angeles" width="100%">
+                        <img src="{{asset('public/mevivu/img/banner/banner-3.jpg')}}" alt="Los Angeles" width="100%">
+                      </div>
+                   
                 </div>
                 <div class="col-lg-3 pl-md-1 banner-left d-none d-md-block">
                     <div class="mb-2">
-                        <img src="{{ asset('public/mevivu/img/banner/banner-4.jpg') }}" alt="Los Angeles" width="100%">
+                        <div class="fotorama" data-autoplay="true"  data-arrows="false"   data-click="true" data-swipe="false"> 
+                            <img src="{{asset('public/mevivu/img/banner/banner-4.jpg')}}" alt="Los Angeles" width="100%">
+                            <img src="{{asset('public/mevivu/img/banner/banner-4.jpg')}}" alt="Los Angeles" width="100%">
+                            <img src="{{asset('public/mevivu/img/banner/banner-4.jpg')}}" alt="Los Angeles" width="100%">
+                          </div>
                     </div>
                     <div>
-                        <img src="{{ asset('public/mevivu/img/banner/banner-5.jpg') }}" alt="Los Angeles" width="100%">
+                        <div class="fotorama" data-autoplay="true"  data-arrows="false"   data-click="true" data-swipe="false">
+                            <img src="{{asset('public/mevivu/img/banner/banner-5.jpg')}}" alt="Los Angeles" width="100%">
+                            <img src="{{asset('public/mevivu/img/banner/banner-5.jpg')}}" alt="Los Angeles" width="100%">
+                            <img src="{{asset('public/mevivu/img/banner/banner-5.jpg')}}" alt="Los Angeles" width="100%">
+                          </div>
                     </div>
                 </div>
             </div>
         </div>
-
-    </section>
+    </section>    
     <!-- banner Section end -->
 
     <!-- Product Section Begin -->

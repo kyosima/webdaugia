@@ -51,10 +51,34 @@
             </div>
             <div class="row">
                 <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12">
-                    <img class="my-1" src="{{ getImage($product->avatar) }}">
+                    <img class="my-1 campaign-detail-img" src="{{ getImage($product->avatar) }}">
 
 
-                    @if ($detail->status == 0)
+                    <h5>Thông tin sản phẩm</h5>
+                    <div class="buttons-view">
+                        <a class="btn-detail-view" data-url="{{ url('dau-gia/lay-hinh-anh/') }}"
+                            data-id="{{ $detail->id }}" onclick="getImage(this)">Ảnh</a>
+                        <a class="btn-detail-view" data-url="{{ url('dau-gia/lay-video/') }}"
+                            data-id="{{ $detail->id }}" onclick="getVideo(this)">Video</a>
+                        <a class="btn-detail-view" data-url="{{ url('dau-gia/lay-mo-ta/') }}"
+                            data-id="{{ $detail->id }}" onclick="getDescription(this)">Mô tả</a>
+
+                        @if ($campaign->status != 2)
+                            <a class="btn-detail-view" id="add-detail-wishlist-{{ $detail->id }}"
+                                data-detailid="{{ $detail->id }}" data-url="{{ url('dau-gia/yeu-thich') }}"
+                                data-status="0" onclick="addCampaintoWishlist(this)">
+                                @if ($detail->wishlist()->first() == null)
+                                    <i class="material-icons">favorite_border</i>
+                                @else
+                                    <i class="material-icons">favorite</i>
+                                @endif
+                                <span>Thích</span>
+                            </a>
+                        @endif
+
+                    </div>
+                    <div>
+                        @if ($detail->status == 0)
                         <h5>Thời gian đấu đến khi đấu giá</h5>
                         <div class="detail-counter" style="display: block" id="detail-counter-{{ $order }}"
                             data-url="{{ url('dau-gia/bat-dau/detail/' . $detail->id) }}"
@@ -112,28 +136,6 @@
                             </script>
                         @endif
                     @endif
-                    <h5>Thông tin sản phẩm</h5>
-                    <div class="buttons-view">
-                        <a class="btn-detail-view" data-url="{{ url('dau-gia/lay-hinh-anh/') }}"
-                            data-id="{{ $detail->id }}" onclick="getImage(this)">Ảnh</a>
-                        <a class="btn-detail-view" data-url="{{ url('dau-gia/lay-video/') }}"
-                            data-id="{{ $detail->id }}" onclick="getVideo(this)">Video</a>
-                        <a class="btn-detail-view" data-url="{{ url('dau-gia/lay-mo-ta/') }}"
-                            data-id="{{ $detail->id }}" onclick="getDescription(this)">Mô tả</a>
-
-                        @if ($campaign->status != 2)
-                            <a class="btn-detail-view" id="add-detail-wishlist-{{ $detail->id }}"
-                                data-detailid="{{ $detail->id }}" data-url="{{ url('dau-gia/yeu-thich') }}"
-                                data-status="0" onclick="addCampaintoWishlist(this)">
-                                @if ($detail->wishlist()->first() == null)
-                                    <i class="material-icons">favorite_border</i>
-                                @else
-                                    <i class="material-icons">favorite</i>
-                                @endif
-                                <span>Thích</span>
-                            </a>
-                        @endif
-
                     </div>
                     <div class="product__details__text">
 
