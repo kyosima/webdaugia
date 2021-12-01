@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendMailToAdmin;
+use App\Jobs\SendMailToCustomer;
 use App\Models\Bill;
 use App\Models\BillAddress;
 use App\Models\BillDetail;
+use Carbon\Carbon;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -50,9 +53,9 @@ class CheckoutController extends Controller
                     'id_ofuser' => auth()->user() ? auth()->user()->id : null,
                     'note' => $request->customer_Note,
                     'payment_method' => $request->payment_method == "cod" ? 1 : 0,
-                    'bill_subtotal' => intval(str_replace(".", "", $request->bill_subtotal)),
-                    'bill_total' => intval(str_replace(".", "", $request->bill_total)),
-                    'bill_promo' => intval(str_replace(".", "", $request->bill_promo)),
+                    'bill_subtotal' => intval(str_replace(",", "", $request->bill_subtotal)),
+                    'bill_total' => intval(str_replace(",", "", $request->bill_total)),
+                    'bill_promo' => intval(str_replace(",", "", $request->bill_promo)),
                     'bill_coupon' => $request->bill_coupon,
                     'bill_soluong' => $request->bill_soluong,
                 ]);
@@ -99,12 +102,16 @@ class CheckoutController extends Controller
             $info = $bill->bill_address;
 
             $products = $bill->bill_detail;
+
             $street = session('bill.street');
             $phuong = session('bill.phuong');
             $quan = session('bill.quan');
             $thanhpho = session('bill.thanhpho');
 
-            $this->sendMail($bill, $info, $products);
+            // $this->sendMail($bill, $info, $products);
+            // Queue send mail
+            dispatch(new SendMailToCustomer($bill, $info, $products))->delay(Carbon::now()->addSeconds(5));
+            dispatch(new SendMailToAdmin($bill, $info, $products))->delay(Carbon::now()->addSeconds(10));
 
             session()->forget('bill');
             session()->forget('coupon');

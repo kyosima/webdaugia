@@ -266,7 +266,7 @@
                 </div>
 
                 <!-- INPUT HIDDEN LOCATION -->
-                <input type="hidden" name="bill_subtotal" value="{{intval(str_replace(".","",Cart::instance('shopping')->subtotal()))}}">
+                <input type="hidden" name="bill_subtotal" value="{{Cart::instance('shopping')->subtotal()}}">
                 <input type="hidden" name="bill_promo" value="{{session('coupon') ? session('coupon')['discount'] : ''}}">
                 <input type="hidden" name="bill_coupon" value="{{session('coupon') ? session('coupon')['name'] : ''}}">
                 <input type="hidden" name="bill_soluong" value="{{Cart::instance('shopping')->count()}}">
